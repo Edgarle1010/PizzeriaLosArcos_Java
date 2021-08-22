@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_nav_button"
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_nav_text" />
+    <item
+        android:id="@+id/parks_nav_button"
+        android:icon="@drawable/ic_baseline_more_horiz_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/more_nav_text" />
+</menu>

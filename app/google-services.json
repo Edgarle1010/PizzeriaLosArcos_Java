@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "610898311485",
+    "project_id": "pizzerialosarcos-9c55f",
+    "storage_bucket": "pizzerialosarcos-9c55f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610898311485:android:31a173a9725a573bd2ed54",
+        "android_client_info": {
+          "package_name": "com.edgarlopez.pizzerialosarcos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610898311485-55p0hbvv3d49v833s9i67em8apfrub34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADM6Pf9Gf6MGJPujAfy2lgdbNyTJMH8rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610898311485-55p0hbvv3d49v833s9i67em8apfrub34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

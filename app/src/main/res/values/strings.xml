@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">PizzeriaLosArcos</string>
+    <string name="text_guest_button">Invitado</string>
+    <string name="text_login_button">Iniciar sesión</string>
+    <string name="text_signin_button">Registrarse</string>
+    <string name="email_hint">e-mail</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="text_login_cardview">Introduce tus datos</string>
+    <string name="text_login_description">Ingresa tus datos</string>
+    <string name="forgot_password_text"><u>Olvidé mi contraseña</u></string>
+    <string name="signin_text_view"><u>Registrar una cuenta</u></string>
+    <string name="name_text">Nombre(s)</string>
+    <string name="name_hint">Nombre(s)</string>
+    <string name="lastname_text">Apellidos</string>
+    <string name="next_text">Siguiente</string>
+    <string name="toast_signin_empty_fields">Favor de completar los campos solicitados</string>
+    <string name="field_required">Este campo es requerido</string>
+    <string name="sign_number_description_text">Registrate con tu número celular</string>
+    <string name="region_text">Región</string>
+    <string name="phonenumber_text">Número celular</string>
+    <string name="phonenumber_hint">Número celular (10 dígitos)</string>
+    <string name="verification_code_recieved_description">Introduzca el código de verificación recibido</string>
+    <string name="send_verification_code_text">Enviado a</string>
+    <string name="verification_code_text_description_field">Código de verificación</string>
+    <string name="create_password_text">Crea una contraseña</string>
+    <string name="verify_password_hint">Verifica contraseña</string>
+    <string name="features_password_text">De 8 a 16 caracteres, incluyendo al menos tres de los siguientes tipos de caracteres: números, mayúsculas, minúsculas y caracteres especiales</string>
+    <string name="menu_nav_text">Menú</string>
+    <string name="more_nav_text">Más</string>
+
 </resources>

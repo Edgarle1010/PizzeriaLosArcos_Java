@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    android:background="@color/quarter_color"
+    android:layout_height="match_parent"
+    android:windowTranslucentStatus="false"
+    tools:context=".Controller.VerificationCodeActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/verication_code_sign_form"
+        android:paddingTop="40dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sign_verification_code_description_text"
+            android:text="@string/verification_code_recieved_description"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView
+            android:id="@+id/verification_code_text"
+            android:text="@string/send_verification_code_text"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView
+            android:id="@+id/verification_code_text_description"
+            android:text="@string/verification_code_text_description_field"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/verification_code_icon"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/ic_baseline_https_24">
+            </ImageView>
+
+            <EditText
+                android:id="@+id/verification_code_text_edit_text"
+                android:hint="@string/verification_code_text_description_field"
+                android:inputType="number"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:layout_toEndOf="@id/verification_code_icon"
+                android:layout_marginStart="10dp"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@id/next_verification_code_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </EditText>
+            <requestFocus></requestFocus>
+
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_verification_code_button"
+            android:text="@string/next_text"
+            android:backgroundTint="@color/secondary_color"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+        </com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/verification_code_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ProgressBar>
+
+</LinearLayout>
