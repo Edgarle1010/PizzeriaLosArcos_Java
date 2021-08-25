@@ -27,5 +27,6 @@
     <string name="features_password_text">De 8 a 16 caracteres, incluyendo al menos tres de los siguientes tipos de caracteres: números, mayúsculas, minúsculas y caracteres especiales</string>
     <string name="menu_nav_text">Menú</string>
     <string name="more_nav_text">Más</string>
+    <string name="logout_text">Cerrar sesión</string>
 
 </resources>

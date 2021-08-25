@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    android:background="@color/quarter_color"
+    android:layout_height="match_parent"
+    android:windowTranslucentStatus="false"
+    tools:context=".Controller.MoreFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/email_sign_form"
+        android:paddingTop="40dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Detalles de la cuenta"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logout_button"
+            android:text="@string/logout_text"
+            android:backgroundTint="@color/secondary_color"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+        </com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+
+</LinearLayout>

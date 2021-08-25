@@ -1,8 +1,5 @@
 package com.edgarlopez.pizzerialosarcos.Controller;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -17,18 +14,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.edgarlopez.pizzerialosarcos.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,10 @@ public class RegisterNumberActivity extends AppCompatActivity {
     private Button nextButton;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
+    private boolean exist;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference = db.collection("Users");
 
     private String prefix = "+52";
     private List<String> listRegion = new ArrayList<String>();
@@ -75,7 +82,7 @@ public class RegisterNumberActivity extends AppCompatActivity {
 
                 if (currentRegion.equals(listRegion.get(0))) {
                     prefix = "+52";
-                }else {
+                } else {
                     prefix = "+1";
                 }
 
@@ -87,60 +94,16 @@ public class RegisterNumberActivity extends AppCompatActivity {
             }
         });
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNumber = numberEditText.getText().toString().trim();
+        nextButton.setOnClickListener(v -> {
+            String phoneNumber = numberEditText.getText().toString().trim();
+            if (phoneNumber.length() == 10) {
+                phoneNumber = prefix + phoneNumber;
+                progressBar.setVisibility(View.VISIBLE);
 
-                if (phoneNumber.length() == 10) {
-                    phoneNumber = prefix + phoneNumber;
-                    progressBar.setVisibility(View.VISIBLE);
+                checkPhoneNumber(phoneNumber);
 
-                    String finalPhoneNumber = phoneNumber;
-                    PhoneAuthOptions options =
-                            PhoneAuthOptions.newBuilder(firebaseAuth)
-                                    .setPhoneNumber(phoneNumber)
-                                    .setTimeout(60L, TimeUnit.SECONDS)
-                                    .setActivity(RegisterNumberActivity.this)
-                                    .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                        @Override
-                                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
-                                        }
-
-                                        @Override
-                                        public void onVerificationFailed(@NonNull FirebaseException e) {
-                                            progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(RegisterNumberActivity.this,
-                                                    e.getLocalizedMessage(),
-                                                    Toast.LENGTH_LONG)
-                                                    .show();
-                                        }
-
-                                        @Override
-                                        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                            super.onCodeSent(s, forceResendingToken);
-                                            progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(RegisterNumberActivity.this,
-                                                    "En breve recibiras un código de seguridad para verificar tu número celular.",
-                                                    Toast.LENGTH_LONG)
-                                                    .show();
-
-                                            AppController.getInstance().setPhoneNumber(finalPhoneNumber);
-                                            AppController.getInstance().setVerificationId(s);
-                                            AppController.getInstance().setResendToken(forceResendingToken.toString());
-
-                                            startActivity(new Intent(RegisterNumberActivity.this,
-                                                    VerificationCodeActivity.class));
-                                        }
-                                    })
-                                    .build();
-
-                    PhoneAuthProvider.verifyPhoneNumber(options);
-
-                }else {
-                    numberEditText.setError("El número celular introducido no es válido.");
-                }
+            } else {
+                numberEditText.setError("El número celular introducido no es válido.");
             }
         });
 
@@ -154,5 +117,61 @@ public class RegisterNumberActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkPhoneNumber(String phoneNumber) {
+        collectionReference
+                .whereEqualTo("phoneNumber", phoneNumber)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (!value.isEmpty()) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            numberEditText.setError("El número celular ya ha sido registrado anteriormente");
+                        } else {
+                            PhoneAuthOptions options =
+                                    PhoneAuthOptions.newBuilder(firebaseAuth)
+                                            .setPhoneNumber(phoneNumber)
+                                            .setTimeout(30L, TimeUnit.SECONDS)
+                                            .setActivity(RegisterNumberActivity.this)
+                                            .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                                                @Override
+                                                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+                                                }
+
+                                                @Override
+                                                public void onVerificationFailed(@NonNull FirebaseException e) {
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(RegisterNumberActivity.this,
+                                                            e.getLocalizedMessage(),
+                                                            Toast.LENGTH_LONG)
+                                                            .show();
+                                                }
+
+                                                @Override
+                                                public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                                    super.onCodeSent(s, forceResendingToken);
+                                                    progressBar.setVisibility(View.GONE);
+                                                    Toast.makeText(RegisterNumberActivity.this,
+                                                            "En breve recibiras un código de seguridad para verificar tu número celular.",
+                                                            Toast.LENGTH_LONG)
+                                                            .show();
+
+                                                    AppController.getInstance().setPhoneNumber(phoneNumber);
+                                                    AppController.getInstance().setVerificationId(s);
+                                                    AppController.getInstance().setResendToken(forceResendingToken.toString());
+
+                                                    startActivity(new Intent(RegisterNumberActivity.this,
+                                                            VerificationCodeActivity.class));
+                                                }
+                                            })
+                                            .build();
+
+                            PhoneAuthProvider.verifyPhoneNumber(options);
+                        }
+                    }
+                });
     }
 }

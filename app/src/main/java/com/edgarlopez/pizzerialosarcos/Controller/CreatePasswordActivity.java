@@ -83,9 +83,8 @@ public class CreatePasswordActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                String fullName = name + " " + lastName;
                                                 UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                        .setDisplayName(fullName)
+                                                        .setDisplayName(name)
                                                         .build();
 
                                                 currentUser.updateProfile(profileUpdate)
@@ -99,7 +98,8 @@ public class CreatePasswordActivity extends AppCompatActivity {
                                                                 //Create a user Map so we can create a user in the User collection
                                                                 Map<String, Object> userObj = new HashMap<>();
                                                                 userObj.put("userId", currentUserId);
-                                                                userObj.put("username", fullName);
+                                                                userObj.put("name", name);
+                                                                userObj.put("lastname", lastName);
                                                                 userObj.put("email", email);
                                                                 userObj.put("phoneNumber", phoneNumber);
                                                                 userObj.put("streaks", 0);

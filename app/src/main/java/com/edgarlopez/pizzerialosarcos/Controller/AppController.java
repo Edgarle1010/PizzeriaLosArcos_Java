@@ -16,6 +16,24 @@ public class AppController extends Application {
     private String phoneNumber;
     private String verificationId;
     private String resendToken;
+    private int streaks;
+    private boolean baned;
+
+    public int getStreaks() {
+        return streaks;
+    }
+
+    public void setStreaks(int streaks) {
+        this.streaks = streaks;
+    }
+
+    public boolean isBaned() {
+        return baned;
+    }
+
+    public void setBaned(boolean baned) {
+        this.baned = baned;
+    }
 
     public String getUserId() {
         return userId;
