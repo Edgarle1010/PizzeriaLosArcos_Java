@@ -1,4 +1,4 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
 import android.app.Application;
 

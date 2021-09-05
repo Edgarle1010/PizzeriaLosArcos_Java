@@ -1,4 +1,4 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Objects;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
     private Button loginButton;

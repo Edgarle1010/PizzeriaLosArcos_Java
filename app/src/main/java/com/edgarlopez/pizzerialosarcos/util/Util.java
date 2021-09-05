@@ -1,4 +1,4 @@
-package com.edgarlopez.pizzerialosarcos.Util;
+package com.edgarlopez.pizzerialosarcos.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,5 +17,8 @@ public class Util {
         return matcher.matches();
 
     }
+
+    public static final String FOOD_TYPE = "FOOD_TYPE";
+    public static final String FOOD_TITLE = "FOOD_TITLE";
 
 }

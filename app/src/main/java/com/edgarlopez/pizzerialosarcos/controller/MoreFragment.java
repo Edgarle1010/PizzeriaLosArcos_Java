@@ -1,4 +1,4 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
 import android.content.Intent;
 import android.os.Bundle;

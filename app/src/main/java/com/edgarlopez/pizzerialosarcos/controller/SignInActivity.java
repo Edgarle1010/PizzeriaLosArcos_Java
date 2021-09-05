@@ -1,8 +1,7 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;

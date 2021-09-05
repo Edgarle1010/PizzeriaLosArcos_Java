@@ -8,7 +8,7 @@
     android:background="@drawable/welcome_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".Controller.WelcomeActivity">
+    tools:context=".controller.WelcomeActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"

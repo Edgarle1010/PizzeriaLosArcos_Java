@@ -1,13 +1,12 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,10 @@ import android.widget.ImageView;
 import com.edgarlopez.pizzerialosarcos.R;
 import com.squareup.picasso.Picasso;
 
-public class MenuFragment extends Fragment {
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+
+public class MenuFragment extends Fragment implements View.OnClickListener {
     private ImageView pizzasMenu;
     private ImageView burgersMenu;
     private ImageView saladsMenu;
@@ -61,6 +63,9 @@ public class MenuFragment extends Fragment {
         kidsMenu = view.findViewById(R.id.kids_image_menu);
 
         loadImageMenu();
+
+        pizzasMenu.setOnClickListener(this);
+        burgersMenu.setOnClickListener(this);
 
         return view;
     }
@@ -123,4 +128,36 @@ public class MenuFragment extends Fragment {
                 .into(kidsMenu);
     }
 
+    @Override
+    public void onClick(View v) {
+        Fragment fragment = new FoodListFragment();
+        Bundle bundle = new Bundle();
+        switch (v.getId()) {
+            case R.id.pizzas_image_menu:
+                bundle.putString(FOOD_TYPE, "pizza");
+                bundle.putString(FOOD_TITLE, "Pizzas");
+                fragment.setArguments(bundle);
+                break;
+            case R.id.burgers_image_menu:
+                bundle.putString(FOOD_TYPE, "burger");
+                bundle.putString(FOOD_TITLE, "Hamburguesas");
+                fragment.setArguments(bundle);
+                break;
+        }
+
+        assert getFragmentManager() != null;
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction
+                .setCustomAnimations(
+                        R.anim.slide_in,  // enter
+                        R.anim.fade_out,  // exit
+                        R.anim.fade_in,   // popEnter
+                        R.anim.slide_out  // popExit
+                )
+                .setReorderingAllowed(true)
+                .replace(R.id.menu_frame, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+    }
 }

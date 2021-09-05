@@ -8,7 +8,7 @@
     android:background="@color/quarter_color"
     android:layout_height="match_parent"
     android:windowTranslucentStatus="false"
-    tools:context=".Controller.RegisterNumberActivity">
+    tools:context=".controller.RegisterNumberActivity">
 
     <LinearLayout
         android:orientation="vertical"

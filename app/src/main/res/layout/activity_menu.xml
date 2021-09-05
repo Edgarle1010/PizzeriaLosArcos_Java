@@ -6,15 +6,42 @@
     android:background="@color/quarter_color"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controller.MenuActivity">
+    tools:context=".controller.MenuActivity">
 
-  <fragment
-      android:id="@+id/menu"
-      android:name="com.edgarlopez.pizzerialosarcos.Controller.MenuFragment"
+  <FrameLayout
+      android:id="@+id/menu_frame"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      tools:context=".Controller.MenuActivity">
-  </fragment>
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+  </FrameLayout>
+
+  <FrameLayout
+      android:id="@+id/extra_ingredient_frame"
+      android:animateLayoutChanges="true"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+  </FrameLayout>
+
+  <ProgressBar
+      android:id="@+id/menu_activity_progress"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/menu_frame"
+      app:layout_constraintEnd_toEndOf="@+id/menu_frame"
+      app:layout_constraintStart_toStartOf="@+id/menu_frame"
+      app:layout_constraintTop_toTopOf="parent">
+
+  </ProgressBar>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"

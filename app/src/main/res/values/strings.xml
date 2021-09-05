@@ -28,5 +28,7 @@
     <string name="menu_nav_text">Menú</string>
     <string name="more_nav_text">Más</string>
     <string name="logout_text">Cerrar sesión</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

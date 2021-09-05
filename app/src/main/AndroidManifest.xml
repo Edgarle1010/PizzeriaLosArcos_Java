@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.edgarlopez.pizzerialosarcos" >
+    package="com.edgarlopez.pizzerialosarcos">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".Controller.AppController"
+        android:name=".controller.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PizzeriaLosArcos" >
-        <activity android:name=".Controller.MenuActivity" >
-        </activity>
-        <activity android:name=".Controller.CreatePasswordActivity" />
-        <activity android:name=".Controller.VerificationCodeActivity" />
-        <activity android:name=".Controller.RegisterNumberActivity" />
-        <activity android:name=".Controller.SignInActivity" />
-        <activity android:name=".Controller.LoginActivity" />
-        <activity android:name=".Controller.WelcomeActivity" >
+        android:theme="@style/Theme.PizzeriaLosArcos">
+        <activity android:name=".controller.MenuActivity"></activity>
+        <activity android:name=".controller.CreatePasswordActivity" />
+        <activity android:name=".controller.VerificationCodeActivity" />
+        <activity android:name=".controller.RegisterNumberActivity" />
+        <activity android:name=".controller.SignInActivity" />
+        <activity android:name=".controller.LoginActivity" />
+        <activity android:name=".controller.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

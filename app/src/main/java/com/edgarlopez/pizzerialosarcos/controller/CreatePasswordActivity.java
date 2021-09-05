@@ -1,12 +1,10 @@
-package com.edgarlopez.pizzerialosarcos.Controller;
+package com.edgarlopez.pizzerialosarcos.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,23 +16,19 @@ import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Any;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.edgarlopez.pizzerialosarcos.Util.Util.isValidPassword;
+import static com.edgarlopez.pizzerialosarcos.util.Util.isValidPassword;
 
 public class CreatePasswordActivity extends AppCompatActivity {
     private ProgressBar progressBar;
