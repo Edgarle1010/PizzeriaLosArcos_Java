@@ -3,17 +3,30 @@ package com.edgarlopez.pizzerialosarcos.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
 import com.edgarlopez.pizzerialosarcos.adapter.OnAddExtraIngredientClickListener;
+import com.edgarlopez.pizzerialosarcos.adapter.OnAddHalfFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnCancelExtraIngredientClickListener;
+import com.edgarlopez.pizzerialosarcos.adapter.OnCancelHalfFoodClickListener;
+import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredientClickListener, OnCancelExtraIngredientClickListener {
+import java.util.List;
+
+public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredientClickListener,
+        OnCancelExtraIngredientClickListener,
+        OnAddHalfFoodClickListener,
+        OnCancelHalfFoodClickListener {
+
     private ProgressBar progressBar;
+    public List<ExtraIngredient> currExtraIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +64,46 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     }
 
     @Override
-    public void onAddClicked() {
+    public void onAddExtraIngredientClicked() {
         OrderDetailsFragment frag = (OrderDetailsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.addButtonClicked();
+        frag.addExtraIngredientClicked();
     }
 
     @Override
-    public void onCancelClicked() {
+    public void onCancelExtraIngredientClicked() {
         OrderDetailsFragment frag = (OrderDetailsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.cancelButtonClicked();
+        frag.cancelExtraIngredientClicked();
+    }
+
+    @Override
+    public void onAddHalfFoodClicked() {
+        OrderDetailsFragment frag = (OrderDetailsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+        frag.addHalfFoodClicked();
+    }
+
+    @Override
+    public void onCancelHalfFoodClicked() {
+        OrderDetailsFragment frag = (OrderDetailsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+        frag.cancelHalfFoodClicked();
     }
 
     @Override
     public void onBackPressed() {
-        ExtraIngredientFragment myFragment = (ExtraIngredientFragment) getSupportFragmentManager().findFragmentById(R.id.extra_ingredient_frame);
-        if (myFragment != null && myFragment.isVisible()) {
-            myFragment.cancelButtonPressed();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.extras_frame);
+
+        if (fragment instanceof ExtraIngredientFragment) {
+            ExtraIngredientFragment extraIngredientFragment = (ExtraIngredientFragment) getSupportFragmentManager().findFragmentById(R.id.extras_frame);
+            extraIngredientFragment.cancelButtonPressed();
+        }else if (fragment instanceof HalfFoodFragment) {
+            HalfFoodFragment halfFoodFragment = (HalfFoodFragment) getSupportFragmentManager().findFragmentById(R.id.extras_frame);
+            halfFoodFragment.cancelButtonPressed();
         }else {
             super.onBackPressed();
         }
-
     }
 }

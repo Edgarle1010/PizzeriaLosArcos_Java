@@ -166,14 +166,12 @@
 
         </TextView>
 
-        <com.google.android.flexbox.FlexboxLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/extraIngredientRecyclerView"
             android:layout_width="match_parent"
-            app:flexWrap="wrap"
-            app:alignItems="stretch"
-            app:alignContent="stretch"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <RelativeLayout
             android:id="@+id/extra_ingredient_relative_layout"

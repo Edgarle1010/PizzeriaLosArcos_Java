@@ -35,6 +35,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
     private ImageView addImageView;
     private String foodType;
     private List<ExtraIngredient> extraIngredientList;
+    private ExtraIngredient currExtraIngredient;
     private NumberPicker extraIngredientPicker;
     private ExtraIngredientViewModel extraIngredientViewModel;
 
@@ -123,6 +124,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
                                 extraIngredientPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
                                 extraIngredientPicker.setOnValueChangedListener(this);
                                 extraIngredientViewModel.setSelectedExtraIngredient(extraIngredientList.get(0));
+                                currExtraIngredient = extraIngredientList.get(0);
                             }
                         }
 
@@ -151,6 +153,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         extraIngredientViewModel.setSelectedExtraIngredient(extraIngredientList.get(newVal));
+        currExtraIngredient = extraIngredientList.get(newVal);
     }
 
     @Override
@@ -175,32 +178,47 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
     }
 
     public void addButtonPressed() {
-        getView().animate()
-                .translationY(getView().getHeight())
-                .alpha(0.0f)
-                .setDuration(500)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
+        boolean alreadyExist = false;
+        MenuActivity ma = (MenuActivity) getActivity();
+        assert ma != null;
+        if (ma.currExtraIngredients != null) {
+            for (ExtraIngredient extraIngredient : ma.currExtraIngredients) {
+                if (extraIngredient.getId().equals(currExtraIngredient.getId())) {
+                    alreadyExist = true;
+                }
+            }
+        }
 
-                    }
+        if (alreadyExist) {
+            Toast.makeText(getActivity(), "El ingrediente extra seleccionado ya ha sido agregado anteriormente", Toast.LENGTH_SHORT).show();
+        }else {
+            getView().animate()
+                    .translationY(getView().getHeight())
+                    .alpha(0.0f)
+                    .setDuration(500)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        getFragmentManager().popBackStack();
-                        addCallback.onAddClicked();
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            getFragmentManager().popBackStack();
+                            addCallback.onAddExtraIngredientClicked();
+                        }
 
-                    }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
 
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+        }
     }
 
     public void cancelButtonPressed() {
@@ -217,7 +235,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         getFragmentManager().popBackStack();
-                        cancelCallback.onCancelClicked();
+                        cancelCallback.onCancelExtraIngredientClicked();
                     }
 
                     @Override
