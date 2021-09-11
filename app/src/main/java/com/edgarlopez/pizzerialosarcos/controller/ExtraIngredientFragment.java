@@ -172,7 +172,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onDetach() {
-        addCallback = null; // => avoid leaking, thanks @Deepscorn
+        addCallback = null;
         cancelCallback = null;
         super.onDetach();
     }

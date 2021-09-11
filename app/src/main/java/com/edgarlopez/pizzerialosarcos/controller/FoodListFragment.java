@@ -23,6 +23,7 @@ import com.edgarlopez.pizzerialosarcos.adapter.OnFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.model.Food;
 import com.edgarlopez.pizzerialosarcos.model.FoodViewModel;
 import com.edgarlopez.pizzerialosarcos.ui.FoodRecyclerViewAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -139,8 +140,8 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         bundle.putString(FOOD_TYPE, foodType);
         fragment.setArguments(bundle);
 
-        assert getFragmentManager() != null;
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        assert getActivity().getSupportFragmentManager() != null;
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(
                         R.anim.slide_in,  // enter

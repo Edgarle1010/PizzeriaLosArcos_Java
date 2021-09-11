@@ -13,22 +13,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
-    private ImageView pizzasMenu;
-    private ImageView burgersMenu;
-    private ImageView saladsMenu;
-    private ImageView foodDishesMenu;
-    private ImageView seaFoodMenu;
-    private ImageView breakfastsMenu;
-    private ImageView drinksMenu;
-    private ImageView dessertsMenu;
-    private ImageView snowMilkshakesMenu;
-    private ImageView kidsMenu;
+    private ImageView pizzasMenu,
+            burgersMenu,
+            saladsMenu,
+            foodDishesMenu,
+            seaFoodMenu,
+            breakfastsMenu,
+            drinksMenu,
+            dessertsMenu,
+            snowMilkshakesMenu,
+            kidsMenu;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -144,6 +145,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 fragment.setArguments(bundle);
                 break;
         }
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.GONE);
 
         assert getFragmentManager() != null;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

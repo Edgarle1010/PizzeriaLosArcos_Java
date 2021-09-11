@@ -5,7 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -95,6 +101,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     public void onBackPressed() {
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.extras_frame);
+        Fragment menuFragment = getSupportFragmentManager().findFragmentById(R.id.menu_frame);
 
         if (fragment instanceof ExtraIngredientFragment) {
             ExtraIngredientFragment extraIngredientFragment = (ExtraIngredientFragment) getSupportFragmentManager().findFragmentById(R.id.extras_frame);
@@ -102,8 +109,48 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         }else if (fragment instanceof HalfFoodFragment) {
             HalfFoodFragment halfFoodFragment = (HalfFoodFragment) getSupportFragmentManager().findFragmentById(R.id.extras_frame);
             halfFoodFragment.cancelButtonPressed();
-        }else {
+        }else if (menuFragment instanceof FoodListFragment) {
+            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+            foodListFragment.getActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
             super.onBackPressed();
+        }else if (menuFragment instanceof OrderDetailsFragment) {
+            OrderDetailsFragment orderDetailsFragment = (OrderDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+            getSupportFragmentManager().beginTransaction().remove(orderDetailsFragment).commit();
+            super.onBackPressed();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View v = getCurrentFocus();
+
+        if (v != null && (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+                v instanceof EditText &&
+                !v.getClass().getName().startsWith("android.webkit.")) {
+            int[] sourceCoordinates = new int[2];
+            v.getLocationOnScreen(sourceCoordinates);
+            float x = ev.getRawX() + v.getLeft() - sourceCoordinates[0];
+            float y = ev.getRawY() + v.getTop() - sourceCoordinates[1];
+
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom()) {
+                ((EditText) v).setCursorVisible(false);
+                hideKeyboard(this);
+            }
+
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void hideKeyboard(Activity activity) {
+        if (activity != null && activity.getWindow() != null) {
+            activity.getWindow().getDecorView();
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+            }
         }
     }
 }
