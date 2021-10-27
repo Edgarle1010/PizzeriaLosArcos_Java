@@ -27,13 +27,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_SIZE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 
 public class ExtraIngredientFragment extends Fragment implements View.OnClickListener, NumberPicker.OnValueChangeListener {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ImageView cancelImageView;
     private ImageView addImageView;
-    private String foodType;
+    private String foodType,
+            foodSize;
     private List<ExtraIngredient> extraIngredientList;
     private ExtraIngredient currExtraIngredient;
     private NumberPicker extraIngredientPicker;
@@ -72,6 +74,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
 
         assert getArguments() != null;
         foodType = getArguments().getString(FOOD_TYPE);
+        foodSize = getArguments().getString(FOOD_SIZE);
 
         cancelImageView = view.findViewById(R.id.cancel_extra_ingredient_image_view);
         addImageView = view.findViewById(R.id.add_extra_ingredient_image_view);
@@ -111,9 +114,19 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
                             String[] array = new String[extraIngredientList.size()];
 
                             for(int j = 0; j < extraIngredientList.size(); j++) {
+                                int price;
+
+                                if (foodSize.equals("big")) {
+                                    price = extraIngredientList.get(j).getbPrice();
+                                }else if (foodSize.equals("medium")) {
+                                    price = extraIngredientList.get(j).getmPrice();
+                                }else {
+                                    price = extraIngredientList.get(j).getsPrice();
+                                }
                                 array[j] = extraIngredientList.get(j).getTitle()
                                         + " $"
-                                        + extraIngredientList.get(j).getbPrice();
+                                        + price;
+
                             }
 
                             if (extraIngredientList.size() > 1) {

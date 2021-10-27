@@ -22,11 +22,13 @@ import java.util.List;
 public class ExtraIngredientRecyclerViewAdapter extends RecyclerView.Adapter<ExtraIngredientRecyclerViewAdapter.ViewHolder> {
     private Context context;
     private List<ExtraIngredient> extraIngredientList;
+    private String foodSize;
     private final OnExtraIngredientClickListener extraIngredientClickListener;
 
-    public ExtraIngredientRecyclerViewAdapter(Context context, List<ExtraIngredient> extraIngredientList, OnExtraIngredientClickListener extraIngredientClickListener) {
+    public ExtraIngredientRecyclerViewAdapter(Context context, List<ExtraIngredient> extraIngredientList, String foodSize, OnExtraIngredientClickListener extraIngredientClickListener) {
         this.context = context;
-        this.extraIngredientList = extraIngredientList ;
+        this.extraIngredientList = extraIngredientList;
+        this.foodSize = foodSize;
         this.extraIngredientClickListener = extraIngredientClickListener;
     }
 
@@ -43,7 +45,15 @@ public class ExtraIngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ext
     public void onBindViewHolder(@NonNull ExtraIngredientRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         ExtraIngredient extraIngredient = extraIngredientList.get(position);
 
-        viewHolder.title.setText(extraIngredient.getTitle() + " $" + extraIngredient.getbPrice());
+        int price;
+        if (foodSize.equals("big")) {
+            price = extraIngredient.getbPrice();
+        }else if (foodSize.equals("medium")) {
+            price = extraIngredient.getmPrice();
+        }else {
+            price = extraIngredient.getsPrice();
+        }
+        viewHolder.title.setText(extraIngredient.getTitle() + " $" + price);
     }
 
     @Override

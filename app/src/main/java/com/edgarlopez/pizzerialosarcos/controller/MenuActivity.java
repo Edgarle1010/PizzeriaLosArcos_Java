@@ -58,6 +58,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             }else if (id == R.id.more_nav_button) {
                 selectedFragment = MoreFragment.newInstance();
 
+            }else if (id == R.id.cart_nav_button) {
+                selectedFragment = ShoppingCartFragment.newInstance();
             }
             assert selectedFragment != null;
             getSupportFragmentManager().beginTransaction()

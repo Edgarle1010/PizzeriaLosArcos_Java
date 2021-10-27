@@ -1,5 +1,6 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,8 +11,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,25 +33,30 @@ import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredientViewModel;
 import com.edgarlopez.pizzerialosarcos.model.Food;
 import com.edgarlopez.pizzerialosarcos.model.FoodViewModel;
-import com.edgarlopez.pizzerialosarcos.model.Order;
-import com.edgarlopez.pizzerialosarcos.model.OrderViewModel;
+import com.edgarlopez.pizzerialosarcos.model.Item;
+import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.ui.ExtraIngredientRecyclerViewAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_ITEM;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_SIZE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 
 public class OrderDetailsFragment extends Fragment implements View.OnClickListener,
         OnExtraIngredientClickListener,
         NumberPicker.OnValueChangeListener {
     private FoodViewModel foodViewModel;
-    private Food principalFood;
+    private Food principalFood,
+            halfFood;
     private ExtraIngredientViewModel extraIngredientViewModel;
     private TextView titleFoodTextView,
             descriptionTextView,
@@ -60,21 +65,22 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             bigSizeTextView,
             mediumSizeTextView,
             smallSizeTextView,
-            amountTextView;
+            amountTextView,
+            totalTextView;
     private EditText commentsEditText;
     private Button addOrderButton;
-    private String foodType;
+    private String foodType,
+            foodTitle;
     private RelativeLayout extraIngredientLayout;
 
-    private String orderTitle;
-    private boolean isCompleteOrder;
-    private String orderSize;
+    private ItemViewModel itemViewModel;
+
+    private String itemTitle;
+    private boolean isCompleteItem;
+    private String foodSize;
     private List<ExtraIngredient> extraIngredientList;
-    private int orderAmount;
-    private String orderComments;
+    private int itemAmount;
     private float price;
-    private Order order;
-    private OrderViewModel orderViewModel;
 
     private RecyclerView recyclerView;
     private ExtraIngredientRecyclerViewAdapter adapter;
@@ -97,26 +103,20 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         extraIngredientList = new ArrayList<>();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        titleFoodTextView.setText(foodViewModel.getSelectedFood().getValue().getTitle());
+        titleFoodTextView.setText(foodTitle + " " + Objects.requireNonNull(foodViewModel.getSelectedFood().getValue()).getTitle());
         descriptionTextView.setText(foodViewModel.getSelectedFood().getValue().getDescription());
 
         principalFood = foodViewModel.getSelectedFood().getValue();
 
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
-        layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.CENTER);
-        layoutManager.setAlignItems(AlignItems.FLEX_START);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new ExtraIngredientRecyclerViewAdapter(getContext(), extraIngredientList, this);
-        recyclerView.setAdapter(adapter);
-
-        DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-        DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-        DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
+        DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(amountTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
 
         completeTextView.setOnClickListener(this);
         halfTextView.setOnClickListener(this);
@@ -127,14 +127,13 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         amountTextView.setOnClickListener(this);
         addOrderButton.setOnClickListener(this);
 
-        orderTitle = titleFoodTextView.getText().toString().trim();
-        isCompleteOrder = true;
-        orderSize = "big";
-        orderAmount = 1;
-        orderComments = "";
+        itemTitle = titleFoodTextView.getText().toString().trim();
+        isCompleteItem = true;
+        foodSize = "big";
+        itemAmount = 1;
         price = 0;
 
-        order = new Order(orderTitle, isCompleteOrder, extraIngredientList, orderSize, orderAmount, orderComments, price);
+        getTotal();
 
         commentsEditText.setOnKeyListener((v, keyCode, event) -> {
             // if enter is pressed start calculating
@@ -144,7 +143,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                 // get EditText text
                 String text = ((EditText) v).getText().toString();
 
-                // find how many rows it cointains
+                // find how many rows it contains
                 int editTextRowCount = text.split("\\n").length;
 
                 // user has input more than limited - lets do something
@@ -198,11 +197,13 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         extraIngredientViewModel = new ViewModelProvider(requireActivity())
                 .get(ExtraIngredientViewModel.class);
 
-        orderViewModel = new ViewModelProvider(requireActivity())
-                .get(OrderViewModel.class);
+        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
+                .getApplication())
+                .create(ItemViewModel.class);
 
         assert getArguments() != null;
         foodType = getArguments().getString(FOOD_TYPE);
+        foodTitle = getArguments().getString(FOOD_TITLE);
 
         recyclerView = view.findViewById(R.id.extraIngredientRecyclerView);
 
@@ -217,24 +218,28 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         amountTextView = view.findViewById(R.id.order_amount_text_view);
         addOrderButton = view.findViewById(R.id.order_add_button);
         extraIngredientLayout = view.findViewById(R.id.extra_ingredient_relative_layout);
+        totalTextView = view.findViewById(R.id.order_total_text_view);
 
         return view;
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.complete_text_view:
-                DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-                DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                titleFoodTextView.setText(principalFood.getTitle());
+                DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                titleFoodTextView.setText(foodTitle + " " + principalFood.getTitle());
                 descriptionTextView.setText(principalFood.getDescription());
-                orderTitle = titleFoodTextView.getText().toString().trim();
+                itemTitle = titleFoodTextView.getText().toString().trim();
+
+                isCompleteItem = true;
+                getTotal();
                 break;
             case R.id.half_text_view:
-                DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-                DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
 
                 disableView();
                 Fragment halfFoodFragment = new HalfFoodFragment();
@@ -257,22 +262,28 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
 
                 break;
             case R.id.size_big_text_view:
-                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                orderSize = "grande";
+                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "big";
+                getTotal();
                 break;
             case R.id.size_medium_text_view:
-                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                orderSize = "mediana";
+                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "medium";
+                getTotal();
                 break;
             case R.id.size_small_text_view:
-                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.third_color));
-                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(getActivity(), R.color.quarter_color));
-                orderSize = "chica";
+                DrawableCompat.setTint(smallSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(mediumSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "small";
+                getTotal();
                 break;
             case R.id.extra_ingredient_relative_layout:
                 disableView();
@@ -280,6 +291,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                 Fragment fragment = new ExtraIngredientFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(FOOD_TYPE, foodType);
+                bundle.putString(FOOD_SIZE, foodSize);
                 fragment.setArguments(bundle);
 
                 assert getFragmentManager() != null;
@@ -297,7 +309,59 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             case R.id.order_amount_text_view:
                 showNumberPicker(getView());
                 break;
+            case R.id.order_add_button:
+                addItem();
+                break;
         }
+    }
+
+    private void addItem() {
+        Item item = new Item(itemTitle,
+                isCompleteItem,
+                extraIngredientList,
+                foodSize,
+                itemAmount,
+                commentsEditText.getText().toString().trim(),
+                price);
+
+        ItemViewModel.insert(item);
+
+        Toast.makeText(getActivity(),"Agregado", Toast.LENGTH_SHORT).show();
+
+        ProgressBar progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
+
+        requireView().animate()
+                .translationY(getView().getHeight())
+                .alpha(0.0f)
+                .setDuration(500)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.menu_frame, MenuFragment.newInstance())
+                                .commit();
+
+                        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
     }
 
     public void disableView() {
@@ -308,8 +372,9 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         smallSizeTextView.setClickable(false);
         extraIngredientLayout.setClickable(false);
         commentsEditText.setFocusable(false);
+        amountTextView.setClickable(false);
         addOrderButton.setClickable(false);
-        getView().setAlpha((float) .3);
+        requireView().setAlpha((float) .3);
     }
 
     public void enableView() {
@@ -320,10 +385,12 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         smallSizeTextView.setClickable(true);
         extraIngredientLayout.setClickable(true);
         commentsEditText.setFocusableInTouchMode(true);
+        amountTextView.setClickable(true);
         addOrderButton.setClickable(true);
-        getView().setAlpha((float) 1);
+        requireView().setAlpha((float) 1);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void addExtraIngredientClicked() {
         extraIngredientList.add(extraIngredientViewModel.getSelectedExtraIngredient().getValue());
 
@@ -340,6 +407,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         }
 
         enableView();
+        getTotal();
     }
 
     public void cancelExtraIngredientClicked() {
@@ -350,10 +418,10 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     public void addHalfFoodClicked() {
         enableView();
 
-        Food halfFood = foodViewModel.getSelectedFood().getValue();
+        halfFood = foodViewModel.getSelectedFood().getValue();
         assert halfFood != null;
-        titleFoodTextView.setText(principalFood.getTitle() + " / " + halfFood.getTitle());
-        orderTitle = titleFoodTextView.getText().toString().trim();
+        titleFoodTextView.setText(foodTitle + " " + principalFood.getTitle() + " / " + halfFood.getTitle());
+        itemTitle = titleFoodTextView.getText().toString().trim();
 
         String pfDescription = principalFood.getDescription();
         if (pfDescription == null) {
@@ -366,6 +434,9 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         }
 
         descriptionTextView.setText(pfDescription + " / " + hfDescription);
+
+        isCompleteItem = false;
+        getTotal();
     }
 
     public void cancelHalfFoodClicked() {
@@ -381,21 +452,80 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         }else {
             extraIngredientLayout.setVisibility(View.GONE);
         }
+
+        getTotal();
     }
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        orderAmount = picker.getValue();
-        amountTextView.setText(String.valueOf(orderAmount));
+        itemAmount = picker.getValue();
+        amountTextView.setText(String.valueOf(itemAmount));
+        getTotal();
     }
 
     public void showNumberPicker(View view){
         AmountOrderFragment newFragment = new AmountOrderFragment();
         newFragment.setValueChangeListener(this);
-        newFragment.show(getActivity().getSupportFragmentManager(), "amount picker");
+        newFragment.show(requireActivity().getSupportFragmentManager(), "amount picker");
     }
 
+    @SuppressLint("SetTextI18n")
     public void getTotal() {
+        float sizePrice;
+        float halfSizePrice;
+        float extraIngredientPrice;
+
+        if (foodSize.equals("big")) {
+            sizePrice = principalFood.getbPrice();
+        }else if (foodSize.equals("medium")) {
+            sizePrice = principalFood.getmPrice();
+        }else {
+            sizePrice = principalFood.getsPrice();
+        }
+
+        if (isCompleteItem) {
+            price = sizePrice;
+        }else {
+            if (foodSize.equals("big")) {
+                halfSizePrice = halfFood.getbPrice();
+            }else if (foodSize.equals("medium")) {
+                halfSizePrice = halfFood.getmPrice();
+            }else {
+                halfSizePrice = halfFood.getsPrice();
+            }
+            price = (sizePrice + halfSizePrice) / 2;
+        }
+
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.CENTER);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new ExtraIngredientRecyclerViewAdapter(getContext(), extraIngredientList, foodSize, this);
+        recyclerView.setAdapter(adapter);
+
+        if (extraIngredientList != null) {
+            float priceSummary = 0;
+            for (ExtraIngredient extraIngredients : extraIngredientList) {
+                if (foodSize.equals("big")) {
+                    extraIngredientPrice = extraIngredients.getbPrice();
+                }else if (foodSize.equals("medium")) {
+                    extraIngredientPrice = extraIngredients.getmPrice();
+                }else {
+                    extraIngredientPrice = extraIngredients.getsPrice();
+                }
+
+                priceSummary = priceSummary + extraIngredientPrice;
+            }
+
+            extraIngredientPrice = priceSummary;
+
+            price = price + extraIngredientPrice;
+        }
+
+        price = price * itemAmount;
+
+        totalTextView.setText("Total: $" + price);
 
     }
 }

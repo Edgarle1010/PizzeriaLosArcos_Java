@@ -8,6 +8,11 @@
         app:showAsAction="ifRoom"
         android:title="@string/menu_nav_text" />
     <item
+        android:id="@+id/cart_nav_button"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/cart_nav_text" />
+    <item
         android:id="@+id/more_nav_button"
         android:icon="@drawable/ic_baseline_more_horiz_24"
         app:showAsAction="ifRoom"

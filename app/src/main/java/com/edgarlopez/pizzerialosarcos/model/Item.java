@@ -1,21 +1,47 @@
 package com.edgarlopez.pizzerialosarcos.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.edgarlopez.pizzerialosarcos.data.DataConverter;
+
+import java.io.Serializable;
 import java.util.List;
 
+@Entity(tableName = "item_table")
+public class Item {
 
-public class Order {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @ColumnInfo(name = "title")
     public String title;
+
+    @ColumnInfo(name = "isComplete")
     public boolean isComplete;
+
+    @ColumnInfo(name = "extraIngredientList")
+    @TypeConverters(DataConverter.class)
     public List<ExtraIngredient> extraIngredientList;
+
+    @ColumnInfo(name = "size")
     public String size;
+
+    @ColumnInfo(name = "amount")
     public int amount;
+
+    @ColumnInfo(name = "comments")
     public String comments;
+
+    @ColumnInfo(name = "price")
     public float price;
 
-    public Order() {
-    }
-
-    public Order(String title, boolean isComplete, List<ExtraIngredient> extraIngredientList, String size, int amount, String comments, float price) {
+    public Item(@NonNull String title, boolean isComplete, List<ExtraIngredient> extraIngredientList,
+                @NonNull String size, int amount, @NonNull String comments, float price) {
         this.title = title;
         this.isComplete = isComplete;
         this.extraIngredientList = extraIngredientList;
@@ -23,6 +49,14 @@ public class Order {
         this.amount = amount;
         this.comments = comments;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

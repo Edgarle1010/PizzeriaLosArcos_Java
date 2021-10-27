@@ -136,12 +136,12 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.pizzas_image_menu:
                 bundle.putString(FOOD_TYPE, "pizza");
-                bundle.putString(FOOD_TITLE, "Pizzas");
+                bundle.putString(FOOD_TITLE, "Pizza");
                 fragment.setArguments(bundle);
                 break;
             case R.id.burgers_image_menu:
                 bundle.putString(FOOD_TYPE, "burger");
-                bundle.putString(FOOD_TITLE, "Hamburguesas");
+                bundle.putString(FOOD_TITLE, "Hamburguesa");
                 fragment.setArguments(bundle);
                 break;
         }

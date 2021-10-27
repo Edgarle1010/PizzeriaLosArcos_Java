@@ -138,6 +138,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         Fragment fragment = new OrderDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FOOD_TYPE, foodType);
+        bundle.putString(FOOD_TITLE, foodTitle);
         fragment.setArguments(bundle);
 
         assert getActivity().getSupportFragmentManager() != null;

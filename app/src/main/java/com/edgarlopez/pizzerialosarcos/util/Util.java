@@ -21,5 +21,6 @@ public class Util {
     public static final String FOOD_TYPE = "FOOD_TYPE";
     public static final String FOOD_TITLE = "FOOD_TITLE";
     public static final String FOOD_ITEM = "FOOD_ITEM";
+    public static final String FOOD_SIZE = "FOOD_SIZE";
 
 }

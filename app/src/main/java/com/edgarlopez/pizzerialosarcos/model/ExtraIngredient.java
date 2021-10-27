@@ -12,12 +12,12 @@ public class ExtraIngredient {
 
     }
 
-    public ExtraIngredient(String id, String title, String food, int sPrice, int mPrice, int bPrice) {
+    public ExtraIngredient(String id, String title, String food, int mPrice, int sPrice, int bPrice) {
         this.id = id;
         this.title = title;
         this.food = food;
-        this.sPrice = sPrice;
         this.mPrice = mPrice;
+        this.sPrice = sPrice;
         this.bPrice = bPrice;
     }
 
@@ -45,20 +45,20 @@ public class ExtraIngredient {
         this.food = food;
     }
 
-    public int getsPrice() {
-        return sPrice;
-    }
-
-    public void setsPrice(int sPrice) {
-        this.sPrice = sPrice;
-    }
-
     public int getmPrice() {
         return mPrice;
     }
 
     public void setmPrice(int mPrice) {
         this.mPrice = mPrice;
+    }
+
+    public int getsPrice() {
+        return sPrice;
+    }
+
+    public void setsPrice(int sPrice) {
+        this.sPrice = sPrice;
     }
 
     public int getbPrice() {
