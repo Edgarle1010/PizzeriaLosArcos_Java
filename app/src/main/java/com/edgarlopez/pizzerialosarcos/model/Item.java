@@ -67,14 +67,6 @@ public class Item {
         this.title = title;
     }
 
-    public boolean isComplete() {
-        return isComplete;
-    }
-
-    public void setComplete(boolean complete) {
-        isComplete = complete;
-    }
-
     public List<ExtraIngredient> getExtraIngredientList() {
         return extraIngredientList;
     }

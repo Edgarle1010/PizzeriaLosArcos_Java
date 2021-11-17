@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.edgarlopez.pizzerialosarcos.adapter.OnAddHalfFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnCancelExtraIngredientClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnCancelHalfFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -47,7 +51,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         BottomNavigationView bottomNavigationView =
                 findViewById(R.id.bottom_navigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
             int id = item.getItemId();
@@ -155,4 +159,29 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             }
         }
     }
+
+    private void checkPlayServices() {
+        int errorCode = GoogleApiAvailability.getInstance()
+                .isGooglePlayServicesAvailable(this);
+
+        if (errorCode != ConnectionResult.SUCCESS) {
+            Dialog errorDialog = GoogleApiAvailability.getInstance()
+                    .getErrorDialog(this, errorCode, errorCode, dialogInterface -> {
+                        Toast.makeText(MenuActivity.this, "No services", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+            errorDialog.show();
+        }else {
+            //Toast.makeText(MenuActivity.this, "All is good", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        checkPlayServices();
+
+    }
+
 }

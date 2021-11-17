@@ -4,5 +4,8 @@
     <color name="secondary_color">#E2C275</color>
     <color name="quarter_color">#F4F4F4</color>
     <color name="third_color">#EADCA6</color>
+    <color name="bg_row_background">#E02401</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
 
 </resources>

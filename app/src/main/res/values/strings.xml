@@ -28,9 +28,16 @@
     <string name="menu_nav_text">Menú</string>
     <string name="more_nav_text">Más</string>
     <string name="logout_text">Cerrar sesión</string>
+    <string name="action_settings">Settings</string>
+    <string name="my_cart">My Cart</string>
+    <string name="delete">Borrar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cart_nav_text">Carrito</string>
     <string name="send_order">Enviar pedido</string>
+    <string name="baned_dialog">Tu cuenta ha sido limitada para hacer pedidos por el uso incorrecto del servicio. Comunicate a soporte si deseas revisar tu caso.</string>
+    <string name="problem_occurred">!Ha ocurrido un problema!</string>
+    <string name="acept">Aceptar</string>
+    <string name="notice">¡Aviso!</string>
 
 </resources>
