@@ -40,6 +40,7 @@ import com.edgarlopez.pizzerialosarcos.adapter.ServiceCallBack;
 import com.edgarlopez.pizzerialosarcos.model.Item;
 import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.model.Order;
+import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.edgarlopez.pizzerialosarcos.ui.ItemRecyclerViewAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -85,9 +86,10 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private AppController appController = AppController.getInstance();
 
+    private UserViewModel userViewModel;
     private ItemViewModel itemViewModel;
+
     private Button sendButton;
     private TextView totalTextView;
     private RecyclerView recyclerView;
@@ -148,6 +150,10 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                 .addConnectionCallbacks(this)
                 .build();
 
+        userViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
+                .getApplication())
+                .create(UserViewModel.class);
+
         itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
                 .getApplication())
                 .create(ItemViewModel.class);
@@ -184,7 +190,8 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                         if (activeService) {
                                             Order order = new Order();
                                             order.setClient(user.getPhoneNumber());
-                                            order.setClientName(appController.getName() + " " + appController.getLastName());
+                                            order.setClientName(userViewModel.getAllUsers().getValue().get(0).getName()
+                                                    + " " + userViewModel.getAllUsers().getValue().get(0).getLastName());
                                             order.setDate(System.currentTimeMillis());
                                             if (currentLocation != null) {
                                                 order.setLocation(currentLocation);

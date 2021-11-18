@@ -13,18 +13,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.edgarlopez.pizzerialosarcos.data.DataConverter;
 import com.edgarlopez.pizzerialosarcos.data.ItemDao;
+import com.edgarlopez.pizzerialosarcos.data.UserDao;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.edgarlopez.pizzerialosarcos.model.Item;
+import com.edgarlopez.pizzerialosarcos.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Item.class}, version = 1, exportSchema = false)
+@Database(entities = {Item.class, User.class}, version = 1, exportSchema = false)
 public abstract class ItemRoomDatabase extends RoomDatabase {
 
     public abstract ItemDao itemDao();
+    public abstract UserDao userDao();
     public static final int NUMBER_OF_THREADS = 4;
 
     private static volatile ItemRoomDatabase INSTANCE;
@@ -37,6 +40,7 @@ public abstract class ItemRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ItemRoomDatabase.class, "item_database")
+                            //.allowMainThreadQueries()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -53,6 +57,9 @@ public abstract class ItemRoomDatabase extends RoomDatabase {
                     super.onCreate(db);
 
                     databaseWriteExecutor.execute(() -> {
+                        UserDao userDao = INSTANCE.userDao();
+                        userDao.deleteAll();
+
                         ItemDao itemDao = INSTANCE.itemDao();
                         itemDao.deleteAll();
                     });

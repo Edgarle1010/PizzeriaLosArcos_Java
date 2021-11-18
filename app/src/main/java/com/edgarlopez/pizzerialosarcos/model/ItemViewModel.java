@@ -27,4 +27,5 @@ public class ItemViewModel extends AndroidViewModel {
     public LiveData<Item> get(int id) { return repository.get(id); }
     public static void update(Item item) { repository.update(item); }
     public static void delete(Item item) { repository.delete(item); }
+    public static void deleteAll() { repository.deleteAll(); }
 }

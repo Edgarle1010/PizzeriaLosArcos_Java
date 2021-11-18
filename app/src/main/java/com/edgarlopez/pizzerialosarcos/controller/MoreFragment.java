@@ -6,19 +6,30 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
+import com.edgarlopez.pizzerialosarcos.model.User;
+import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+
 public class MoreFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
+    private UserViewModel userViewModel;
+    private ItemViewModel itemViewModel;
     private FirebaseUser user;
+
     private Button logoutButton;
 
     public MoreFragment() {
@@ -46,20 +57,28 @@ public class MoreFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+        userViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
+                .getApplication())
+                .create(UserViewModel.class);
+
+        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
+                .getApplication())
+                .create(ItemViewModel.class);
+
         logoutButton = view.findViewById(R.id.logout_button);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user != null && firebaseAuth != null) {
-                    firebaseAuth.signOut();
+        logoutButton.setOnClickListener(v -> {
+            if (user != null && firebaseAuth != null) {
+                firebaseAuth.signOut();
 
-                    Intent intent = new Intent(getActivity(),
-                            WelcomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
+                ItemViewModel.deleteAll();
+                UserViewModel.deleteAll();
+
+                Intent intent = new Intent(getActivity(),
+                        WelcomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 

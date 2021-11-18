@@ -2,7 +2,11 @@ package com.edgarlopez.pizzerialosarcos.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.edgarlopez.pizzerialosarcos.model.User;
+import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,6 +44,8 @@ public class CreatePasswordActivity extends AppCompatActivity {
     private Button signInButton;
     private FirebaseUser currentUser;
 
+    private UserViewModel userViewModel;
+
     //Firestore connection
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -46,6 +55,10 @@ public class CreatePasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_password);
+
+        userViewModel = new ViewModelProvider.AndroidViewModelFactory(CreatePasswordActivity.this
+                .getApplication())
+                .create(UserViewModel.class);
 
         progressBar = findViewById(R.id.password_progress);
         password = findViewById(R.id.password_edit_text);
@@ -85,42 +98,38 @@ public class CreatePasswordActivity extends AppCompatActivity {
                                                         .addOnCompleteListener(task1 -> {
                                                             progressBar.setVisibility(View.GONE);
                                                             if (task1.isSuccessful()) {
-                                                                //we take user to AddJournalActivity
+
                                                                 assert currentUser != null;
                                                                 final String currentUserId = currentUser.getUid();
 
-                                                                //Create a user Map so we can create a user in the User collection
-                                                                Map<String, Object> userObj = new HashMap<>();
-                                                                userObj.put("userId", currentUserId);
-                                                                userObj.put("name", name);
-                                                                userObj.put("lastname", lastName);
-                                                                userObj.put("email", email);
-                                                                userObj.put("phoneNumber", phoneNumber);
-                                                                userObj.put("streaks", 0);
-                                                                userObj.put("baned", false);
+                                                                User user = new User(currentUserId, name, lastName, email, phoneNumber, 0, false);
 
-                                                                collectionReference.add(userObj)
+                                                                collectionReference.add(user)
                                                                         .addOnSuccessListener(documentReference -> documentReference.get()
-                                                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                                    @Override
-                                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task11) {
-                                                                                        if (Objects.requireNonNull(task11.getResult().exists())) {
-                                                                                            progressBar.setVisibility(View.GONE);
-                                                                                            AppController.getInstance().setUserId(currentUserId);
+                                                                                .addOnCompleteListener(task11 -> {
+                                                                                    if (Objects.requireNonNull(task11.getResult().exists())) {
+                                                                                        progressBar.setVisibility(View.GONE);
 
+                                                                                        userViewModel.getAllUsers().observe(CreatePasswordActivity.this, users -> {
+                                                                                            UserViewModel.insert(user);
+                                                                                        });
+
+                                                                                        AlertDialog.Builder aD = new AlertDialog.Builder(CreatePasswordActivity.this);
+                                                                                        aD.setTitle(String.format(getString(R.string.congratulations_message), name));
+                                                                                        aD.setMessage(R.string.user_create_successfully_message);
+                                                                                        aD.setPositiveButton(R.string.acept, (dialog, which) -> {
                                                                                             finishAffinity();
                                                                                             Intent intent = new Intent(CreatePasswordActivity.this,
                                                                                                     MenuActivity.class);
                                                                                             startActivity(intent);
+                                                                                        });
+                                                                                        aD.setCancelable(false);
 
-                                                                                            Toast.makeText(CreatePasswordActivity.this,
-                                                                                                    "Tu usuario se ha creado correctamente. Por favor no olvides tu usuario ni tu contraseña",
-                                                                                                    Toast.LENGTH_SHORT)
-                                                                                                    .show();
+                                                                                        AlertDialog dialog = aD.create();
+                                                                                        dialog.show();
 
-                                                                                        }else {
-                                                                                            progressBar.setVisibility(View.GONE);
-                                                                                        }
+                                                                                    }else {
+                                                                                        progressBar.setVisibility(View.GONE);
                                                                                     }
                                                                                 }))
                                                                         .addOnFailureListener(e -> Toast.makeText(CreatePasswordActivity.this,
@@ -145,14 +154,11 @@ public class CreatePasswordActivity extends AppCompatActivity {
             }
         });
 
-        verifyPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    signInButton.callOnClick();
-                }
-                return false;
+        verifyPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                signInButton.callOnClick();
             }
+            return false;
         });
     }
 }

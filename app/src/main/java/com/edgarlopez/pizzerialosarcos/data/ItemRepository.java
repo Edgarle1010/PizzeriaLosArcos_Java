@@ -33,4 +33,7 @@ public class ItemRepository {
     public void delete(Item item) {
         ItemRoomDatabase.databaseWriteExecutor.execute(() -> itemDao.delete(item));
     }
+    public void deleteAll() {
+        ItemRoomDatabase.databaseWriteExecutor.execute(() -> itemDao.deleteAll());
+    }
 }
