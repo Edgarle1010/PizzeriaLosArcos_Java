@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -327,6 +328,9 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         ItemViewModel.insert(item);
 
         Toast.makeText(getActivity(),"Agregado", Toast.LENGTH_SHORT).show();
+
+        Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(400);
 
         ProgressBar progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
 

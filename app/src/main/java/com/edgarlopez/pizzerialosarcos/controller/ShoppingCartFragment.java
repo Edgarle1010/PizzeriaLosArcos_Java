@@ -3,6 +3,7 @@ package com.edgarlopez.pizzerialosarcos.controller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,6 +200,9 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                                 db.collection("orders")
                                                         .document(fol)
                                                         .set(order).addOnSuccessListener(documentReference -> {
+                                                    Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                                                    v.vibrate(400);
+
                                                     AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
                                                     aD.setTitle(R.string.order_sent_successfully_title);
                                                     aD.setMessage(String.format(getString(R.string.order_successfully_message), waitTime, fol));
