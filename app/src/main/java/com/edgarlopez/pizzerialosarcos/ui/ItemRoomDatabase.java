@@ -40,7 +40,7 @@ public abstract class ItemRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ItemRoomDatabase.class, "item_database")
-                            //.allowMainThreadQueries()
+                            .allowMainThreadQueries()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

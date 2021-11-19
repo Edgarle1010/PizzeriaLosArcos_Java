@@ -28,6 +28,9 @@ public interface UserDao {
     @Query("SELECT * FROM user_table WHERE user_table.userId == :id")
     LiveData<User> get(String id);
 
+    @Query("SELECT * FROM user_table WHERE user_table.userId == :id")
+    User getOne(String id);
+
     @Update
     void update(User user);
 

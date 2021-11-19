@@ -3,12 +3,9 @@ package com.edgarlopez.pizzerialosarcos.controller;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -43,7 +40,6 @@ import com.edgarlopez.pizzerialosarcos.model.Order;
 import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.edgarlopez.pizzerialosarcos.ui.ItemRecyclerViewAdapter;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -51,23 +47,15 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -187,15 +175,17 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                             checkBaned(baned -> {
                                 if (!baned) {
                                     checkService(activeService -> {
+                                        Order order = new Order();
                                         if (activeService) {
-                                            Order order = new Order();
+                                            String name = userViewModel.getOne(user.getUid()).getName();
+                                            String lastName = userViewModel.getOne(user.getUid()).getLastName();
+
                                             order.setClient(user.getPhoneNumber());
-                                            order.setClientName(userViewModel.getAllUsers().getValue().get(0).getName()
-                                                    + " " + userViewModel.getAllUsers().getValue().get(0).getLastName());
+                                            order.setClientName(name + " " + lastName);
                                             order.setDate(System.currentTimeMillis());
                                             if (currentLocation != null) {
                                                 order.setLocation(currentLocation);
-                                            }else {
+                                            } else {
                                                 order.setLocation("Ubicación no proporcionada.");
                                             }
                                             order.setComplete(false);
@@ -204,13 +194,24 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                             order.setTotalPrice(price);
 
                                             checkOrderId(id -> {
+                                                String fol = "F" + id;
                                                 db.collection("orders")
-                                                        .add(order).addOnSuccessListener(documentReference -> {
-                                                            Toast.makeText(requireActivity(), "Guardado", Toast.LENGTH_SHORT).show();
-                                                        });
+                                                        .document(fol)
+                                                        .set(order).addOnSuccessListener(documentReference -> {
+                                                    AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
+                                                    aD.setTitle(R.string.order_sent_successfully_title);
+                                                    aD.setMessage(String.format(getString(R.string.order_successfully_message), waitTime, fol));
+                                                    aD.setPositiveButton(R.string.acept, (dialog, which) -> {
+                                                        ItemViewModel.deleteAll();
+                                                    });
+                                                    aD.setCancelable(false);
+
+                                                    AlertDialog dialog = aD.create();
+                                                    dialog.show();
+                                                });
                                             });
 
-                                        }else {
+                                        } else {
                                             AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
                                             aD.setTitle(R.string.notice);
                                             aD.setMessage(messageStatus);
@@ -220,7 +221,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                             dialog.show();
                                         }
                                     });
-                                }else {
+                                } else {
                                     AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
                                     aD.setTitle(R.string.problem_occurred);
                                     aD.setMessage(R.string.baned_dialog);
@@ -232,11 +233,12 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                             });
                         }
                     });
-                    builder.setNegativeButton("No", (dialogInterface, i) -> { });
+                    builder.setNegativeButton("No", (dialogInterface, i) -> {
+                    });
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 });
-            }else {
+            } else {
                 Toast.makeText(requireActivity(), "La lista está vacía", Toast.LENGTH_SHORT).show();
             }
         });
@@ -294,13 +296,12 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
         db.collection("orders")
                 .get().addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        documentIdCallBack.onDocumentIdChecked(task.getResult().size());
-                    }
-                    else {
-                        Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
+            progressBar.setVisibility(View.GONE);
+            if (task.isSuccessful()) {
+                documentIdCallBack.onDocumentIdChecked(task.getResult().size());
+            } else {
+                Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -320,7 +321,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                     activeService = doc.getBoolean("status");
                     serviceCallBack.onServiceChecked(activeService);
                 }
-            }else {
+            } else {
                 Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -354,19 +355,19 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
         db.collection("waitTime")
                 .document("time")
                 .get().addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
+            progressBar.setVisibility(View.GONE);
+            if (task.isSuccessful()) {
+                DocumentSnapshot doc = task.getResult();
 
-                        assert doc != null;
-                        if (doc.exists()) {
-                            waitTime = doc.getString("time");
-                            firestoreCallback.onCallback(waitTime);
-                        }
-                    }else {
-                        Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                assert doc != null;
+                if (doc.exists()) {
+                    waitTime = doc.getString("time");
+                    firestoreCallback.onCallback(waitTime);
+                }
+            } else {
+                Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -383,7 +384,8 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
         if (client != null && client.isConnected()) {
             LocationServices.getFusedLocationProviderClient(requireActivity())
-                    .removeLocationUpdates(new LocationCallback() {});
+                    .removeLocationUpdates(new LocationCallback() {
+                    });
             client.disconnect();
         }
     }
@@ -424,8 +426,8 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
         if (ActivityCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(requireActivity(),
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(requireActivity(),
@@ -477,7 +479,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                     }).setNegativeButton("Cancel", null).create().show();
                         }
                     }
-                }else {
+                } else {
                     if (client != null) {
                         client.connect();
                     }

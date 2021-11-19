@@ -25,9 +25,9 @@ public class UserRepository {
             userDao.insert(user);
         });
     }
-    public LiveData<User> get(String id) {
-        return userDao.get(id);
-    }
+    public LiveData<User> get(String id) { return userDao.get(id); }
+    public User getOne(String id) { return userDao.getOne(id); }
+
     public void update(User user) {
         ItemRoomDatabase.databaseWriteExecutor.execute(() -> userDao.update(user));
     }

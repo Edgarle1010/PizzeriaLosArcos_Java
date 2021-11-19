@@ -25,6 +25,7 @@ public class UserViewModel extends AndroidViewModel {
     public static void insert(User user) { repository.insert(user); }
 
     public LiveData<User> get(String id) { return repository.get(id); }
+    public User getOne(String id) { return repository.getOne(id); }
     public static void update(User user) { repository.update(user); }
     public static void delete(User user) { repository.delete(user); }
     public static void deleteAll() { repository.deleteAll(); }
