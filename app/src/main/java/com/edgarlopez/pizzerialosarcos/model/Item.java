@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -49,6 +50,10 @@ public class Item {
         this.amount = amount;
         this.comments = comments;
         this.price = price;
+    }
+
+    @Ignore
+    public Item() {
     }
 
     public int getId() {

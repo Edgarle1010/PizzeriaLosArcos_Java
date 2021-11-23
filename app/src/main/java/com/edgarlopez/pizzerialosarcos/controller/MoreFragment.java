@@ -33,7 +33,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
     private ItemViewModel itemViewModel;
 
-    private CardView howToGetCardView,
+    private CardView ordersHistoryCardView,
+            howToGetCardView,
             callCardView,
             commentsCardView;
     private Button logoutButton;
@@ -69,13 +70,15 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 .getApplication())
                 .create(ItemViewModel.class);
 
+        ordersHistoryCardView = view.findViewById(R.id.orders_history_cardview);
         howToGetCardView = view.findViewById(R.id.how_to_get_cardview);
         callCardView = view.findViewById(R.id.call_cardview);
         commentsCardView = view.findViewById(R.id.comments_cardview);
         logoutButton = view.findViewById(R.id.logout_button);
 
-        callCardView.setOnClickListener(this);
+        ordersHistoryCardView.setOnClickListener(this);
         howToGetCardView.setOnClickListener(this);
+        callCardView.setOnClickListener(this);
         commentsCardView.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
 
@@ -93,6 +96,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.orders_history_cardview:
+                startActivity(new Intent(requireActivity(),
+                        OrdersHistoryActivity.class));
+                break;
             case R.id.how_to_get_cardview:
                 Intent intentMaps = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("https://goo.gl/maps/rVtzSXdvUaxMSc1M9"));

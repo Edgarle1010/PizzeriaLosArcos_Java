@@ -81,7 +81,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
 
         titleTextView = view.findViewById(R.id.title_food);
         recyclerView = view.findViewById(R.id.foodRecyclerView);
-        progressBar = (ProgressBar) requireActivity().findViewById(R.id.menu_activity_progress);
+        progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));

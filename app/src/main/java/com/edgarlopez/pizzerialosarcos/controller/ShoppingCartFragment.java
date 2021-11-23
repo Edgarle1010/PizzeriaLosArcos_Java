@@ -49,13 +49,16 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -184,22 +187,25 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
                                             order.setClient(user.getPhoneNumber());
                                             order.setClientName(name + " " + lastName);
-                                            order.setDate(System.currentTimeMillis());
+                                            order.setDate(new Date().getTime());
                                             if (currentLocation != null) {
                                                 order.setLocation(currentLocation);
                                             } else {
                                                 order.setLocation("Ubicación no proporcionada.");
                                             }
                                             order.setComplete(false);
+                                            order.setStatus("Pedido");
                                             order.setItems(itemViewModel.getAllItems().getValue().size());
                                             order.setItemList(itemViewModel.getAllItems().getValue());
                                             order.setTotalPrice(price);
 
                                             checkOrderId(id -> {
                                                 String fol = "F" + id;
+                                                order.setFolio(fol);
                                                 db.collection("orders")
                                                         .document(fol)
                                                         .set(order).addOnSuccessListener(documentReference -> {
+
                                                     Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
                                                     v.vibrate(400);
 
@@ -303,7 +309,20 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                 .get().addOnCompleteListener(task -> {
             progressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
-                documentIdCallBack.onDocumentIdChecked(task.getResult().size());
+
+                String folio = "F";
+                boolean go = true;
+                for (int i = 0; i < task.getResult().size() && go; i++) {
+                    folio = "F" + i;
+                    if (!folio.equals(task.getResult().getDocuments().get(i).getId())) {
+                        documentIdCallBack.onDocumentIdChecked(i);
+                        go = false;
+                    }
+                }
+                if (go) {
+                    documentIdCallBack.onDocumentIdChecked(task.getResult().size());
+                }
+
             } else {
                 Toast.makeText(requireActivity(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
