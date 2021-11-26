@@ -241,10 +241,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         Toast.LENGTH_LONG)
                                                         .show();
 
-                                                finishAffinity();
-                                                //Go to ListActivity
                                                 startActivity(new Intent(LoginActivity.this,
                                                         MenuActivity.class));
+
+                                                finish();
                                             }
 
                                         }

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
@@ -26,18 +27,24 @@ import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class MoreFragment extends Fragment implements View.OnClickListener {
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
-
-    private ItemViewModel itemViewModel;
-
-    private CardView ordersHistoryCardView,
+    private CardView userInformationCardView,
+            ordersHistoryCardView,
             howToGetCardView,
             callCardView,
             commentsCardView;
-    private Button logoutButton;
+    private TextView userNameTextView,
+            phoneNumberTextView;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference = db.collection("Users");
 
     private static final int REQUEST = 112;
 
@@ -66,21 +73,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
-                .getApplication())
-                .create(ItemViewModel.class);
-
+        userInformationCardView = view.findViewById(R.id.user_information_cardview);
         ordersHistoryCardView = view.findViewById(R.id.orders_history_cardview);
         howToGetCardView = view.findViewById(R.id.how_to_get_cardview);
         callCardView = view.findViewById(R.id.call_cardview);
         commentsCardView = view.findViewById(R.id.comments_cardview);
-        logoutButton = view.findViewById(R.id.logout_button);
+        userNameTextView = view.findViewById(R.id.username_textview);
+        phoneNumberTextView = view.findViewById(R.id.phone_number_textview);
 
+        userInformationCardView.setOnClickListener(this);
         ordersHistoryCardView.setOnClickListener(this);
         howToGetCardView.setOnClickListener(this);
         callCardView.setOnClickListener(this);
         commentsCardView.setOnClickListener(this);
-        logoutButton.setOnClickListener(this);
 
         return view;
 
@@ -96,6 +101,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.user_information_cardview:
+                startActivity(new Intent(requireActivity(),
+                        UserInformationActivity.class));
+                break;
             case R.id.orders_history_cardview:
                 startActivity(new Intent(requireActivity(),
                         OrdersHistoryActivity.class));
@@ -128,21 +137,37 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
 
                 requireActivity().startActivity(Intent.createChooser(emailIntent, "Enviar correo por..."));
                 break;
-            case R.id.logout_button:
-                if (user != null && firebaseAuth != null) {
-                    firebaseAuth.signOut();
-
-                    ItemViewModel.deleteAll();
-                    UserViewModel.deleteAll();
-
-                    Intent intent = new Intent(getActivity(),
-                            WelcomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-                break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        assert user != null;
+        String currentUserId = user.getUid();
+
+        collectionReference
+                .whereEqualTo("userId", currentUserId)
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+
+                    if (e != null) {
+                    }
+                    assert queryDocumentSnapshots != null;
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            String name = snapshot.getString("name");
+                            String lastName = snapshot.getString("lastName");
+                            String phoneNumber = snapshot.getString("phoneNumber");
+
+                            userNameTextView.setText(name + " " + lastName);
+                            phoneNumberTextView.setText(phoneNumber);
+                        }
+
+                    }
+
+                });
     }
 
     public void makeCall()

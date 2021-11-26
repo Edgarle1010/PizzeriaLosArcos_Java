@@ -2,6 +2,7 @@ package com.edgarlopez.pizzerialosarcos.ui;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,6 @@ public abstract class ItemRoomDatabase extends RoomDatabase {
                 @Override
                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
                     super.onCreate(db);
-
                     databaseWriteExecutor.execute(() -> {
                         UserDao userDao = INSTANCE.userDao();
                         userDao.deleteAll();

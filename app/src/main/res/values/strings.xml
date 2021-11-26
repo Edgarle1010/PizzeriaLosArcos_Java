@@ -40,9 +40,19 @@
     <string name="acept">Aceptar</string>
     <string name="notice">¡Aviso!</string>
     <string name="user_create_successfully_message">Tu usuario se ha creado correctamente. Por favor no olvides tu usuario ni tu contraseña</string>
-    <string name="congratulations_message">!Felicidades, %s!</string>
+    <string name="congratulations_message">¡Felicidades, %s!</string>
     <string name="welcome_message">Bienvenido de vuelta, %s</string>
     <string name="order_sent_successfully_title">Pedido enviado correctamente</string>
     <string name="order_successfully_message">Tu pedido ya está en proceso, puedes pasar por el en %s minutos. \nNúmero de folio: %s\n\nRecuerda recogerlo en la pizzería ubicada en el Periférico Gómez Morín</string>
+    <string name="logout_question_message">¿Seguro que quieres salir?</string>
+    <string name="cancel_option">Cancelar</string>
+    <string name="edit_data_with_support_message">Es posible cambiar el número celular o la dirección e-mail contactandose con soporte.</string>
+    <string name="important_announcement">¡Aviso importante!</string>
+    <string name="delete_account_message">Tu cuenta será eleminada permanentemente junto con tu información de usuario.\n\nLas ordenes realizadas en esta cuentan seguiran almacenas en nuestros servidores por cuestiones de estadística, así como las incidencias que tuvo la cuenta al hacer uso del servicio.\n\nSi se quisiera crear una cuenta nueva con el número celular actual, será necesario contactar a soporte.\n\nIntroduce tu contraseña actual para continuar</string>
+    <string name="delete_account_successfully">Cuenta eliminada correctamente</string>
+    <string name="save_text">Guardar</string>
+    <string name="current_password_hint">Contraseña actual</string>
+    <string name="new_password_hint">Contraseña nueva</string>
+    <string name="changue_paswword_successfully_message">Contraseña actualizada correctamente</string>
 
 </resources>

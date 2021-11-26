@@ -10,13 +10,21 @@
     android:orientation="vertical"
     tools:context=".controller.WelcomeActivity">
 
+    <ProgressBar
+        android:id="@+id/welcome_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ProgressBar>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:backgroundTint="@color/primary_color"
         app:cornerRadius="20dp"
-        android:onClick="onClick"
         android:text="@string/text_login_button">
     </com.google.android.material.button.MaterialButton>
 
@@ -26,7 +34,6 @@
         android:layout_height="60dp"
         android:backgroundTint="@color/secondary_color"
         app:cornerRadius="20dp"
-        android:onClick="onClick"
         android:text="@string/text_signin_button">
     </com.google.android.material.button.MaterialButton>
 
@@ -36,7 +43,6 @@
         android:layout_height="60dp"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/text_guest_button"
-        android:onClick="onClick"
         style="?android:attr/borderlessButtonStyle">
     </com.google.android.material.button.MaterialButton>
 

@@ -1,9 +1,8 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,21 +10,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
+    private ProgressBar progressBar;
     private Button loginButton;
     private Button signInButton;
     private Button guestButton;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
@@ -38,44 +38,47 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        progressBar = findViewById(R.id.welcome_progress);
+        loginButton = findViewById(R.id.loginButton);
+        signInButton = findViewById(R.id.signInButton);
+        guestButton = findViewById(R.id.guestButton);
+
+        loginButton.setOnClickListener(this);
+        signInButton.setOnClickListener(this);
+        guestButton.setOnClickListener(this);
+
         firebaseAuth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        progressBar.setVisibility(View.VISIBLE);
+        authStateListener = firebaseAuth -> {
+            progressBar.setVisibility(View.GONE);
+            currentUser = firebaseAuth.getCurrentUser();
+            if (currentUser != null) {
                 currentUser = firebaseAuth.getCurrentUser();
-                if (currentUser != null) {
-                    currentUser = firebaseAuth.getCurrentUser();
-                    String currentUserId = currentUser.getUid();
+                String currentUserId = currentUser.getUid();
 
-                    collectionReference
-                            .whereEqualTo("userId", currentUserId)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value,
-                                                    @Nullable FirebaseFirestoreException error) {
-                                    if (error != null) {
-                                        return;
+                progressBar.setVisibility(View.VISIBLE);
+                collectionReference
+                        .whereEqualTo("userId", currentUserId)
+                        .get().addOnCompleteListener(task -> {
+                            progressBar.setVisibility(View.GONE);
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                    String userId = snapshot.getString("userId");
+
+                                    if (userId.equals(currentUserId)) {
+                                        startActivity(new Intent(WelcomeActivity.this,
+                                                MenuActivity.class));
+                                        finish();
                                     }
-
-                                    String name;
-
-                                    if (!value.isEmpty()) {
-                                        for (QueryDocumentSnapshot snapshot : value) {
-                                            AppController appController = AppController.getInstance();
-                                            appController.setUserId(snapshot.getString("userId"));
-                                            appController.setName(snapshot.getString("username"));
-
-                                            finishAffinity();
-                                            startActivity(new Intent(WelcomeActivity.this,
-                                                    MenuActivity.class));
-                                        }
-                                    }
-
                                 }
-                            });
-                }else {
-
-                }
+                            } else {
+                                Toast.makeText(WelcomeActivity.this,
+                                        task.getException().getLocalizedMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                progressBar.setVisibility(View.GONE);
             }
         };
 
@@ -84,12 +87,9 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        loginButton = findViewById(R.id.loginButton);
-        signInButton = findViewById(R.id.signInButton);
-        guestButton = findViewById(R.id.guestButton);
-
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

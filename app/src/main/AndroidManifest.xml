@@ -17,6 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PizzeriaLosArcos">
         <activity
+            android:name=".controller.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.EditUserNameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.UserInformationActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.OrdersHistoryActivity"
             android:exported="false" />
         <activity android:name=".controller.MenuActivity" />
@@ -25,7 +34,9 @@
         <activity android:name=".controller.RegisterNumberActivity" />
         <activity android:name=".controller.SignInActivity" />
         <activity android:name=".controller.LoginActivity" />
-        <activity android:name=".controller.WelcomeActivity">
+        <activity
+            android:name=".controller.WelcomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -3,6 +3,7 @@ package com.edgarlopez.pizzerialosarcos.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user_table")
@@ -38,6 +39,10 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.streaks = streaks;
         this.isBaned = isBaned;
+    }
+
+    @Ignore
+    public User() {
     }
 
     public String getUserId() {

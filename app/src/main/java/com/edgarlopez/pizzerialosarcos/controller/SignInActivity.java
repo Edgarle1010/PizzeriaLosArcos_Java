@@ -29,44 +29,35 @@ public class SignInActivity extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.lastname_edit_text);
         emailEditText = findViewById(R.id.email_account);
 
-        emailEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    nextButton.callOnClick();
-                }
-                return false;
+        emailEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                nextButton.callOnClick();
             }
+            return false;
         });
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = nameEditText.getText().toString().trim();
-                String lastname = lastNameEditText.getText().toString().trim();
-                String email = emailEditText.getText().toString().trim();
+        nextButton.setOnClickListener(v -> {
+            String name = nameEditText.getText().toString().trim();
+            String lastname = lastNameEditText.getText().toString().trim();
+            String email = emailEditText.getText().toString().trim();
 
-                if (!name.matches("[A-Za-zÀ-ÿ '-]*")) {
-                    nameEditText.setError("El nombre introducido no es válido");
-                    return;
-                }
+            if (!name.matches("[A-Za-zÀ-ÿ '-]*") || name.isEmpty()) {
+                nameEditText.setError("El nombre introducido no es válido");
+            }
 
-                else if (!lastname.matches("[A-Za-zÀ-ÿ '-]*")) {
-                    lastNameEditText.setError("El apellido introducido no es válido");
-                    return;
-                }
+            else if (!lastname.matches("[A-Za-zÀ-ÿ '-]*") || lastname.isEmpty()) {
+                lastNameEditText.setError("El apellido introducido no es válido");
+            }
 
-                else if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
-                    emailEditText.setError("El email introducido no es válido");
-                    return;
-                }else {
-                    AppController.getInstance().setName(name);
-                    AppController.getInstance().setLastName(lastname);
-                    AppController.getInstance().setEmail(email);
+            else if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+                emailEditText.setError("El email introducido no es válido");
+            } else {
+                AppController.getInstance().setName(name);
+                AppController.getInstance().setLastName(lastname);
+                AppController.getInstance().setEmail(email);
 
-                    startActivity(new Intent(SignInActivity.this,
-                            RegisterNumberActivity.class));
-                }
+                startActivity(new Intent(SignInActivity.this,
+                        RegisterNumberActivity.class));
             }
         });
     }
