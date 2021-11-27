@@ -29,6 +29,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,10 @@ public class CreatePasswordActivity extends AppCompatActivity {
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (AppController.getInstance().isRecoveryRequest()) {
+            signInButton.setText(R.string.save_text);
+        }
+
         signInButton.setOnClickListener(v -> {
             String passwordText = password.getText().toString().trim();
             String verifyPasswordText = verifyPassword.getText().toString().trim();
@@ -80,72 +85,116 @@ public class CreatePasswordActivity extends AppCompatActivity {
                             .addOnCompleteListener(task -> {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    String email = AppController.getInstance().getEmail();
-                                    String phoneNumber = AppController.getInstance().getPhoneNumber();
-                                    String name = AppController.getInstance().getName();
-                                    String lastName = AppController.getInstance().getLastName();
+                                    if (AppController.getInstance().isRecoveryRequest()) {
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        collectionReference
+                                                .whereEqualTo("userId", currentUser.getUid())
+                                                .get().addOnCompleteListener(task13 -> {
+                                            progressBar.setVisibility(View.GONE);
+                                            if (task13.isSuccessful()) {
+                                                for (QueryDocumentSnapshot snapshot : task13.getResult()) {
+                                                    String id = snapshot.getString("userId");
+                                                    String name = snapshot.getString("name");
+                                                    String lastName = snapshot.getString("lastName");
+                                                    String email1 = snapshot.getString("email");
+                                                    String phoneNumber = snapshot.getString("phoneNumber");
+                                                    int streaks = snapshot.getLong("streaks").intValue();
+                                                    boolean baned = snapshot.getBoolean("baned");
 
-                                    progressBar.setVisibility(View.VISIBLE);
-                                    currentUser.updateEmail(email).addOnCompleteListener(task12 -> {
-                                        progressBar.setVisibility(View.GONE);
-                                        if (task12.isSuccessful()) {
-                                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                    .setDisplayName(name + " " + lastName)
-                                                    .build();
+                                                    User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned);
 
-                                            progressBar.setVisibility(View.VISIBLE);
-                                            currentUser.updateProfile(profileUpdate)
-                                                    .addOnCompleteListener(task1 -> {
-                                                        progressBar.setVisibility(View.GONE);
-                                                        if (task1.isSuccessful()) {
-
-                                                            assert currentUser != null;
-                                                            final String currentUserId = currentUser.getUid();
-
-                                                            User user = new User(currentUserId, name, lastName, email, phoneNumber, 0, false);
-
-                                                            progressBar.setVisibility(View.VISIBLE);
-                                                            collectionReference
-                                                                    .document(currentUserId)
-                                                                    .set(user).addOnCompleteListener(task11 -> {
-                                                                if (task11.isSuccessful()) {
-                                                                    userViewModel.getAllUsers().observe(CreatePasswordActivity.this, users -> {
-                                                                        UserViewModel.insert(user);
-                                                                    });
-
-                                                                    AlertDialog.Builder aD = new AlertDialog.Builder(CreatePasswordActivity.this);
-                                                                    aD.setTitle(String.format(getString(R.string.congratulations_message), name));
-                                                                    aD.setMessage(R.string.user_create_successfully_message);
-                                                                    aD.setPositiveButton(R.string.acept, (dialog, which) -> {
-                                                                        progressBar.setVisibility(View.GONE);
-                                                                        Intent intent = new Intent(CreatePasswordActivity.this,
-                                                                                MenuActivity.class);
-                                                                        startActivity(intent);
-                                                                        finish();
-                                                                    });
-                                                                    aD.setCancelable(false);
-
-                                                                    AlertDialog dialog = aD.create();
-                                                                    dialog.show();
-
-                                                                } else {
-                                                                    progressBar.setVisibility(View.GONE);
-                                                                    Toast.makeText(CreatePasswordActivity.this,
-                                                                            task.getException().getLocalizedMessage(),
-                                                                            Toast.LENGTH_SHORT)
-                                                                            .show();
-                                                                }
-
-                                                            });
-                                                        }
+                                                    userViewModel.getAllUsers().observe(this, users -> {
+                                                        UserViewModel.insert(user1);
                                                     });
-                                        }
-                                    });
 
+                                                    Toast.makeText(CreatePasswordActivity.this,
+                                                            R.string.password_recovery_successfully_message,
+                                                            Toast.LENGTH_LONG)
+                                                            .show();
+
+                                                    AppController.getInstance().setRecoveryRequest(false);
+
+                                                    finishAffinity();
+
+                                                    startActivity(new Intent(CreatePasswordActivity.this,
+                                                            WelcomeActivity.class));
+                                                }
+                                            } else {
+                                                progressBar.setVisibility(View.GONE);
+                                                Toast.makeText(CreatePasswordActivity.this,
+                                                        task.getException().getLocalizedMessage(),
+                                                        Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        });
+
+                                    } else {
+                                        String email = AppController.getInstance().getEmail();
+                                        String phoneNumber = AppController.getInstance().getPhoneNumber();
+                                        String name = AppController.getInstance().getName();
+                                        String lastName = AppController.getInstance().getLastName();
+
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        currentUser.updateEmail(email).addOnCompleteListener(task12 -> {
+                                            progressBar.setVisibility(View.GONE);
+                                            if (task12.isSuccessful()) {
+                                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                        .setDisplayName(name + " " + lastName)
+                                                        .build();
+
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                currentUser.updateProfile(profileUpdate)
+                                                        .addOnCompleteListener(task1 -> {
+                                                            progressBar.setVisibility(View.GONE);
+                                                            if (task1.isSuccessful()) {
+
+                                                                assert currentUser != null;
+                                                                final String currentUserId = currentUser.getUid();
+
+                                                                User user = new User(currentUserId, name, lastName, email, phoneNumber, 0, false);
+
+                                                                progressBar.setVisibility(View.VISIBLE);
+                                                                collectionReference
+                                                                        .document(currentUserId)
+                                                                        .set(user).addOnCompleteListener(task11 -> {
+                                                                    if (task11.isSuccessful()) {
+                                                                        userViewModel.getAllUsers().observe(CreatePasswordActivity.this, users -> {
+                                                                            UserViewModel.insert(user);
+                                                                        });
+
+                                                                        AlertDialog.Builder aD = new AlertDialog.Builder(CreatePasswordActivity.this);
+                                                                        aD.setTitle(String.format(getString(R.string.congratulations_message), name));
+                                                                        aD.setMessage(R.string.user_create_successfully_message);
+                                                                        aD.setPositiveButton(R.string.acept, (dialog, which) -> {
+                                                                            progressBar.setVisibility(View.GONE);
+                                                                            finishAffinity();
+                                                                            Intent intent = new Intent(CreatePasswordActivity.this,
+                                                                                    MenuActivity.class);
+                                                                            startActivity(intent);
+                                                                        });
+                                                                        aD.setCancelable(false);
+
+                                                                        AlertDialog dialog = aD.create();
+                                                                        dialog.show();
+
+                                                                    } else {
+                                                                        progressBar.setVisibility(View.GONE);
+                                                                        Toast.makeText(CreatePasswordActivity.this,
+                                                                                task.getException().getLocalizedMessage(),
+                                                                                Toast.LENGTH_SHORT)
+                                                                                .show();
+                                                                    }
+
+                                                                });
+                                                            }
+                                                        });
+                                            }
+                                        });
+                                    }
                                 } else {
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(CreatePasswordActivity.this,
-                                            "¡Ha ocurrido un error!",
+                                            task.getException().getLocalizedMessage(),
                                             Toast.LENGTH_SHORT)
                                             .show();
                                 }

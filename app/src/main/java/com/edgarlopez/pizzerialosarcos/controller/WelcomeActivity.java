@@ -99,7 +99,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.signInButton:
                 startActivity(new Intent(WelcomeActivity.this,
-                        SignInActivity.class));
+                        TermsServicesActivity.class));
                 break;
             case R.id.guestButton:
                 break;

@@ -17,6 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PizzeriaLosArcos">
         <activity
+            android:name=".controller.RecoveryPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.TermsServicesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.ChangePasswordActivity"
             android:exported="false" />
         <activity

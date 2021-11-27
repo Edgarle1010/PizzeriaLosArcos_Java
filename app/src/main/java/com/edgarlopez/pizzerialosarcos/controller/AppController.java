@@ -16,8 +16,17 @@ public class AppController extends Application {
     private String phoneNumber;
     private String verificationId;
     private String resendToken;
+    private boolean isRecoveryRequest;
     private int streaks;
     private boolean baned;
+
+    public boolean isRecoveryRequest() {
+        return isRecoveryRequest;
+    }
+
+    public void setRecoveryRequest(boolean recoveryRequest) {
+        isRecoveryRequest = recoveryRequest;
+    }
 
     public int getStreaks() {
         return streaks;

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button loginButton;
     private TextView signInTextView;
+    private TextView recoveryPasswordTextView;
     private EditText passwordEditText;
 
     //e-mail login
@@ -68,8 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AutoCompleteTextView phoneNumberEditText;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser currentUser;
     private ProgressBar progressBar;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
         signInTextView = findViewById(R.id.signIn_text);
+        recoveryPasswordTextView = findViewById(R.id.recovery_text);
 
         listRegion.add("+52");
         listRegion.add("+1");
@@ -143,11 +144,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.signIn_text:
                 startActivity(new Intent(LoginActivity.this,
-                        SignInActivity.class));
+                        TermsServicesActivity.class));
+                break;
+            case R.id.recovery_text:
+                startActivity(new Intent(LoginActivity.this,
+                        RecoveryPasswordActivity.class));
                 break;
             case R.id.login_button:
                 String email = emailEditText.getText().toString().trim();
@@ -238,13 +244,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                                 Toast.makeText(LoginActivity.this,
                                                         String.format(getString(R.string.welcome_message), name),
-                                                        Toast.LENGTH_LONG)
+                                                        Toast.LENGTH_SHORT)
                                                         .show();
+
+                                                finishAffinity();
 
                                                 startActivity(new Intent(LoginActivity.this,
                                                         MenuActivity.class));
-
-                                                finish();
                                             }
 
                                         }

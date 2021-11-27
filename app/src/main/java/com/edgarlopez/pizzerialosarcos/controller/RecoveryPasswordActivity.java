@@ -1,5 +1,11 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,21 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.edgarlopez.pizzerialosarcos.R;
-import com.google.firebase.FirebaseApp;
+import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
+import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -37,13 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class RegisterNumberActivity extends AppCompatActivity {
+public class RecoveryPasswordActivity extends AppCompatActivity implements View.OnClickListener {
+    private ProgressBar progressBar;
+    private ImageButton backImageButton;
     private Spinner spinnerRegion;
     private EditText numberEditText;
     private Button nextButton;
-    private ProgressBar progressBar;
+
     private FirebaseAuth firebaseAuth;
-    private boolean exist;
+    private FirebaseUser user;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Users");
@@ -54,19 +58,19 @@ public class RegisterNumberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_number);
-
-        FirebaseApp.initializeApp(this);
-        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
-        firebaseAppCheck.installAppCheckProviderFactory(
-                SafetyNetAppCheckProviderFactory.getInstance());
+        setContentView(R.layout.activity_recovery_password);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
-        spinnerRegion = findViewById(R.id.region_spinner);
-        numberEditText = findViewById(R.id.phonenumber_text_edit_text);
-        nextButton = findViewById(R.id.next_number_button);
-        progressBar = findViewById(R.id.register_number_progress);
+        progressBar = findViewById(R.id.password_recovery_progress);
+        backImageButton = findViewById(R.id.back_button_recovery_password);
+        spinnerRegion = findViewById(R.id.region_recovery_spinner);
+        numberEditText = findViewById(R.id.phonenumber_recovery_text_edit_text);
+        nextButton = findViewById(R.id.next_recovery_number_button);
+
+        backImageButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
 
         listRegion.add("🇲🇽 México (+52)");
         listRegion.add("🇺🇸 Estados Unidos (+1)");
@@ -79,31 +83,16 @@ public class RegisterNumberActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String currentRegion = parent.getItemAtPosition(position).toString();
-
                 if (currentRegion.equals(listRegion.get(0))) {
                     prefix = "+52";
                 } else {
                     prefix = "+1";
                 }
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-
-        nextButton.setOnClickListener(v -> {
-            String phoneNumber = numberEditText.getText().toString().trim();
-            if (phoneNumber.length() == 10) {
-                phoneNumber = prefix + phoneNumber;
-                progressBar.setVisibility(View.VISIBLE);
-
-                checkPhoneNumber(phoneNumber);
-
-            } else {
-                numberEditText.setError("El número celular introducido no es válido.");
             }
         });
 
@@ -113,7 +102,28 @@ public class RegisterNumberActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
 
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back_button_recovery_password:
+                finish();
+                break;
+            case R.id.next_recovery_number_button:
+                String phoneNumber = numberEditText.getText().toString().trim();
+                if (phoneNumber.length() == 10) {
+                    phoneNumber = prefix + phoneNumber;
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    checkPhoneNumber(phoneNumber);
+
+                } else {
+                    numberEditText.setError("El número celular introducido no es válido.");
+                }
+                break;
+        }
     }
 
     private void checkPhoneNumber(String phoneNumber) {
@@ -122,15 +132,15 @@ public class RegisterNumberActivity extends AppCompatActivity {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (!value.isEmpty()) {
+                        if (value.isEmpty()) {
                             progressBar.setVisibility(View.INVISIBLE);
-                            numberEditText.setError("El número celular ya ha sido registrado anteriormente");
+                            numberEditText.setError("El número celular no ha sido registrado anteriormente");
                         } else {
                             PhoneAuthOptions options =
                                     PhoneAuthOptions.newBuilder(firebaseAuth)
                                             .setPhoneNumber(phoneNumber)
                                             .setTimeout(30L, TimeUnit.SECONDS)
-                                            .setActivity(RegisterNumberActivity.this)
+                                            .setActivity(RecoveryPasswordActivity.this)
                                             .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
                                                 @Override
@@ -141,7 +151,7 @@ public class RegisterNumberActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onVerificationFailed(@NonNull FirebaseException e) {
                                                     progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(RegisterNumberActivity.this,
+                                                    Toast.makeText(RecoveryPasswordActivity.this,
                                                             e.getLocalizedMessage(),
                                                             Toast.LENGTH_LONG)
                                                             .show();
@@ -151,7 +161,7 @@ public class RegisterNumberActivity extends AppCompatActivity {
                                                 public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                                     super.onCodeSent(s, forceResendingToken);
                                                     progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(RegisterNumberActivity.this,
+                                                    Toast.makeText(RecoveryPasswordActivity.this,
                                                             "En breve recibiras un código de seguridad para verificar tu número celular.",
                                                             Toast.LENGTH_LONG)
                                                             .show();
@@ -159,8 +169,9 @@ public class RegisterNumberActivity extends AppCompatActivity {
                                                     AppController.getInstance().setPhoneNumber(phoneNumber);
                                                     AppController.getInstance().setVerificationId(s);
                                                     AppController.getInstance().setResendToken(forceResendingToken.toString());
+                                                    AppController.getInstance().setRecoveryRequest(true);
 
-                                                    startActivity(new Intent(RegisterNumberActivity.this,
+                                                    startActivity(new Intent(RecoveryPasswordActivity.this,
                                                             VerificationCodeActivity.class));
                                                 }
                                             })

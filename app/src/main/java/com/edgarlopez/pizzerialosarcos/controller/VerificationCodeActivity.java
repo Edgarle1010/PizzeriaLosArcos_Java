@@ -47,43 +47,34 @@ public class VerificationCodeActivity extends AppCompatActivity {
         phoneNumber = AppController.getInstance().getPhoneNumber();
         verificationId = AppController.getInstance().getVerificationId();
 
-        phoneNumberTextView.setText(phoneNumberTextView.getText().toString() + " " + phoneNumber);
+        phoneNumberTextView.setText(String.format("%s %s", phoneNumberTextView.getText().toString(), phoneNumber));
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String code = verificationCodeEditText.getText().toString().trim();
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        nextButton.setOnClickListener(v -> {
+            String code = verificationCodeEditText.getText().toString().trim();
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
 
-                progressBar.setVisibility(View.VISIBLE);
-                firebaseAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-                                    startActivity(new Intent(VerificationCodeActivity.this,
-                                            CreatePasswordActivity.class));
-                                }else {
-                                    // Sign in failed, display a message and update the UI
-                                    Log.w("TAG", "signInWithCredential:failure", task.getException());
-                                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                        verificationCodeEditText.setError("El código de verificación introducido no es válido");
-                                    }
-                                }
+            progressBar.setVisibility(View.VISIBLE);
+            firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(task -> {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(VerificationCodeActivity.this,
+                                    CreatePasswordActivity.class));
+                        }else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                verificationCodeEditText.setError("El código de verificación introducido no es válido");
                             }
-                        });
-            }
+                        }
+                    });
         });
 
-        verificationCodeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    nextButton.callOnClick();
-                }
-                return false;
+        verificationCodeEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                nextButton.callOnClick();
             }
+            return false;
         });
     }
 }

@@ -36,7 +36,8 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
             ordersHistoryCardView,
             howToGetCardView,
             callCardView,
-            commentsCardView;
+            commentsCardView,
+            moreCardView;
     private TextView userNameTextView,
             phoneNumberTextView;
 
@@ -78,6 +79,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         howToGetCardView = view.findViewById(R.id.how_to_get_cardview);
         callCardView = view.findViewById(R.id.call_cardview);
         commentsCardView = view.findViewById(R.id.comments_cardview);
+        moreCardView = view.findViewById(R.id.more_about_cardview);
         userNameTextView = view.findViewById(R.id.username_textview);
         phoneNumberTextView = view.findViewById(R.id.phone_number_textview);
 
@@ -86,6 +88,7 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         howToGetCardView.setOnClickListener(this);
         callCardView.setOnClickListener(this);
         commentsCardView.setOnClickListener(this);
+        moreCardView.setOnClickListener(this);
 
         return view;
 
@@ -136,6 +139,10 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 emailIntent.setSelector( selectorIntent );
 
                 requireActivity().startActivity(Intent.createChooser(emailIntent, "Enviar correo por..."));
+                break;
+            case R.id.more_about_cardview:
+                startActivity(new Intent(requireActivity(),
+                        AboutActivity.class));
                 break;
         }
     }

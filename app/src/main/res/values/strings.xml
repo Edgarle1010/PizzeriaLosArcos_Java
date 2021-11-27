@@ -54,5 +54,11 @@
     <string name="current_password_hint">Contraseña actual</string>
     <string name="new_password_hint">Contraseña nueva</string>
     <string name="changue_paswword_successfully_message">Contraseña actualizada correctamente</string>
+    <string name="Copyright_message">Derechos de autor © 2021 Edgar Francisco López Enríquez. Todos los derechos reservados.</string>
+    <string name="terms_service_text">Si pulsa Aceptar significa que acepta nuestros
+        <a href="https://pizzerialosarcos-9c55f.web.app/">Términos y condiciones</a> y ha leído el
+        <a href="https://pizzerialosarcos-9c55f.web.app/notice_privacy.html">Aviso de privacidad</a>.
+    </string>
+    <string name="password_recovery_successfully_message">Contraseña restaurada correctamente. Iniciando sesión automaticamente.</string>
 
 </resources>
