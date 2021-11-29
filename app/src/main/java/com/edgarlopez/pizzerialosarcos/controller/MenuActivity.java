@@ -1,23 +1,30 @@
 
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
@@ -30,9 +37,13 @@ import com.edgarlopez.pizzerialosarcos.model.Item;
 import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.model.User;
 import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
+import com.edgarlopez.pizzerialosarcos.ui.ItemRecyclerViewAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.List;
 
@@ -44,6 +55,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     private ProgressBar progressBar;
     public List<ExtraIngredient> currExtraIngredients;
 
+    private ItemViewModel itemViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +66,26 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                 .replace(R.id.menu_frame, MenuFragment.newInstance())
                 .commit();
 
+
+
         progressBar = findViewById(R.id.menu_activity_progress);
+
         BottomNavigationView bottomNavigationView =
                 findViewById(R.id.bottom_navigation);
+
+        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(MenuActivity.this
+                .getApplication())
+                .create(ItemViewModel.class);
+
+        itemViewModel.getAllItems().observe(MenuActivity.this, items -> {
+            if (items.size() == 0) {
+                bottomNavigationView.removeBadge(R.id.cart_nav_button);
+            } else {
+                BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.cart_nav_button);
+                badge.setNumber(items.size());
+            }
+        });
+
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -78,6 +108,12 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
 
             return true;
         });
+
+        bottomNavigationView.setOnItemReselectedListener(item -> {
+
+        });
+
+
 
     }
 
@@ -178,7 +214,6 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                     });
             errorDialog.show();
         }else {
-            //Toast.makeText(MenuActivity.this, "All is good", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -189,5 +224,4 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         checkPlayServices();
 
     }
-
 }

@@ -3,8 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3390625" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.3380208333333333" />
+        <entry key="app/src/main/res/drawable/badge.xml" value="0.3390625" />
+        <entry key="app/src/main/res/drawable/badge_background.xml" value="0.19270833333333334" />
+        <entry key="app/src/main/res/drawable/badge_frame.xml" value="0.3390625" />
+        <entry key="app/src/main/res/drawable/custom_badge_layout.xml" value="0.3390625" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3380208333333333" />
+        <entry key="app/src/main/res/drawable/rounded_edit_text.xml" value="0.3390625" />
         <entry key="app/src/main/res/layout/activity_about.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_create_password.xml" value="0.1765625" />
@@ -18,6 +24,8 @@
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.3229166666666667" />
         <entry key="app/src/main/res/layout/activity_terms_services.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/activity_user_information.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_action_item_layout.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/custom_badge_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/food_row.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/fragment_amount_order.xml" value="0.17552083333333332" />
         <entry key="app/src/main/res/layout/fragment_food_list.xml" value="0.16259057971014493" />

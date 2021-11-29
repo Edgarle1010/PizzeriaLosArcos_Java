@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     private ProgressBar progressBar;
+    private ImageButton backImageButton;
     private EditText currentPasswordEditText,
             newPasswordEditText,
             verifyNewPasswordEditText;
@@ -41,12 +43,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
 
         progressBar = findViewById(R.id.change_password_progress);
+        backImageButton = findViewById(R.id.back_button_change_password);
         currentPasswordEditText = findViewById(R.id.current_password_edit_text);
         newPasswordEditText = findViewById(R.id.new_password_edit_text);
         verifyNewPasswordEditText = findViewById(R.id.verify_new_password_edit_text);
         saveButton = findViewById(R.id.save_button_change_password);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        backImageButton.setOnClickListener(v -> finish());
 
         saveButton.setOnClickListener(v -> {
             String currentPasswordText = currentPasswordEditText.getText().toString().trim();

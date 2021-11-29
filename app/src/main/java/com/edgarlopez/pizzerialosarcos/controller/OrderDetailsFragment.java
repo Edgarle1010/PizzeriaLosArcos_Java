@@ -327,7 +327,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
 
         ItemViewModel.insert(item);
 
-        Toast.makeText(getActivity(),"Agregado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Agregado al carrito", Toast.LENGTH_SHORT).show();
 
         Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(400);
