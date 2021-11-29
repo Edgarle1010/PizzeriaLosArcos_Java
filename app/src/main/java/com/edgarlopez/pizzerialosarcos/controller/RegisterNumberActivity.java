@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.appcheck.FirebaseAppCheck;
@@ -38,6 +41,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterNumberActivity extends AppCompatActivity {
+    private ImageButton backButton;
     private Spinner spinnerRegion;
     private EditText numberEditText;
     private Button nextButton;
@@ -63,6 +67,7 @@ public class RegisterNumberActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        backButton = findViewById(R.id.back_button_register_number);
         spinnerRegion = findViewById(R.id.region_spinner);
         numberEditText = findViewById(R.id.phonenumber_text_edit_text);
         nextButton = findViewById(R.id.next_number_button);
@@ -74,6 +79,8 @@ public class RegisterNumberActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, listRegion);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRegion.setAdapter(dataAdapter);
+
+        backButton.setOnClickListener(v -> finish());
 
         spinnerRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -98,7 +105,6 @@ public class RegisterNumberActivity extends AppCompatActivity {
             String phoneNumber = numberEditText.getText().toString().trim();
             if (phoneNumber.length() == 10) {
                 phoneNumber = prefix + phoneNumber;
-                progressBar.setVisibility(View.VISIBLE);
 
                 checkPhoneNumber(phoneNumber);
 
@@ -117,15 +123,17 @@ public class RegisterNumberActivity extends AppCompatActivity {
     }
 
     private void checkPhoneNumber(String phoneNumber) {
+        progressBar.setVisibility(View.VISIBLE);
         collectionReference
                 .whereEqualTo("phoneNumber", phoneNumber)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (!value.isEmpty()) {
+                .get().addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
                             progressBar.setVisibility(View.INVISIBLE);
                             numberEditText.setError("El número celular ya ha sido registrado anteriormente");
                         } else {
+                            progressBar.setVisibility(View.VISIBLE);
                             PhoneAuthOptions options =
                                     PhoneAuthOptions.newBuilder(firebaseAuth)
                                             .setPhoneNumber(phoneNumber)
@@ -168,6 +176,11 @@ public class RegisterNumberActivity extends AppCompatActivity {
 
                             PhoneAuthProvider.verifyPhoneNumber(options);
                         }
+                    } else {
+                        Toast.makeText(RegisterNumberActivity.this,
+                                task.getException().getLocalizedMessage(),
+                                Toast.LENGTH_LONG)
+                                .show();
                     }
                 });
     }

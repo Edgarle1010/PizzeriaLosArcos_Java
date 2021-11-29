@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public class VerificationCodeActivity extends AppCompatActivity {
+    private ImageButton backButton;
     private ProgressBar progressBar;
     private EditText verificationCodeEditText;
     private TextView phoneNumberTextView;
@@ -39,6 +41,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        backButton = findViewById(R.id.back_button_verification_code);
         progressBar = findViewById(R.id.verification_code_progress);
         verificationCodeEditText = findViewById(R.id.verification_code_text_edit_text);
         phoneNumberTextView = findViewById(R.id.verification_code_text);
@@ -48,6 +51,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
         verificationId = AppController.getInstance().getVerificationId();
 
         phoneNumberTextView.setText(String.format("%s %s", phoneNumberTextView.getText().toString(), phoneNumber));
+
+        backButton.setOnClickListener(v -> finish());
 
         nextButton.setOnClickListener(v -> {
             String code = verificationCodeEditText.getText().toString().trim();

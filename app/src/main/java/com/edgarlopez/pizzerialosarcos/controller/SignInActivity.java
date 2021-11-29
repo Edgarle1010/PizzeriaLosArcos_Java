@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.edgarlopez.pizzerialosarcos.R;
 
 public class SignInActivity extends AppCompatActivity {
+    private ImageButton backButton;
     private Button nextButton;
     private EditText nameEditText;
     private EditText lastNameEditText;
@@ -24,10 +26,13 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        backButton = findViewById(R.id.back_button_sign_in);
         nextButton = findViewById(R.id.next_signin_button);
         nameEditText = findViewById(R.id.name_edit_text);
         lastNameEditText = findViewById(R.id.lastname_edit_text);
         emailEditText = findViewById(R.id.email_account);
+
+        backButton.setOnClickListener(v -> finish());
 
         emailEditText.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {

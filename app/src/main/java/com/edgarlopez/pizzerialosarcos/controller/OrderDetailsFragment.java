@@ -3,13 +3,16 @@ package com.edgarlopez.pizzerialosarcos.controller;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -68,6 +72,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             smallSizeTextView,
             amountTextView,
             totalTextView;
+    private ImageButton backButton;
     private EditText commentsEditText;
     private Button addOrderButton;
     private String foodType,
@@ -119,6 +124,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         DrawableCompat.setTint(amountTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
 
+        backButton.setOnClickListener(this);
         completeTextView.setOnClickListener(this);
         halfTextView.setOnClickListener(this);
         bigSizeTextView.setOnClickListener(this);
@@ -208,6 +214,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
 
         recyclerView = view.findViewById(R.id.extraIngredientRecyclerView);
 
+        backButton = view.findViewById(R.id.back_button_order_detail);
         titleFoodTextView = view.findViewById(R.id.food_title_order);
         descriptionTextView = view.findViewById(R.id.food_description_order);
         completeTextView = view.findViewById(R.id.complete_text_view);
@@ -228,6 +235,9 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.back_button_order_detail:
+                getParentFragmentManager().popBackStack();
+                break;
             case R.id.complete_text_view:
                 DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
                 DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
@@ -349,6 +359,11 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.menu_frame, MenuFragment.newInstance())
                                 .commit();
+
+                        FragmentManager fm = requireActivity().getSupportFragmentManager();
+                        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                            fm.popBackStack();
+                        }
 
                         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
                         bottomNavigationView.setVisibility(View.VISIBLE);

@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -49,6 +50,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nullable;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private ImageButton backButton;
+
     private UserViewModel userViewModel;
 
     private Button loginButton;
@@ -92,6 +95,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 LoginActivity.this.getApplication())
                 .create(UserViewModel.class);
 
+        backButton = findViewById(R.id.back_button_login);
+
         //e-mail login
         loginWithEmailImage = findViewById(R.id.login_with_email_icon);
         emailTextView = findViewById(R.id.email_login_text);
@@ -109,6 +114,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = findViewById(R.id.login_button);
         signInTextView = findViewById(R.id.signIn_text);
         recoveryPasswordTextView = findViewById(R.id.recovery_text);
+
+        backButton.setOnClickListener(this);
 
         listRegion.add("+52");
         listRegion.add("+1");
@@ -147,6 +154,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("NonConstantResourceId")
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.back_button_login:
+                finish();
+                break;
             case R.id.signIn_text:
                 startActivity(new Intent(LoginActivity.this,
                         TermsServicesActivity.class));

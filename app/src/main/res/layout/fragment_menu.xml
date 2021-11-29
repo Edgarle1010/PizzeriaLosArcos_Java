@@ -10,30 +10,13 @@
     android:windowTranslucentStatus="false"
     tools:context=".controller.MenuFragment">
 
-    <TextView
-        android:id="@+id/title_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingTop="40dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
-        android:text="Menú"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TextView>
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_menu">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,7 +100,7 @@
                         android:id="@+id/food_dishes_image_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="170dp"
-                        android:scaleType="fitXY"></ImageView>
+                        android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -131,7 +114,7 @@
                         android:id="@+id/seafood_image_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="170dp"
-                        android:scaleType="fitXY"></ImageView>
+                        android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -169,7 +152,7 @@
                         android:id="@+id/drinks_image_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="170dp"
-                        android:scaleType="fitXY"></ImageView>
+                        android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -193,7 +176,7 @@
                         android:id="@+id/desserts_image_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="170dp"
-                        android:scaleType="fitXY"></ImageView>
+                        android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

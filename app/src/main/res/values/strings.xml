@@ -19,7 +19,7 @@
     <string name="region_text">Región</string>
     <string name="phonenumber_text">Número celular</string>
     <string name="phonenumber_hint">Número celular (10 dígitos)</string>
-    <string name="verification_code_recieved_description">Introduzca el código de verificación recibido</string>
+    <string name="verification_code_received_description">Introduzca el código de verificación recibido</string>
     <string name="send_verification_code_text">Enviado a</string>
     <string name="verification_code_text_description_field">Código de verificación</string>
     <string name="create_password_text">Crea una contraseña</string>

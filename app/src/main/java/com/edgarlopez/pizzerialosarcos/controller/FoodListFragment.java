@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 
 public class FoodListFragment extends Fragment implements OnFoodClickListener {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ImageButton backButton;
     private TextView titleTextView;
     private String foodType;
     private String foodTitle;
@@ -47,6 +48,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
     private FoodRecyclerViewAdapter foodRecyclerAdapter;
     private FoodViewModel foodViewModel;
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Food");
 
     public FoodListFragment() {
@@ -73,18 +75,10 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food_list, container, false);
 
-        foodList.clear();
-
-        assert getArguments() != null;
-        foodType = getArguments().getString(FOOD_TYPE);
-        foodTitle = getArguments().getString(FOOD_TITLE);
-
+        backButton = view.findViewById(R.id.back_button_food_list);
         titleTextView = view.findViewById(R.id.title_food);
         recyclerView = view.findViewById(R.id.foodRecyclerView);
         progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         return view;
     }
@@ -93,18 +87,25 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
+        foodType = getArguments().getString(FOOD_TYPE);
+        foodTitle = getArguments().getString(FOOD_TITLE);
+
         foodViewModel = new ViewModelProvider(requireActivity())
                 .get(FoodViewModel.class);
 
-        progressBar.setVisibility(View.VISIBLE);
         titleTextView.setText(foodTitle);
 
+        backButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
+        progressBar.setVisibility(View.VISIBLE);
         collectionReference
                 .orderBy("listPosition")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     progressBar.setVisibility(View.GONE);
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        foodList.clear();
                         for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
                             Food food = foods.toObject(Food.class);
 
@@ -118,6 +119,8 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                         if (foodViewModel.getFoods().getValue() != null) {
                             foodList = foodViewModel.getFoods().getValue();
                             foodRecyclerAdapter = new FoodRecyclerViewAdapter(getContext(), foodList, this);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                             recyclerView.setAdapter(foodRecyclerAdapter);
                         }
 
@@ -132,7 +135,6 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
 
     @Override
     public void onFoodClicked(Food food) {
-        Log.d("Food", "onFoodClicked: " + food.getTitle());
         foodViewModel.setSelectedFood(food);
 
         Fragment fragment = new OrderDetailsFragment();
@@ -141,8 +143,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         bundle.putString(FOOD_TITLE, foodTitle);
         fragment.setArguments(bundle);
 
-        assert getActivity().getSupportFragmentManager() != null;
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(
                         R.anim.slide_in,  // enter
