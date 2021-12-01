@@ -96,7 +96,10 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
 
         titleTextView.setText(foodTitle);
 
-        backButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        backButton.setOnClickListener(v -> {
+            getParentFragmentManager().popBackStack();
+            requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+        });
 
         progressBar.setVisibility(View.VISIBLE);
         collectionReference
@@ -137,11 +140,9 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
     public void onFoodClicked(Food food) {
         foodViewModel.setSelectedFood(food);
 
-        Fragment fragment = new OrderDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FOOD_TYPE, foodType);
         bundle.putString(FOOD_TITLE, foodTitle);
-        fragment.setArguments(bundle);
 
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction
@@ -151,10 +152,25 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                         R.anim.fade_in,   // popEnter
                         R.anim.slide_out  // popExit
                 )
-                .setReorderingAllowed(true)
-                .replace(R.id.menu_frame, fragment);
+                .setReorderingAllowed(true);
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+
+        switch (foodType) {
+            case "pizza":
+                Fragment orderFragment = new OrderDetailsFragment();
+                orderFragment.setArguments(bundle);
+                fragmentTransaction
+                        .replace(R.id.menu_frame, orderFragment);
+                fragmentTransaction.commit();
+                break;
+            case "burger":
+                Fragment orderSecondary = new OrderDetailsSecondaryFragment();
+                orderSecondary.setArguments(bundle);
+                fragmentTransaction
+                        .replace(R.id.menu_frame, orderSecondary);
+                fragmentTransaction.commit();
+                break;
+        }
 
     }
 }

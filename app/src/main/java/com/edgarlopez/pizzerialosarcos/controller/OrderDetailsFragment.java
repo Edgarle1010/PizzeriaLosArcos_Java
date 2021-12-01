@@ -59,8 +59,8 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 public class OrderDetailsFragment extends Fragment implements View.OnClickListener,
         OnExtraIngredientClickListener,
         NumberPicker.OnValueChangeListener {
-    private FoodViewModel foodViewModel;
-    private Food principalFood,
+        private FoodViewModel foodViewModel;
+        private Food principalFood,
             halfFood;
     private ExtraIngredientViewModel extraIngredientViewModel;
     private TextView titleFoodTextView,
@@ -107,6 +107,51 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
 
         extraIngredientList = new ArrayList<>();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_order_details, container, false);
+
+        extraIngredientList.clear();
+
+        MenuActivity ma = (MenuActivity) getActivity();
+        assert ma != null;
+        ma.currExtraIngredients = extraIngredientList;
+
+        foodViewModel = new ViewModelProvider(requireActivity())
+                .get(FoodViewModel.class);
+
+        extraIngredientViewModel = new ViewModelProvider(requireActivity())
+                .get(ExtraIngredientViewModel.class);
+
+        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
+                .getApplication())
+                .create(ItemViewModel.class);
+
+        assert getArguments() != null;
+        foodType = getArguments().getString(FOOD_TYPE);
+        foodTitle = getArguments().getString(FOOD_TITLE);
+
+        recyclerView = view.findViewById(R.id.extraIngredientRecyclerView);
+
+        backButton = view.findViewById(R.id.back_button_order_detail);
+        titleFoodTextView = view.findViewById(R.id.food_title_order);
+        descriptionTextView = view.findViewById(R.id.food_description_order);
+        completeTextView = view.findViewById(R.id.complete_text_view);
+        halfTextView = view.findViewById(R.id.half_text_view);
+        bigSizeTextView = view.findViewById(R.id.size_big_text_view);
+        mediumSizeTextView = view.findViewById(R.id.size_medium_text_view);
+        smallSizeTextView = view.findViewById(R.id.size_small_text_view);
+        commentsEditText = view.findViewById(R.id.order_comments_edit_text);
+        amountTextView = view.findViewById(R.id.order_amount_text_view);
+        addOrderButton = view.findViewById(R.id.order_add_button);
+        extraIngredientLayout = view.findViewById(R.id.extra_ingredient_relative_layout);
+        totalTextView = view.findViewById(R.id.order_total_text_view);
+
+        return view;
     }
 
     @SuppressLint("SetTextI18n")
@@ -183,52 +228,6 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             }
             return false;
         });
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_order_details, container, false);
-
-        extraIngredientList.clear();
-
-        MenuActivity ma = (MenuActivity) getActivity();
-        assert ma != null;
-        ma.currExtraIngredients = extraIngredientList;
-
-        foodViewModel = new ViewModelProvider(requireActivity())
-                .get(FoodViewModel.class);
-
-        extraIngredientViewModel = new ViewModelProvider(requireActivity())
-                .get(ExtraIngredientViewModel.class);
-
-        itemViewModel = new ViewModelProvider.AndroidViewModelFactory(requireActivity()
-                .getApplication())
-                .create(ItemViewModel.class);
-
-        assert getArguments() != null;
-        foodType = getArguments().getString(FOOD_TYPE);
-        foodTitle = getArguments().getString(FOOD_TITLE);
-
-        recyclerView = view.findViewById(R.id.extraIngredientRecyclerView);
-
-        backButton = view.findViewById(R.id.back_button_order_detail);
-        titleFoodTextView = view.findViewById(R.id.food_title_order);
-        descriptionTextView = view.findViewById(R.id.food_description_order);
-        completeTextView = view.findViewById(R.id.complete_text_view);
-        halfTextView = view.findViewById(R.id.half_text_view);
-        bigSizeTextView = view.findViewById(R.id.size_big_text_view);
-        mediumSizeTextView = view.findViewById(R.id.size_medium_text_view);
-        smallSizeTextView = view.findViewById(R.id.size_small_text_view);
-        commentsEditText = view.findViewById(R.id.order_comments_edit_text);
-        amountTextView = view.findViewById(R.id.order_amount_text_view);
-        addOrderButton = view.findViewById(R.id.order_add_button);
-        extraIngredientLayout = view.findViewById(R.id.extra_ingredient_relative_layout);
-        totalTextView = view.findViewById(R.id.order_total_text_view);
-
-        return view;
     }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})

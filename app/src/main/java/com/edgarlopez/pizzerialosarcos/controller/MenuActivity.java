@@ -66,8 +66,6 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                 .replace(R.id.menu_frame, MenuFragment.newInstance())
                 .commit();
 
-
-
         progressBar = findViewById(R.id.menu_activity_progress);
 
         BottomNavigationView bottomNavigationView =
@@ -119,16 +117,24 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
 
     @Override
     public void onAddExtraIngredientClicked() {
-        OrderDetailsFragment frag = (OrderDetailsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.addExtraIngredientClicked();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+
+        if (fragment instanceof OrderDetailsFragment) {
+            ((OrderDetailsFragment) fragment).addExtraIngredientClicked();
+        } else if (fragment instanceof  OrderDetailsSecondaryFragment) {
+            ((OrderDetailsSecondaryFragment) fragment).addExtraIngredientClicked();
+        }
     }
 
     @Override
     public void onCancelExtraIngredientClicked() {
-        OrderDetailsFragment frag = (OrderDetailsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.cancelExtraIngredientClicked();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+
+        if (fragment instanceof OrderDetailsFragment) {
+            ((OrderDetailsFragment) fragment).cancelExtraIngredientClicked();
+        } else if (fragment instanceof  OrderDetailsSecondaryFragment) {
+            ((OrderDetailsSecondaryFragment) fragment).cancelExtraIngredientClicked();
+        }
     }
 
     @Override
@@ -159,7 +165,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             halfFoodFragment.cancelButtonPressed();
         }else if (menuFragment instanceof FoodListFragment) {
             FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-            foodListFragment.getActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+            foodListFragment.requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
             super.onBackPressed();
         }else if (menuFragment instanceof OrderDetailsFragment) {
             OrderDetailsFragment orderDetailsFragment = (OrderDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);

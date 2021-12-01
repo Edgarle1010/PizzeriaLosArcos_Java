@@ -53,11 +53,18 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             item.size = "Grande";
         }else if (item.size.equals("medium")) {
             item.size = "Mediana";
-        }else {
+        }else if (item.size.equals("small")) {
             item.size = "Chica";
+        } else {
+            item.size = "";
         }
 
-        holder.title.setText(item.getTitle() + " | " + item.getSize());
+        if (item.size.isEmpty()) {
+            holder.title.setText(item.getTitle());
+        } else {
+            holder.title.setText(item.getTitle() + " | " + item.getSize());
+        }
+
         for (ExtraIngredient extraIngredients : item.extraIngredientList) {
             holder.extraIngredient.append("- " + extraIngredients.getTitle() + "\n");
         }
