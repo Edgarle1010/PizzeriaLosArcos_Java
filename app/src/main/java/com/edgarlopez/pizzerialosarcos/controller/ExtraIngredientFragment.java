@@ -47,7 +47,6 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
     private OnCancelExtraIngredientClickListener cancelCallback;
 
     public ExtraIngredientFragment() {
-        // Required empty public constructor
     }
 
     public static ExtraIngredientFragment newInstance() {
@@ -67,7 +66,6 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_extra_ingredient, container, false);
 
         extraIngredientList.clear();
@@ -217,7 +215,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            getFragmentManager().popBackStack();
+                            getParentFragmentManager().popBackStack();
                             addCallback.onAddExtraIngredientClicked();
                         }
 
@@ -247,7 +245,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        getFragmentManager().popBackStack();
+                        getParentFragmentManager().popBackStack();
                         cancelCallback.onCancelExtraIngredientClicked();
                     }
 

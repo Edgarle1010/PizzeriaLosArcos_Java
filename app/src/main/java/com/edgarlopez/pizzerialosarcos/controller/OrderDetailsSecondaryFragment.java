@@ -110,6 +110,10 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
 
         extraIngredientList.clear();
 
+        MenuActivity ma = (MenuActivity) getActivity();
+        assert ma != null;
+        ma.currExtraIngredients = extraIngredientList;
+
         foodViewModel = new ViewModelProvider(requireActivity())
                 .get(FoodViewModel.class);
 
@@ -375,6 +379,10 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
     @SuppressLint("NotifyDataSetChanged")
     public void addExtraIngredientClicked() {
         extraIngredientList.add(extraIngredientViewModel.getSelectedExtraIngredient().getValue());
+
+        MenuActivity ma = (MenuActivity) getActivity();
+        assert ma != null;
+        ma.currExtraIngredients = extraIngredientList;
 
         adapter.notifyDataSetChanged();
 
