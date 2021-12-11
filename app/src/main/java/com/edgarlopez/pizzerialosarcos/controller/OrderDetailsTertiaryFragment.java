@@ -37,8 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
-import com.edgarlopez.pizzerialosarcos.adapter.OnAddExtraIngredientClickListener;
-import com.edgarlopez.pizzerialosarcos.adapter.OnCancelExtraIngredientClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnExtraIngredientClickListener;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredientViewModel;
@@ -57,43 +55,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OrderDetailsSecondaryFragment extends Fragment implements View.OnClickListener,
+public class OrderDetailsTertiaryFragment extends Fragment implements View.OnClickListener,
         OnExtraIngredientClickListener,
         NumberPicker.OnValueChangeListener {
-    private ItemViewModel itemViewModel;
-    private ExtraIngredientViewModel extraIngredientViewModel;
     private FoodViewModel foodViewModel;
     private Food principalFood;
+    private ExtraIngredientViewModel extraIngredientViewModel;
+    private TextView titleFoodTextView,
+            descriptionTextView,
+            hashFillingTextView,
+            chickenFillingTextView,
+            cheeseFillingTextView,
+            amountTextView,
+            totalTextView;
+    private ImageButton backButton;
+    private EditText commentsEditText;
+    private Button addOrderButton;
+    private String foodType,
+            foodTitle;
+    private RelativeLayout extraIngredientLayout;
+
+    private ItemViewModel itemViewModel;
+
+    private String itemTitle;
+    private String foodSize;
+    private boolean isCompleteItem;
+    private String foodFilling;
+    private List<ExtraIngredient> extraIngredientList;
+    private int itemAmount;
+    private float price;
 
     private RecyclerView recyclerView;
     private ExtraIngredientRecyclerViewAdapter adapter;
 
-    private String foodType;
-    private String itemTitle;
-    private String foodSize;
-    private boolean isCompleteItem;
-    private int itemAmount;
-    private float price;
-    private List<ExtraIngredient> extraIngredientList;
-
-    private TextView titleFoodTextView,
-            extraIngredientSubtitleTextView,
-            descriptionTextView,
-            amountTextView,
-            totalTextView;
-    private EditText commentsEditText;
-    private ImageButton backButton;
-    private Button addOrderButton;
-    private RelativeLayout extraIngredientLayout;
-
-    public OrderDetailsSecondaryFragment() {
+    public OrderDetailsTertiaryFragment() {
 
     }
 
-    public static OrderDetailsSecondaryFragment newInstance() {
-        OrderDetailsSecondaryFragment fragment = new OrderDetailsSecondaryFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+    public static OrderDetailsTertiaryFragment newInstance() {
+        OrderDetailsTertiaryFragment fragment = new OrderDetailsTertiaryFragment();
         return fragment;
     }
 
@@ -107,7 +107,7 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_order_details_secundary, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_details_tertiary, container, false);
 
         extraIngredientList.clear();
 
@@ -127,17 +127,21 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
 
         assert getArguments() != null;
         foodType = getArguments().getString(FOOD_TYPE);
+        foodTitle = getArguments().getString(FOOD_TITLE);
 
-        recyclerView = view.findViewById(R.id.extraIngredientRecyclerView_secondary);
-        backButton = view.findViewById(R.id.back_button_order_detail_secondary);
-        titleFoodTextView = view.findViewById(R.id.food_title_order_secondary);
-        descriptionTextView = view.findViewById(R.id.food_description_order_secondary);
-        extraIngredientSubtitleTextView = view.findViewById(R.id.extra_ingredient_subtitle_textview_secondary);
-        commentsEditText = view.findViewById(R.id.order_secondary_comments_edit_text);
-        amountTextView = view.findViewById(R.id.order_secondary_amount_text_view);
-        addOrderButton = view.findViewById(R.id.order_secondary_add_button);
-        extraIngredientLayout = view.findViewById(R.id.extra_ingredient_relative_layout_secondary);
-        totalTextView = view.findViewById(R.id.order_secondary_total_text_view);
+        recyclerView = view.findViewById(R.id.extraIngredientRecyclerView_tertiary);
+
+        backButton = view.findViewById(R.id.back_button_order_detail_tertiary);
+        titleFoodTextView = view.findViewById(R.id.food_title_order_tertiary);
+        descriptionTextView = view.findViewById(R.id.food_description_order_tertiary);
+        hashFillingTextView = view.findViewById(R.id.filling_hash_text_view);
+        chickenFillingTextView = view.findViewById(R.id.filling_chicken_text_view);
+        cheeseFillingTextView = view.findViewById(R.id.filling_cheese_text_view);
+        commentsEditText = view.findViewById(R.id.order_comments_edit_text_tertiary);
+        amountTextView = view.findViewById(R.id.order_amount_text_view_tertiary);
+        addOrderButton = view.findViewById(R.id.order_add_button_tertiary);
+        extraIngredientLayout = view.findViewById(R.id.extra_ingredient_relative_layout_tertiary);
+        totalTextView = view.findViewById(R.id.order_total_text_view_tertiary);
 
         return view;
     }
@@ -150,20 +154,23 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
         if (principalFood != null) {
             titleFoodTextView.setText(principalFood.getTitle());
             descriptionTextView.setText(principalFood.getDescription());
-
-            if (principalFood.getId().equals(FRENCH_FRIES_ID)) {
-                extraIngredientSubtitleTextView.setVisibility(View.GONE);
-                extraIngredientLayout.setVisibility(View.GONE);
-            }
         }
 
+        DrawableCompat.setTint(hashFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(amountTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+
         backButton.setOnClickListener(this);
+        hashFillingTextView.setOnClickListener(this);
+        chickenFillingTextView.setOnClickListener(this);
+        cheeseFillingTextView.setOnClickListener(this);
         extraIngredientLayout.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
         addOrderButton.setOnClickListener(this);
 
         itemTitle = titleFoodTextView.getText().toString().trim();
         isCompleteItem = true;
+        foodFilling = "picadillo";
         foodSize = "big";
         itemAmount = 1;
         price = 0;
@@ -217,10 +224,34 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back_button_order_detail_secondary:
+            case R.id.back_button_order_detail_tertiary:
                 getParentFragmentManager().popBackStack();
                 break;
-            case R.id.extra_ingredient_relative_layout_secondary:
+            case R.id.filling_hash_text_view:
+                DrawableCompat.setTint(hashFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(chickenFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(cheeseFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodFilling = "Picadillo";
+                getTotal();
+                break;
+            case R.id.filling_chicken_text_view:
+                DrawableCompat.setTint(chickenFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(hashFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(cheeseFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodFilling = "Pollo";
+                getTotal();
+                break;
+            case R.id.filling_cheese_text_view:
+                DrawableCompat.setTint(cheeseFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(hashFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(chickenFillingTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodFilling = "Queso";
+                getTotal();
+                break;
+            case R.id.extra_ingredient_relative_layout_tertiary:
                 disableView();
 
                 Fragment fragment = new ExtraIngredientFragment();
@@ -240,10 +271,10 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
-            case R.id.order_secondary_amount_text_view:
+            case R.id.order_amount_text_view_tertiary:
                 showNumberPicker(getView());
                 break;
-            case R.id.order_secondary_add_button:
+            case R.id.order_add_button_tertiary:
                 addItem();
                 break;
         }
@@ -267,6 +298,36 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
         getTotal();
     }
 
+    public void disableView() {
+        backButton.setClickable(false);
+        hashFillingTextView.setClickable(false);
+        chickenFillingTextView.setClickable(false);
+        cheeseFillingTextView.setClickable(false);
+        extraIngredientLayout.setClickable(false);
+        commentsEditText.setFocusable(false);
+        amountTextView.setClickable(false);
+        addOrderButton.setClickable(false);
+        requireView().setAlpha((float) .3);
+    }
+
+    public void enableView() {
+        backButton.setClickable(true);
+        hashFillingTextView.setClickable(true);
+        chickenFillingTextView.setClickable(true);
+        cheeseFillingTextView.setClickable(true);
+        extraIngredientLayout.setClickable(true);
+        commentsEditText.setFocusableInTouchMode(true);
+        amountTextView.setClickable(true);
+        addOrderButton.setClickable(true);
+        requireView().setAlpha((float) 1);
+    }
+
+    public void showNumberPicker(View view){
+        AmountOrderFragment newFragment = new AmountOrderFragment();
+        newFragment.setValueChangeListener(this);
+        newFragment.show(requireActivity().getSupportFragmentManager(), "amount picker");
+    }
+
     public void getTotal() {
         float sizePrice;
         float extraIngredientPrice;
@@ -286,13 +347,7 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
         if (extraIngredientList != null) {
             float priceSummary = 0;
             for (ExtraIngredient extraIngredients : extraIngredientList) {
-                if (foodSize.equals("big")) {
-                    extraIngredientPrice = extraIngredients.getbPrice();
-                }else if (foodSize.equals("medium")) {
-                    extraIngredientPrice = extraIngredients.getmPrice();
-                }else {
-                    extraIngredientPrice = extraIngredients.getsPrice();
-                }
+                extraIngredientPrice = extraIngredients.getbPrice();
                 priceSummary = priceSummary + extraIngredientPrice;
             }
             extraIngredientPrice = priceSummary;
@@ -303,28 +358,28 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
         totalTextView.setText(String.format("Total: $%s", price));
     }
 
-    public void enableView() {
-        backButton.setClickable(true);
-        extraIngredientLayout.setClickable(true);
-        commentsEditText.setFocusableInTouchMode(true);
-        amountTextView.setClickable(true);
-        addOrderButton.setClickable(true);
-        requireView().setAlpha((float) 1);
+    @SuppressLint("NotifyDataSetChanged")
+    public void addExtraIngredientClicked() {
+        extraIngredientList.add(extraIngredientViewModel.getSelectedExtraIngredient().getValue());
+
+        MenuActivity ma = (MenuActivity) getActivity();
+        assert ma != null;
+        ma.currExtraIngredients = extraIngredientList;
+
+        adapter.notifyDataSetChanged();
+
+        if (extraIngredientList.size() > 2) {
+            extraIngredientLayout.setVisibility(View.GONE);
+        }else {
+            extraIngredientLayout.setVisibility(View.VISIBLE);
+        }
+
+        enableView();
+        getTotal();
     }
 
-    public void disableView() {
-        backButton.setClickable(false);
-        extraIngredientLayout.setClickable(false);
-        commentsEditText.setFocusable(false);
-        amountTextView.setClickable(false);
-        addOrderButton.setClickable(false);
-        requireView().setAlpha((float) .3);
-    }
-
-    public void showNumberPicker(View view){
-        AmountOrderFragment newFragment = new AmountOrderFragment();
-        newFragment.setValueChangeListener(this);
-        newFragment.show(requireActivity().getSupportFragmentManager(), "amount picker");
+    public void cancelExtraIngredientClicked() {
+        enableView();
     }
 
     private void addItem() {
@@ -383,29 +438,4 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
                     }
                 });
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void addExtraIngredientClicked() {
-        extraIngredientList.add(extraIngredientViewModel.getSelectedExtraIngredient().getValue());
-
-        MenuActivity ma = (MenuActivity) getActivity();
-        assert ma != null;
-        ma.currExtraIngredients = extraIngredientList;
-
-        adapter.notifyDataSetChanged();
-
-        if (extraIngredientList.size() > 2) {
-            extraIngredientLayout.setVisibility(View.GONE);
-        }else {
-            extraIngredientLayout.setVisibility(View.VISIBLE);
-        }
-
-        enableView();
-        getTotal();
-    }
-
-    public void cancelExtraIngredientClicked() {
-        enableView();
-    }
-
 }

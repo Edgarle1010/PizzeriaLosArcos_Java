@@ -1,5 +1,6 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             kidsMenu;
 
     public MenuFragment() {
-        // Required empty public constructor
     }
 
     public static MenuFragment newInstance() {
@@ -49,7 +49,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
         pizzasMenu = view.findViewById(R.id.pizzas_image_menu);
@@ -67,6 +66,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
         pizzasMenu.setOnClickListener(this);
         burgersMenu.setOnClickListener(this);
+        saladsMenu.setOnClickListener(this);
+        foodDishesMenu.setOnClickListener(this);
 
         return view;
     }
@@ -129,6 +130,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 .into(kidsMenu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         Fragment fragment = new FoodListFragment();
@@ -141,16 +143,25 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.burgers_image_menu:
                 bundle.putString(FOOD_TYPE, "burger");
-                bundle.putString(FOOD_TITLE, "Hamburguesa");
+                bundle.putString(FOOD_TITLE, "Hamburguesas");
+                fragment.setArguments(bundle);
+                break;
+            case R.id.salads_image_menu:
+                bundle.putString(FOOD_TYPE, "salad");
+                bundle.putString(FOOD_TITLE, "Ensaladas");
+                fragment.setArguments(bundle);
+                break;
+            case R.id.food_dishes_image_menu:
+                bundle.putString(FOOD_TYPE, "platillo");
+                bundle.putString(FOOD_TITLE, "Platillos");
                 fragment.setArguments(bundle);
                 break;
         }
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
         bottomNavigationView.setVisibility(View.GONE);
 
-        assert getFragmentManager() != null;
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(
                         R.anim.slide_in,  // enter

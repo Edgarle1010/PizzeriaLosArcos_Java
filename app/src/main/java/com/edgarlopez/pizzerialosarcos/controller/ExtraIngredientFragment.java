@@ -99,7 +99,7 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
                         for (QueryDocumentSnapshot extraIngredients : queryDocumentSnapshots) {
                             ExtraIngredient extraIngredient = extraIngredients.toObject(ExtraIngredient.class);
 
-                            if (extraIngredient.getFood().contains(foodType)) {
+                           if (extraIngredient.getFood().contains(foodType)) {
                                 extraIngredientList.add(extraIngredient);
                             }
                         }

@@ -123,6 +123,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsFragment) fragment).addExtraIngredientClicked();
         } else if (fragment instanceof  OrderDetailsSecondaryFragment) {
             ((OrderDetailsSecondaryFragment) fragment).addExtraIngredientClicked();
+        } else if (fragment instanceof  OrderDetailsTertiaryFragment) {
+            ((OrderDetailsTertiaryFragment) fragment).addExtraIngredientClicked();
         }
     }
 
@@ -134,6 +136,9 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsFragment) fragment).cancelExtraIngredientClicked();
         } else if (fragment instanceof  OrderDetailsSecondaryFragment) {
             ((OrderDetailsSecondaryFragment) fragment).cancelExtraIngredientClicked();
+        }
+        else if (fragment instanceof  OrderDetailsTertiaryFragment) {
+            ((OrderDetailsTertiaryFragment) fragment).cancelExtraIngredientClicked();
         }
     }
 

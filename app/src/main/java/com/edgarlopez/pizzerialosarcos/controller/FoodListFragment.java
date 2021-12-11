@@ -34,8 +34,20 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SALAD;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.TORTILLA_SOUP_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.TORTILLA_SOUP_ID;
 
 public class FoodListFragment extends Fragment implements OnFoodClickListener {
     private ImageButton backButton;
@@ -52,7 +64,6 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
     private CollectionReference collectionReference = db.collection("Food");
 
     public FoodListFragment() {
-        // Required empty public constructor
     }
 
     public static FoodListFragment newInstance() {
@@ -72,7 +83,6 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food_list, container, false);
 
         backButton = view.findViewById(R.id.back_button_food_list);
@@ -155,21 +165,32 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                 .setReorderingAllowed(true);
         fragmentTransaction.addToBackStack(null);
 
-        switch (foodType) {
-            case "pizza":
-                Fragment orderFragment = new OrderDetailsFragment();
-                orderFragment.setArguments(bundle);
-                fragmentTransaction
-                        .replace(R.id.menu_frame, orderFragment);
-                fragmentTransaction.commit();
-                break;
-            case "burger":
-                Fragment orderSecondary = new OrderDetailsSecondaryFragment();
-                orderSecondary.setArguments(bundle);
-                fragmentTransaction
-                        .replace(R.id.menu_frame, orderSecondary);
-                fragmentTransaction.commit();
-                break;
+        if (foodType.equals(PIZZA)) {
+            Fragment orderFragment = new OrderDetailsFragment();
+            orderFragment.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderFragment);
+            fragmentTransaction.commit();
+        } else if (foodType.equals(PLATILLO) && food.getId().contains(ENCHILADAS_ID)) {
+            bundle.putString(FOOD_TYPE, ENCHILADAS_FOOD_TYPE);
+            Fragment orderTertiary = new OrderDetailsTertiaryFragment();
+            orderTertiary.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderTertiary);
+            fragmentTransaction.commit();
+        } else if (foodType.equals(BURGER) || foodType.equals(SALAD) || foodType.equals(PLATILLO)) {
+            if (food.getId().equals(HOTDOG_ID)) {
+                bundle.putString(FOOD_TYPE, HOTDOG_FOOD_TYPE);
+            } else if (food.getId().equals(SPAGHETTI_ID)) {
+                bundle.putString(FOOD_TYPE, SPAGHETTI_FOOD_TYPE);
+            } else if (food.getId().equals(TORTILLA_SOUP_ID)) {
+                bundle.putString(FOOD_TYPE, TORTILLA_SOUP_FOOD_TYPE);
+            }
+            Fragment orderSecondary = new OrderDetailsSecondaryFragment();
+            orderSecondary.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderSecondary);
+            fragmentTransaction.commit();
         }
 
     }

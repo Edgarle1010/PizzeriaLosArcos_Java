@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+android:id="@+id/fragment_order_details"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/quarter_color"
+tools:context=".controller.OrderDetailsTertiaryFragment">
+
+<LinearLayout
+    android:id="@+id/title_layout_orders_detail_tertiary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/secondary_color"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back_button_order_detail_tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/food_title_order_tertiary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_color"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:paddingStart="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_tertiary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_tertiary"
+            app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_tertiary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/food_description_order_tertiary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp">
+
+    </TextView>
+
+</LinearLayout>
+
+<ScrollView
+    android:id="@+id/scrollView_tertiary"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toTopOf="@+id/order_add_button_tertiary"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_tertiary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/food_size_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Relleno"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/filling_hash_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Picadillo"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/filling_chicken_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Pollo"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/filling_cheese_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Queso"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/food_extra_ingredient_order_tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Ingrediente extra"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/extraIngredientRecyclerView_tertiary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/extra_ingredient_relative_layout_tertiary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="onClick">
+
+            <ImageView
+                android:id="@+id/add_extra_ingredient_icon_tertiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_baseline_add_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/add_extra_ingredient_icon_tertiary"
+                android:text="Añadir ingrediente extra"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Cantidad"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/order_amount_text_view_tertiary"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_corner"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="1"
+            android:textColor="@color/primary_color"
+            android:textSize="17sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/food_comments_text_tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Comentarios"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/order_comments_edit_text_tertiary"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_edit_text"
+            android:elevation="3dp"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/primary_color">
+
+        </EditText>
+
+
+    </LinearLayout>
+
+</ScrollView>
+
+<Button
+    android:id="@+id/order_add_button_tertiary"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="10dp"
+    android:text="Agregar al carrito"
+    android:elevation="5dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+</Button>
+
+<TextView
+    android:id="@+id/order_total_text_view_tertiary"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/rounded_corner"
+    android:padding="10dp"
+    android:text="Total: $"
+    android:textAlignment="center"
+    android:textColor="@color/primary_color"
+    android:textSize="17sp"
+    android:textStyle="bold"
+    android:elevation="5dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+</TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -92,13 +92,10 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     private ExtraIngredientRecyclerViewAdapter adapter;
 
     public OrderDetailsFragment() {
-        // Required empty public constructor
     }
 
     public static OrderDetailsFragment newInstance() {
         OrderDetailsFragment fragment = new OrderDetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -112,7 +109,6 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_details, container, false);
 
         extraIngredientList.clear();
@@ -154,12 +150,11 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        titleFoodTextView.setText(foodTitle + " " + Objects.requireNonNull(foodViewModel.getSelectedFood().getValue()).getTitle());
+        titleFoodTextView.setText(String.format("%s %s", foodTitle, Objects.requireNonNull(foodViewModel.getSelectedFood().getValue()).getTitle()));
         descriptionTextView.setText(foodViewModel.getSelectedFood().getValue().getDescription());
 
         principalFood = foodViewModel.getSelectedFood().getValue();
@@ -304,8 +299,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                 bundle.putString(FOOD_SIZE, foodSize);
                 fragment.setArguments(bundle);
 
-                assert getFragmentManager() != null;
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction
                         .setReorderingAllowed(true)
                         .setCustomAnimations(
@@ -383,6 +377,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     public void disableView() {
+        backButton.setClickable(false);
         completeTextView.setClickable(false);
         halfTextView.setClickable(false);
         bigSizeTextView.setClickable(false);
@@ -396,6 +391,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     public void enableView() {
+        backButton.setClickable(true);
         completeTextView.setClickable(true);
         halfTextView.setClickable(true);
         bigSizeTextView.setClickable(true);
@@ -487,7 +483,6 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         newFragment.show(requireActivity().getSupportFragmentManager(), "amount picker");
     }
 
-    @SuppressLint("SetTextI18n")
     public void getTotal() {
         float sizePrice;
         float halfSizePrice;
@@ -543,7 +538,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
 
         price = price * itemAmount;
 
-        totalTextView.setText("Total: $" + price);
+        totalTextView.setText(String.format("Total: $%s", price));
 
     }
 }
