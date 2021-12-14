@@ -54,9 +54,11 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         }else if (item.size.equals("medium")) {
             item.size = "Mediana";
         }else if (item.size.equals("small")) {
-            item.size = "Chica";
-        } else {
-            item.size = "";
+            if (item.getTitle().contains("Coctel") || item.getTitle().contains("Filete")) {
+                item.size = "Chico";
+            } else {
+                item.size = "Chica";
+            }
         }
 
         if (item.size.isEmpty()) {
@@ -70,7 +72,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         }
         holder.comments.setText(item.getComments());
         holder.amount.setText(String.valueOf(item.getAmount()));
-        holder.price.setText(String.valueOf("$" + item.getPrice()));
+        holder.price.setText("$" + item.getPrice());
     }
 
     @Override

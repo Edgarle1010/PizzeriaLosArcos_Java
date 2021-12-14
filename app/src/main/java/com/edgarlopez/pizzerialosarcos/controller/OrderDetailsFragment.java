@@ -59,8 +59,8 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 public class OrderDetailsFragment extends Fragment implements View.OnClickListener,
         OnExtraIngredientClickListener,
         NumberPicker.OnValueChangeListener {
-        private FoodViewModel foodViewModel;
-        private Food principalFood,
+    private FoodViewModel foodViewModel;
+    private Food principalFood,
             halfFood;
     private ExtraIngredientViewModel extraIngredientViewModel;
     private TextView titleFoodTextView,
@@ -253,8 +253,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                 halfFoodBundle.putSerializable(FOOD_ITEM, principalFood);
                 halfFoodFragment.setArguments(halfFoodBundle);
 
-                assert getFragmentManager() != null;
-                FragmentTransaction HalfFoodFragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction HalfFoodFragmentTransaction = getParentFragmentManager().beginTransaction();
                 HalfFoodFragmentTransaction
                         .setReorderingAllowed(true)
                         .setCustomAnimations(

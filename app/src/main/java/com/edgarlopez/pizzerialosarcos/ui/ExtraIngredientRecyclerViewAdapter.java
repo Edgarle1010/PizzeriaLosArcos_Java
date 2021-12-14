@@ -45,6 +45,10 @@ public class ExtraIngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ext
     public void onBindViewHolder(@NonNull ExtraIngredientRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         ExtraIngredient extraIngredient = extraIngredientList.get(position);
 
+        if (extraIngredient.getsPrice() == 0) {
+            foodSize = "big";
+        }
+
         int price;
         if (foodSize.equals("big")) {
             price = extraIngredient.getbPrice();
@@ -53,7 +57,7 @@ public class ExtraIngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ext
         }else {
             price = extraIngredient.getsPrice();
         }
-        viewHolder.title.setText(extraIngredient.getTitle() + " $" + price);
+        viewHolder.title.setText(String.format("%s $%d", extraIngredient.getTitle(), price));
     }
 
     @Override

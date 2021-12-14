@@ -114,6 +114,10 @@ public class ExtraIngredientFragment extends Fragment implements View.OnClickLis
                             for(int j = 0; j < extraIngredientList.size(); j++) {
                                 int price;
 
+                                if (extraIngredientList.get(j).getsPrice() == 0) {
+                                    foodSize = "big";
+                                }
+
                                 if (foodSize.equals("big")) {
                                     price = extraIngredientList.get(j).getbPrice();
                                 }else if (foodSize.equals("medium")) {

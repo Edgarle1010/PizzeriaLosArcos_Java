@@ -17,8 +17,18 @@ import com.edgarlopez.pizzerialosarcos.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
+import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SALAD;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SALAD_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD_TITLE;
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
     private ImageView pizzasMenu,
@@ -37,7 +47,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
 
     public static MenuFragment newInstance() {
         MenuFragment fragment = new MenuFragment();
-        Bundle args = new Bundle();
         return fragment;
     }
 
@@ -68,6 +77,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         burgersMenu.setOnClickListener(this);
         saladsMenu.setOnClickListener(this);
         foodDishesMenu.setOnClickListener(this);
+        seaFoodMenu.setOnClickListener(this);
 
         return view;
     }
@@ -137,23 +147,28 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.pizzas_image_menu:
-                bundle.putString(FOOD_TYPE, "pizza");
-                bundle.putString(FOOD_TITLE, "Pizza");
+                bundle.putString(FOOD_TYPE, PIZZA);
+                bundle.putString(FOOD_TITLE, PIZZA_TITLE);
                 fragment.setArguments(bundle);
                 break;
             case R.id.burgers_image_menu:
-                bundle.putString(FOOD_TYPE, "burger");
-                bundle.putString(FOOD_TITLE, "Hamburguesas");
+                bundle.putString(FOOD_TYPE, BURGER);
+                bundle.putString(FOOD_TITLE, BURGER_TITLE);
                 fragment.setArguments(bundle);
                 break;
             case R.id.salads_image_menu:
-                bundle.putString(FOOD_TYPE, "salad");
-                bundle.putString(FOOD_TITLE, "Ensaladas");
+                bundle.putString(FOOD_TYPE, SALAD);
+                bundle.putString(FOOD_TITLE, SALAD_TITLE);
                 fragment.setArguments(bundle);
                 break;
             case R.id.food_dishes_image_menu:
-                bundle.putString(FOOD_TYPE, "platillo");
-                bundle.putString(FOOD_TITLE, "Platillos");
+                bundle.putString(FOOD_TYPE, PLATILLO);
+                bundle.putString(FOOD_TITLE, PLATILLO_TITLE);
+                fragment.setArguments(bundle);
+                break;
+            case R.id.seafood_image_menu:
+                bundle.putString(FOOD_TYPE, SEA_FOOD);
+                bundle.putString(FOOD_TITLE, SEA_FOOD_TITLE);
                 fragment.setArguments(bundle);
                 break;
         }

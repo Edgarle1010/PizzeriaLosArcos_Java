@@ -116,6 +116,7 @@
                     <ImageView
                         android:id="@+id/seafood_image_menu"
                         android:layout_width="wrap_content"
+                        android:onClick="onClick"
                         android:layout_height="170dp"
                         android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>

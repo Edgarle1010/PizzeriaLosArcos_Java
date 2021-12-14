@@ -37,13 +37,22 @@ import java.util.List;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO;
+import static com.edgarlopez.pizzerialosarcos.util.Util.RANCH_SHRIMP_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.RANCH_SHRIMP_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SALAD;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.TORTILLA_SOUP_FOOD_TYPE;
@@ -178,13 +187,28 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             fragmentTransaction
                     .replace(R.id.menu_frame, orderTertiary);
             fragmentTransaction.commit();
-        } else if (foodType.equals(BURGER) || foodType.equals(SALAD) || foodType.equals(PLATILLO)) {
+        } else if (foodType.equals(SEA_FOOD) && (food.getId().contains(SHRIMP_ID) || food.getId().contains(FISH_STEAK_ID))) {
+            if (food.getId().equals(SHRIMP_ID)) {
+                bundle.putString(FOOD_TYPE, SHRIMP_FOOD_TYPE);
+            } else if (food.getId().equals(FISH_STEAK_ID)) {
+                bundle.putString(FOOD_TYPE, FISH_STEAK_FOOD_TYPE);
+            }
+            Fragment orderFour = new OrderDetailsFourFragment();
+            orderFour.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderFour);
+            fragmentTransaction.commit();
+        }else if (foodType.equals(BURGER) || foodType.equals(SALAD) || foodType.equals(PLATILLO) || foodType.equals(SEA_FOOD)) {
             if (food.getId().equals(HOTDOG_ID)) {
                 bundle.putString(FOOD_TYPE, HOTDOG_FOOD_TYPE);
             } else if (food.getId().equals(SPAGHETTI_ID)) {
                 bundle.putString(FOOD_TYPE, SPAGHETTI_FOOD_TYPE);
             } else if (food.getId().equals(TORTILLA_SOUP_ID)) {
                 bundle.putString(FOOD_TYPE, TORTILLA_SOUP_FOOD_TYPE);
+            } else if (food.getId().contains(FISH_STEAK_TITLE)) {
+                bundle.putString(FOOD_TYPE, FISH_STEAK_FOOD_TYPE);
+            } else if (food.getId().equals(RANCH_SHRIMP_ID)) {
+                bundle.putString(FOOD_TYPE, RANCH_SHRIMP_FOOD_TYPE);
             }
             Fragment orderSecondary = new OrderDetailsSecondaryFragment();
             orderSecondary.setArguments(bundle);
