@@ -17,6 +17,8 @@ import com.edgarlopez.pizzerialosarcos.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST;
+import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
@@ -78,6 +80,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         saladsMenu.setOnClickListener(this);
         foodDishesMenu.setOnClickListener(this);
         seaFoodMenu.setOnClickListener(this);
+        breakfastsMenu.setOnClickListener(this);
 
         return view;
     }
@@ -169,6 +172,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             case R.id.seafood_image_menu:
                 bundle.putString(FOOD_TYPE, SEA_FOOD);
                 bundle.putString(FOOD_TITLE, SEA_FOOD_TITLE);
+                fragment.setArguments(bundle);
+                break;
+            case R.id.breakfasts_image_menu:
+                bundle.putString(FOOD_TYPE, BREAKFAST);
+                bundle.putString(FOOD_TITLE, BREAKFAST_TITLE);
                 fragment.setArguments(bundle);
                 break;
         }

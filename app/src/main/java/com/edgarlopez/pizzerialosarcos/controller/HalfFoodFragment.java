@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
@@ -36,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.EGGS_INGREDIENTS_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_ITEM;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
 
@@ -44,6 +46,7 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
     private String foodType;
     private Food principalFood;
     private ProgressBar progressBar;
+    private TextView halfTitleTextView;
     private ImageView cancelImageView;
     private List<Food> foodList;
     private RecyclerView recyclerView;
@@ -88,6 +91,7 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
         cancelImageView = view.findViewById(R.id.cancel_half_food_image_view);
         recyclerView = view.findViewById(R.id.halfFoodRecyclerView);
         progressBar = (ProgressBar) getActivity().findViewById(R.id.menu_activity_progress);
+        halfTitleTextView = view.findViewById(R.id.half_fragment_title);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -124,6 +128,10 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
                 .get(FoodViewModel.class);
 
         //progressBar.setVisibility(View.VISIBLE);
+
+        if (foodType.equals(EGGS_INGREDIENTS_ID)) {
+            halfTitleTextView.setText("Seleccione el ingrediente");
+        }
 
         collectionReference
                 .orderBy("listPosition")

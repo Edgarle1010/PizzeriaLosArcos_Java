@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_ID;
@@ -198,7 +199,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             fragmentTransaction
                     .replace(R.id.menu_frame, orderFour);
             fragmentTransaction.commit();
-        }else if (foodType.equals(BURGER) || foodType.equals(SALAD) || foodType.equals(PLATILLO) || foodType.equals(SEA_FOOD)) {
+        } else if (foodType.equals(BURGER) || foodType.equals(SALAD) || foodType.equals(PLATILLO) || foodType.equals(SEA_FOOD)) {
             if (food.getId().equals(HOTDOG_ID)) {
                 bundle.putString(FOOD_TYPE, HOTDOG_FOOD_TYPE);
             } else if (food.getId().equals(SPAGHETTI_ID)) {
@@ -214,6 +215,12 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             orderSecondary.setArguments(bundle);
             fragmentTransaction
                     .replace(R.id.menu_frame, orderSecondary);
+            fragmentTransaction.commit();
+        } else if (foodType.equals(BREAKFAST)) {
+            Fragment orderFive = new OrderDetailsFiveFragment();
+            orderFive.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderFive);
             fragmentTransaction.commit();
         }
 

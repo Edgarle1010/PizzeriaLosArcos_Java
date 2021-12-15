@@ -141,8 +141,9 @@
                     <ImageView
                         android:id="@+id/breakfasts_image_menu"
                         android:layout_width="wrap_content"
+                        android:onClick="onClick"
                         android:layout_height="170dp"
-                        android:scaleType="fitXY"></ImageView>
+                        android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

@@ -31,9 +31,11 @@
         <entry key="app/src/main/res/layout/food_row.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/fragment_amount_order.xml" value="0.17552083333333332" />
         <entry key="app/src/main/res/layout/fragment_food_list.xml" value="0.16259057971014493" />
+        <entry key="app/src/main/res/layout/fragment_half_food.xml" value="0.1765625" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.15653495440729484" />
         <entry key="app/src/main/res/layout/fragment_more.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_order_details.xml" value="0.15653495440729484" />
+        <entry key="app/src/main/res/layout/fragment_order_details_five.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_order_details_four.xml" value="0.15020263424518743" />
         <entry key="app/src/main/res/layout/fragment_order_details_secundary.xml" value="0.1765625" />
         <entry key="app/src/main/res/layout/fragment_order_details_tertiary.xml" value="0.25" />

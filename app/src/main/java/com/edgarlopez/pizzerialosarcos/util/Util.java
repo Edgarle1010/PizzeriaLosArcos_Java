@@ -33,6 +33,8 @@ public class Util {
     public static final String PLATILLO_TITLE = "Platillos";
     public static final String SEA_FOOD = "seaFood";
     public static final String SEA_FOOD_TITLE = "Mariscos";
+    public static final String BREAKFAST = "breakfast";
+    public static final String BREAKFAST_TITLE = "Desayunos";
 
     public static final String HOTDOG_ID = "burgerHotDog";
     public static final String HOTDOG_FOOD_TYPE = "hotdog";
@@ -50,4 +52,5 @@ public class Util {
     public static final String FISH_STEAK_FOOD_TYPE = "fishSteak";
     public static final String RANCH_SHRIMP_ID = "seaFoodCamaronesRancheros";
     public static final String RANCH_SHRIMP_FOOD_TYPE = "ranchShrimp";
+    public static final String EGGS_INGREDIENTS_ID = "ingredientB";
 }
