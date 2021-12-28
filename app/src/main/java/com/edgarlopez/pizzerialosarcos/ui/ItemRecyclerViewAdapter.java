@@ -67,9 +67,14 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             holder.title.setText(item.getTitle() + " | " + item.getSize());
         }
 
-        for (ExtraIngredient extraIngredients : item.extraIngredientList) {
-            holder.extraIngredient.append("- " + extraIngredients.getTitle() + "\n");
+        if (item.extraIngredientList != null) {
+            for (ExtraIngredient extraIngredients : item.extraIngredientList) {
+                holder.extraIngredient.append("- " + extraIngredients.getTitle() + "\n");
+            }
+        } else {
+            holder.extraIngredient.setText("");
         }
+
         holder.comments.setText(item.getComments());
         holder.amount.setText(String.valueOf(item.getAmount()));
         holder.price.setText("$" + item.getPrice());

@@ -42,7 +42,6 @@ public class AmountOrderFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_amount_order, container, false);
 
         return view;

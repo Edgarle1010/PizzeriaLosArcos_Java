@@ -36,6 +36,7 @@ import java.util.List;
 
 import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
+import static com.edgarlopez.pizzerialosarcos.util.Util.DRINKS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_FOOD_TYPE;
@@ -54,6 +55,8 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SODA_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SODA_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.TORTILLA_SOUP_FOOD_TYPE;
@@ -221,6 +224,15 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             orderFive.setArguments(bundle);
             fragmentTransaction
                     .replace(R.id.menu_frame, orderFive);
+            fragmentTransaction.commit();
+        } else if (foodType.equals(DRINKS)) {
+            Fragment orderDrinks = new OrderDetailsDrinksFragment();
+            if (food.getId().equals(SODA_ID)) {
+                bundle.putString(FOOD_TYPE, SODA_FOOD_TYPE);
+            }
+            orderDrinks.setArguments(bundle);
+            fragmentTransaction
+                    .replace(R.id.menu_frame, orderDrinks);
             fragmentTransaction.commit();
         }
 
