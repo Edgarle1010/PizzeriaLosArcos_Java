@@ -427,13 +427,12 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         enableView();
     }
 
-    @SuppressLint("SetTextI18n")
     public void addHalfFoodClicked() {
         enableView();
 
         halfFood = foodViewModel.getSelectedFood().getValue();
         assert halfFood != null;
-        titleFoodTextView.setText(foodTitle + " " + principalFood.getTitle() + " / " + halfFood.getTitle());
+        titleFoodTextView.setText(String.format("%s %s / %s", foodTitle, principalFood.getTitle(), halfFood.getTitle()));
         itemTitle = titleFoodTextView.getText().toString().trim();
 
         String pfDescription = principalFood.getDescription();
@@ -446,7 +445,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             hfDescription = halfFood.getTitle();
         }
 
-        descriptionTextView.setText(pfDescription + " / " + hfDescription);
+        descriptionTextView.setText(String.format("%s / %s", pfDescription, hfDescription));
 
         isCompleteItem = false;
         getTotal();

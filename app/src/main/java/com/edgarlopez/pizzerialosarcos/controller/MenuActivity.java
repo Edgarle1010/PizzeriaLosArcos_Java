@@ -127,6 +127,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsTertiaryFragment) fragment).addExtraIngredientClicked();
         } else if (fragment instanceof OrderDetailsFourFragment) {
             ((OrderDetailsFourFragment) fragment).addExtraIngredientClicked();
+        } else if (fragment instanceof OrderDetailsFiveFragment) {
+            ((OrderDetailsFiveFragment) fragment).addExtraIngredientClicked();
         }
     }
 
@@ -142,21 +144,31 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsTertiaryFragment) fragment).cancelExtraIngredientClicked();
         } else if (fragment instanceof OrderDetailsFourFragment) {
             ((OrderDetailsFourFragment) fragment).cancelExtraIngredientClicked();
+        } else if (fragment instanceof OrderDetailsFiveFragment) {
+            ((OrderDetailsFiveFragment) fragment).cancelExtraIngredientClicked();
         }
     }
 
     @Override
     public void onAddHalfFoodClicked() {
-        OrderDetailsFragment frag = (OrderDetailsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.addHalfFoodClicked();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+
+        if (fragment instanceof OrderDetailsFragment) {
+            ((OrderDetailsFragment) fragment).addHalfFoodClicked();
+        } else if (fragment instanceof OrderDetailsFiveFragment) {
+            ((OrderDetailsFiveFragment) fragment).addHalfFoodClicked();
+        }
     }
 
     @Override
     public void onCancelHalfFoodClicked() {
-        OrderDetailsFragment frag = (OrderDetailsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        frag.cancelHalfFoodClicked();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+
+        if (fragment instanceof OrderDetailsFragment) {
+            ((OrderDetailsFragment) fragment).cancelHalfFoodClicked();
+        } else if (fragment instanceof OrderDetailsFiveFragment) {
+            ((OrderDetailsFiveFragment) fragment).cancelHalfFoodClicked();
+        }
     }
 
     @Override

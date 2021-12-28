@@ -129,7 +129,7 @@ tools:context=".controller.OrderDetailsFiveFragment">
         </LinearLayout>
 
         <TextView
-            android:id="@+id/food_style_order"
+            android:id="@+id/food_style_order_five"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -170,6 +170,202 @@ tools:context=".controller.OrderDetailsFiveFragment">
                 android:backgroundTint="@color/quarter_color"
                 android:padding="10dp"
                 android:text="Revueltos"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/food_chilaquiles_order_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:text="Chilaquiles"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/chilaquiles_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/chilaquiles_red_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Rojos"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/chilaquiles_green_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Verdes"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/food_filling_order_five"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Relleno"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/filling_layout_five"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/filling_cheese_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Queso"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/filling_hash_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Picadillo"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/filling_chicken_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Pollo"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/food_ingredient_order_five"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Ingrediente"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/ingredient_layout_five"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/ingredient_bacon_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Tocino"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ingredient_ham_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Jamón"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ingredient_chorizo_text_view_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Chorizo"
                 android:textAlignment="center"
                 android:textColor="@color/primary_color"
                 android:textSize="17sp"

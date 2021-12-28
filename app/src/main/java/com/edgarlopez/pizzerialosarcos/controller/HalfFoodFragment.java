@@ -90,7 +90,7 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
 
         cancelImageView = view.findViewById(R.id.cancel_half_food_image_view);
         recyclerView = view.findViewById(R.id.halfFoodRecyclerView);
-        progressBar = (ProgressBar) getActivity().findViewById(R.id.menu_activity_progress);
+        progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
         halfTitleTextView = view.findViewById(R.id.half_fragment_title);
 
         recyclerView.setHasFixedSize(true);
