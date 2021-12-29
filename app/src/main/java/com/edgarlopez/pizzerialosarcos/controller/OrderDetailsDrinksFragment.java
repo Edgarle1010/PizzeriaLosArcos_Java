@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -64,6 +65,10 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
     private ProgressBar progressBar;
     private TextView titleFoodTextView,
             descriptionTextView,
+            sodaTextView,
+            sizeTextView,
+            pitcherSizeTextView,
+            glassSizeTextView,
             amountTextView,
             totalTextView;
     private ImageButton backButton;
@@ -73,12 +78,15 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             foodTitle;
     private NumberPicker sodaNumberPicker;
 
+    private LinearLayout sizeLayout;
+
     private ItemViewModel itemViewModel;
 
     private CollectionReference collectionReference = db.collection("Food");
 
     private String itemTitle;
     private String foodSize;
+    private String foodSizeTitle;
     private boolean isCompleteItem;
     private int itemAmount;
     private float price;
@@ -121,7 +129,12 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         backButton = view.findViewById(R.id.back_button_order_detail_drinks);
         titleFoodTextView = view.findViewById(R.id.food_title_order_drinks);
         descriptionTextView = view.findViewById(R.id.food_description_order_drinks);
+        sodaTextView = view.findViewById(R.id.soda_text_view);
         sodaNumberPicker = view.findViewById(R.id.soda_number_picker);
+        sizeTextView = view.findViewById(R.id.food_size_order_drinks);
+        sizeLayout = view.findViewById(R.id.size_layout_drinks);
+        pitcherSizeTextView = view.findViewById(R.id.size_pitcher_text_view);
+        glassSizeTextView = view.findViewById(R.id.size_glass_text_view);
         commentsEditText = view.findViewById(R.id.order_comments_edit_text_drinks);
         amountTextView = view.findViewById(R.id.order_amount_text_view_drinks);
         addOrderButton = view.findViewById(R.id.order_add_button_drinks);
@@ -140,60 +153,87 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             descriptionTextView.setText(principalFood.getDescription());
         }
 
+        DrawableCompat.setTint(pitcherSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(amountTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
 
         backButton.setOnClickListener(this);
+        pitcherSizeTextView.setOnClickListener(this);
+        glassSizeTextView.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
         addOrderButton.setOnClickListener(this);
 
-        progressBar.setVisibility(View.VISIBLE);
-        collectionReference
-                .orderBy("listPosition")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    progressBar.setVisibility(View.GONE);
-                    foodList.clear();
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
-                            Food food = foods.toObject(Food.class);
+        if (principalFood.getTitle().contains("naranja") ||
+            principalFood.getTitle().contains("Agua") ||
+            principalFood.getTitle().contains("Limonada") ||
+            principalFood.getTitle().contains("Café") ||
+            principalFood.getTitle().contains("vainilla") ||
+            principalFood.getTitle().contains("Chocolate") ||
+            principalFood.getTitle().contains("Leche")) {
+            sodaTextView.setVisibility(View.GONE);
+            sodaNumberPicker.setVisibility(View.GONE);
+            if (principalFood.getTitle().contains("naranja") ||
+                principalFood.getTitle().contains("Limonada") ||
+                principalFood.getTitle().contains("Chocolate")) {
+                sizeTextView.setVisibility(View.VISIBLE);
+                sizeLayout.setVisibility(View.VISIBLE);
+                if (principalFood.getTitle().contains("Chocolate")) {
+                    pitcherSizeTextView.setText("Caliente");
+                    glassSizeTextView.setText("Frio");
+                    foodSizeTitle = "Caliente";
+                } else {
+                    foodSizeTitle = "Jarra";
+                }
+            }
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            collectionReference
+                    .orderBy("listPosition")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        progressBar.setVisibility(View.GONE);
+                        foodList.clear();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
+                                Food food = foods.toObject(Food.class);
 
-                            if (food.getId().contains(foodType)) {
-                                foodList.add(food);
+                                if (food.getId().contains(foodType)) {
+                                    foodList.add(food);
+                                }
                             }
+
+                            foodViewModel.setSelectedFoods(foodList);
+
+                            if (foodViewModel.getFoods().getValue() != null) {
+                                foodList = foodViewModel.getFoods().getValue();
+
+                                String[] array = new String[foodList.size()];
+
+                                for(int j = 0; j < foodList.size(); j++) {
+                                    array[j] = foodList.get(j).getTitle();
+                                }
+
+                                if (foodList.size() > 1) {
+                                    sodaNumberPicker.setMaxValue(foodList.size() - 1);
+                                    sodaNumberPicker.setMinValue(0);
+                                    sodaNumberPicker.setDisplayedValues(array);
+                                    sodaNumberPicker.setWrapSelectorWheel(true);
+                                    sodaNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+                                    sodaNumberPicker.setOnValueChangedListener(this);
+                                    foodViewModel.setSelectedFood(foodList.get(0));
+                                    currDrink = foodList.get(0);
+                                }
+                            }
+
+                        }else {
+                            Toast.makeText(getContext(), "Lista vacía", Toast.LENGTH_SHORT).show();
                         }
-
-                        foodViewModel.setSelectedFoods(foodList);
-
-                        if (foodViewModel.getFoods().getValue() != null) {
-                            foodList = foodViewModel.getFoods().getValue();
-
-                            String[] array = new String[foodList.size()];
-
-                            for(int j = 0; j < foodList.size(); j++) {
-                                array[j] = foodList.get(j).getTitle();
-                            }
-
-                            if (foodList.size() > 1) {
-                                sodaNumberPicker.setMaxValue(foodList.size() - 1);
-                                sodaNumberPicker.setMinValue(0);
-                                sodaNumberPicker.setDisplayedValues(array);
-                                sodaNumberPicker.setWrapSelectorWheel(true);
-                                sodaNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-                                sodaNumberPicker.setOnValueChangedListener(this);
-                                foodViewModel.setSelectedFood(foodList.get(0));
-                                currDrink = foodList.get(0);
-                            }
-                        }
-
-                    }else {
-                        Toast.makeText(getContext(), "Lista vacía", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                });
+                    })
+                    .addOnFailureListener(e -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
 
         itemTitle = titleFoodTextView.getText().toString().trim();
         isCompleteItem = true;
@@ -253,6 +293,31 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             case R.id.back_button_order_detail_drinks:
                 getParentFragmentManager().popBackStack();
                 break;
+            case R.id.size_pitcher_text_view:
+                DrawableCompat.setTint(pitcherSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(glassSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "big";
+                if (principalFood.getTitle().contains("Chocolate")) {
+                    foodSizeTitle = "Caliente";
+                } else {
+                    foodSizeTitle = "Jarra";
+                }
+                getTotal();
+                break;
+            case R.id.size_glass_text_view:
+                DrawableCompat.setTint(glassSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(pitcherSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                if (principalFood.getTitle().contains("Chocolate")) {
+                    foodSize = "big";
+                    foodSizeTitle = "Frio";
+                } else {
+                    foodSize = "small";
+                    foodSizeTitle = "Vaso";
+                }
+                getTotal();
+                break;
             case R.id.order_amount_text_view_drinks:
                 showNumberPicker(getView());
                 break;
@@ -266,6 +331,7 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         if (picker.equals(sodaNumberPicker)) {
             currDrink = foodList.get(newVal);
+            principalFood = currDrink;
         } else {
             itemAmount = picker.getValue();
             amountTextView.setText(String.valueOf(itemAmount));
@@ -297,7 +363,15 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
     }
 
     private void addItem() {
-        itemTitle = String.format("%s | %s", principalFood.getTitle(), currDrink.getTitle());
+        if (foodSizeTitle == null) {
+            itemTitle = principalFood.getTitle();
+        } else if (principalFood.getTitle().contains("naranja") ||
+                principalFood.getTitle().contains("Limonada") ||
+                principalFood.getTitle().contains("Chocolate")) {
+            itemTitle = String.format("%s | %s", principalFood.getTitle(), foodSizeTitle);
+        } else {
+            itemTitle = String.format("%s | %s", principalFood.getTitle(), currDrink.getTitle());
+        }
 
         Item item = new Item(itemTitle,
                 isCompleteItem,

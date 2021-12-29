@@ -109,6 +109,60 @@ tools:context=".controller.OrderDetailsDrinksFragment">
         </LinearLayout>
 
         <TextView
+            android:id="@+id/food_size_order_drinks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:text="Tamaño"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/size_layout_drinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/size_pitcher_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Jarra"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/size_glass_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".33"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Vaso"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

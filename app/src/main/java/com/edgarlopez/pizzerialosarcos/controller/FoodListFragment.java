@@ -44,6 +44,8 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FISH_STEAK_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FUZETEA_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FUZETEA_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
@@ -55,6 +57,8 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SEA_FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SHRIMP_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SMOOTHIE_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.SMOOTHIE_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SODA_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SODA_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.SPAGHETTI_FOOD_TYPE;
@@ -229,6 +233,10 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             Fragment orderDrinks = new OrderDetailsDrinksFragment();
             if (food.getId().equals(SODA_ID)) {
                 bundle.putString(FOOD_TYPE, SODA_FOOD_TYPE);
+            } else if (food.getId().equals(FUZETEA_ID)) {
+                bundle.putString(FOOD_TYPE, FUZETEA_FOOD_TYPE);
+            } else if (food.getId().equals(SMOOTHIE_ID)) {
+                bundle.putString(FOOD_TYPE, SMOOTHIE_FOOD_TYPE);
             }
             orderDrinks.setArguments(bundle);
             fragmentTransaction

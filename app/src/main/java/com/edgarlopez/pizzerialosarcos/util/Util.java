@@ -57,4 +57,8 @@ public class Util {
     public static final String EGGS_INGREDIENTS_ID = "ingredientB";
     public static final String SODA_ID = "drinksRefresco";
     public static final String SODA_FOOD_TYPE = "soda";
+    public static final String FUZETEA_ID = "drinksFuzeTea";
+    public static final String FUZETEA_FOOD_TYPE = "fuzeTea";
+    public static final String SMOOTHIE_ID = "drinksLicuado";
+    public static final String SMOOTHIE_FOOD_TYPE = "smoothie";
 }
