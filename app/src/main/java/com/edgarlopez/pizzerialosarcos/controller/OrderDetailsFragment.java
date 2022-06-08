@@ -55,6 +55,7 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_ITEM;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_SIZE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA_SUBTITLE;
 
 public class OrderDetailsFragment extends Fragment implements View.OnClickListener,
         OnExtraIngredientClickListener,
@@ -154,8 +155,15 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        titleFoodTextView.setText(String.format("%s %s", foodTitle, Objects.requireNonNull(foodViewModel.getSelectedFood().getValue()).getTitle()));
-        descriptionTextView.setText(foodViewModel.getSelectedFood().getValue().getDescription());
+        titleFoodTextView.setText(String.format("%s", Objects.requireNonNull(foodViewModel.getSelectedFood().getValue()).getTitle()));
+
+        String description = foodViewModel.getSelectedFood().getValue().getDescription();
+        if (description != null) {
+            descriptionTextView.setVisibility(View.VISIBLE);
+            descriptionTextView.setText(description);
+        } else {
+            descriptionTextView.setVisibility(View.GONE);
+        }
 
         principalFood = foodViewModel.getSelectedFood().getValue();
 
@@ -235,7 +243,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
             case R.id.complete_text_view:
                 DrawableCompat.setTint(completeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
                 DrawableCompat.setTint(halfTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
-                titleFoodTextView.setText(foodTitle + " " + principalFood.getTitle());
+                titleFoodTextView.setText(principalFood.getTitle());
                 descriptionTextView.setText(principalFood.getDescription());
                 itemTitle = titleFoodTextView.getText().toString().trim();
 
@@ -319,7 +327,8 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void addItem() {
-        Item item = new Item(itemTitle,
+        Item item = new Item(principalFood.getId(),
+                itemTitle,
                 isCompleteItem,
                 extraIngredientList,
                 foodSize,
@@ -431,21 +440,23 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         enableView();
 
         halfFood = foodViewModel.getSelectedFood().getValue();
-        assert halfFood != null;
-        titleFoodTextView.setText(String.format("%s %s / %s", foodTitle, principalFood.getTitle(), halfFood.getTitle()));
+        titleFoodTextView.setText(String.format("%s / %s", principalFood.getTitle(), halfFood.getTitle().replace(PIZZA_SUBTITLE,"")));
         itemTitle = titleFoodTextView.getText().toString().trim();
 
         String pfDescription = principalFood.getDescription();
-        if (pfDescription == null) {
-            pfDescription = principalFood.getTitle();
-        }
-
         String hfDescription = halfFood.getDescription();
-        if (hfDescription == null) {
-            hfDescription = halfFood.getTitle();
+        if (pfDescription != null || hfDescription != null) {
+            if (pfDescription == null) {
+                pfDescription = principalFood.getTitle();
+            }
+            if (hfDescription == null) {
+                hfDescription = halfFood.getTitle();
+            }
+            descriptionTextView.setVisibility(View.VISIBLE);
+            descriptionTextView.setText(String.format("%s / %s", pfDescription, hfDescription));
+        } else {
+            descriptionTextView.setVisibility(View.GONE);
         }
-
-        descriptionTextView.setText(String.format("%s / %s", pfDescription, hfDescription));
 
         isCompleteItem = false;
         getTotal();

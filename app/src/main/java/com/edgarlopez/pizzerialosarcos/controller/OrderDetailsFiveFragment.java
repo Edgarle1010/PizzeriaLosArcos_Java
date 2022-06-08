@@ -235,7 +235,17 @@ public class OrderDetailsFiveFragment extends Fragment implements View.OnClickLi
         principalFood = foodViewModel.getSelectedFood().getValue();
         if (principalFood != null) {
             titleFoodTextView.setText(principalFood.getTitle());
-            descriptionTextView.setText(principalFood.getDescription());
+
+            String description = principalFood.getDescription();
+            if (description != null) {
+                if (!description.isEmpty()) {
+                    descriptionTextView.setText(description);
+                } else {
+                    descriptionTextView.setVisibility(View.GONE);
+                }
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
+            }
 
             if (principalFood.getTitle().contains("divorciados") ||
                     principalFood.getTitle().contains("rancheros") ||
@@ -663,7 +673,8 @@ public class OrderDetailsFiveFragment extends Fragment implements View.OnClickLi
     }
 
     private void addItem() {
-        Item item = new Item(itemTitle,
+        Item item = new Item(principalFood.getId(),
+                itemTitle,
                 isCompleteItem,
                 extraIngredientList,
                 "",

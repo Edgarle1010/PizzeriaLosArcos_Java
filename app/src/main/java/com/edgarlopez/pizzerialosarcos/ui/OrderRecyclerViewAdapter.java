@@ -45,7 +45,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         viewHolder.folio.setText(String.valueOf(order.getFolio()));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString  = dateFormat.format(order.getDate());
+        String dateString  = dateFormat.format(order.getDateRequest());
         viewHolder.date.setText(dateString);
 
         viewHolder.status.setText(order.getStatus());

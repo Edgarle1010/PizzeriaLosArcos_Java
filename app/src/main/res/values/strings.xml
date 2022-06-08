@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PizzeriaLosArcos</string>
+    <string name="app_name">Pizzería Los Arcos</string>
     <string name="text_guest_button">Invitado</string>
     <string name="text_login_button">Iniciar sesión</string>
     <string name="text_signin_button">Registrarse</string>
@@ -60,5 +60,7 @@
         <a href="https://pizzerialosarcos-9c55f.web.app/notice_privacy.html">Aviso de privacidad</a>.
     </string>
     <string name="password_recovery_successfully_message">Contraseña restaurada correctamente. Iniciando sesión automaticamente.</string>
+    <string name="text_notifications_title">Notificaciones</string>
+    <string name="empty_notification_list">No tienes notificaciones nuevas</string>
 
 </resources>

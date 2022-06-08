@@ -5,6 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.edgarlopez.pizzerialosarcos.data.DataConverter;
+import com.edgarlopez.pizzerialosarcos.data.DataConverterString;
+
+import java.util.List;
 
 @Entity(tableName = "user_table")
 public class User {
@@ -26,12 +32,16 @@ public class User {
     public String phoneNumber;
 
     @ColumnInfo(name = "streak")
-    public int streaks;
+    @TypeConverters(DataConverterString.class)
+    public List<String> streaks;
 
     @ColumnInfo(name = "is_baned")
     public boolean isBaned;
 
-    public User(String userId, String name, String lastName, String email, String phoneNumber, int streaks, boolean isBaned) {
+    @ColumnInfo(name = "fcm_token")
+    public String fcmToken;
+
+    public User(String userId, String name, String lastName, String email, String phoneNumber, List<String> streaks, boolean isBaned, String fcmToken) {
         this.userId = userId;
         this.name = name;
         this.lastName = lastName;
@@ -39,6 +49,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.streaks = streaks;
         this.isBaned = isBaned;
+        this.fcmToken = fcmToken;
     }
 
     @Ignore
@@ -85,11 +96,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getStreaks() {
+    public List<String> getStreaks() {
         return streaks;
     }
 
-    public void setStreaks(int streaks) {
+    public void setStreaks(List<String> streaks) {
         this.streaks = streaks;
     }
 
@@ -99,5 +110,13 @@ public class User {
 
     public void setBaned(boolean baned) {
         isBaned = baned;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

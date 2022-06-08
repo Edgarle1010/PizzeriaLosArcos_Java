@@ -1,5 +1,7 @@
 package com.edgarlopez.pizzerialosarcos.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 
 public class Food implements Serializable {
@@ -7,20 +9,22 @@ public class Food implements Serializable {
     private String title;
     private String description;
     private int bPrice;
-    private int mPrice;
-    private int sPrice;
+    private Integer mPrice;
+    private Integer sPrice;
+    private int listPosition;
 
     public Food() {
 
     }
 
-    public Food(String id, String title, String description, int bPrice, int mPrice, int sPrice) {
+    public Food(String id, String title, String description, int bPrice, Integer mPrice, Integer sPrice, int listPosition) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.bPrice = bPrice;
         this.mPrice = mPrice;
         this.sPrice = sPrice;
+        this.listPosition = listPosition;
     }
 
     public String getId() {
@@ -55,19 +59,27 @@ public class Food implements Serializable {
         this.bPrice = bPrice;
     }
 
-    public int getmPrice() {
+    public Integer getmPrice() {
         return mPrice;
     }
 
-    public void setmPrice(int mPrice) {
+    public void setmPrice(Integer mPrice) {
         this.mPrice = mPrice;
     }
 
-    public int getsPrice() {
+    public Integer getsPrice() {
         return sPrice;
     }
 
-    public void setsPrice(int sPrice) {
+    public void setsPrice(Integer sPrice) {
         this.sPrice = sPrice;
+    }
+
+    public int getListPosition() {
+        return listPosition;
+    }
+
+    public void setListPosition(int listPosition) {
+        this.listPosition = listPosition;
     }
 }

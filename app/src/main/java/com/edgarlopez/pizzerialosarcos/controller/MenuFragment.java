@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.edgarlopez.pizzerialosarcos.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,10 +22,16 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.DESSERTS;
+import static com.edgarlopez.pizzerialosarcos.util.Util.DESSERTS_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.DRINKS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.DRINKS_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.KIDS;
+import static com.edgarlopez.pizzerialosarcos.util.Util.KIDS_TITLE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.MILKSHAKESICECREAM;
+import static com.edgarlopez.pizzerialosarcos.util.Util.MILKSHAKESICECREAM_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO;
@@ -84,6 +91,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         seaFoodMenu.setOnClickListener(this);
         breakfastsMenu.setOnClickListener(this);
         drinksMenu.setOnClickListener(this);
+        dessertsMenu.setOnClickListener(this);
+        snowMilkshakesMenu.setOnClickListener(this);
+        kidsMenu.setOnClickListener(this);
 
         return view;
     }
@@ -155,42 +165,52 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
             case R.id.pizzas_image_menu:
                 bundle.putString(FOOD_TYPE, PIZZA);
                 bundle.putString(FOOD_TITLE, PIZZA_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.burgers_image_menu:
                 bundle.putString(FOOD_TYPE, BURGER);
                 bundle.putString(FOOD_TITLE, BURGER_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.salads_image_menu:
                 bundle.putString(FOOD_TYPE, SALAD);
                 bundle.putString(FOOD_TITLE, SALAD_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.food_dishes_image_menu:
                 bundle.putString(FOOD_TYPE, PLATILLO);
                 bundle.putString(FOOD_TITLE, PLATILLO_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.seafood_image_menu:
                 bundle.putString(FOOD_TYPE, SEA_FOOD);
                 bundle.putString(FOOD_TITLE, SEA_FOOD_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.breakfasts_image_menu:
                 bundle.putString(FOOD_TYPE, BREAKFAST);
                 bundle.putString(FOOD_TITLE, BREAKFAST_TITLE);
-                fragment.setArguments(bundle);
                 break;
             case R.id.drinks_image_menu:
                 bundle.putString(FOOD_TYPE, DRINKS);
                 bundle.putString(FOOD_TITLE, DRINKS_TITLE);
-                fragment.setArguments(bundle);
+                break;
+            case R.id.desserts_image_menu:
+                bundle.putString(FOOD_TYPE, DESSERTS);
+                bundle.putString(FOOD_TITLE, DESSERTS_TITLE);
+                break;
+            case R.id.snow_milkshakes_image_menu:
+                bundle.putString(FOOD_TYPE, MILKSHAKESICECREAM);
+                bundle.putString(FOOD_TITLE, MILKSHAKESICECREAM_TITLE);
+                break;
+            case R.id.kids_image_menu:
+                bundle.putString(FOOD_TYPE, KIDS);
+                bundle.putString(FOOD_TITLE, KIDS_TITLE);
                 break;
         }
 
+        fragment.setArguments(bundle);
+
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
         bottomNavigationView.setVisibility(View.GONE);
+
+        LinearLayout nabBarLayout = requireActivity().findViewById(R.id.nav_bar_layout);
+        nabBarLayout.setVisibility(View.GONE);
 
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction
@@ -205,5 +225,21 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+        LinearLayout nabBarLayout = requireActivity().findViewById(R.id.nav_bar_layout);
+        nabBarLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

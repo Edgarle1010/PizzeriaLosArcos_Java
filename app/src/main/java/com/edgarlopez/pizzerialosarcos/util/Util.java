@@ -5,9 +5,7 @@ import java.util.regex.Pattern;
 
 public class Util {
 
-    //*****************************************************************
     public static boolean isValidPassword(final String password) {
-
         Pattern pattern;
         Matcher matcher;
         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
@@ -15,8 +13,14 @@ public class Util {
         matcher = pattern.matcher(password);
 
         return matcher.matches();
-
     }
+
+    public static final String NOTIFICATIONS_COLLECTION = "notifications";
+    public static final String NOTIFICATIONS_DATE_SEND = "dateSend";
+    public static final String NOTIFICATIONS_VIEWED = "viewed";
+    public static final String USERS_COLLECTION = "Users";
+    public static final String USER_TOKEN = "fcmToken";
+    public static final String ORDERS_DATE_REQUEST = "dateRequest";
 
     public static final String FOOD_TYPE = "FOOD_TYPE";
     public static final String FOOD_TITLE = "FOOD_TITLE";
@@ -25,6 +29,7 @@ public class Util {
 
     public static final String PIZZA = "pizza";
     public static final String PIZZA_TITLE = "Pizzas";
+    public static final String PIZZA_SUBTITLE = "Pizza ";
     public static final String BURGER = "burger";
     public static final String BURGER_TITLE = "Hamburguesas";
     public static final String SALAD = "salad";
@@ -37,6 +42,12 @@ public class Util {
     public static final String BREAKFAST_TITLE = "Desayunos";
     public static final String DRINKS = "drinks";
     public static final String DRINKS_TITLE = "Bebidas";
+    public static final String DESSERTS = "desserts";
+    public static final String DESSERTS_TITLE = "Postres";
+    public static final String MILKSHAKESICECREAM = "milkshakesIceCream";
+    public static final String MILKSHAKESICECREAM_TITLE = "Nieves y malteadas";
+    public static final String KIDS = "kids";
+    public static final String KIDS_TITLE = "Kids";
 
     public static final String HOTDOG_ID = "burgerHotDog";
     public static final String HOTDOG_FOOD_TYPE = "hotdog";
@@ -61,4 +72,9 @@ public class Util {
     public static final String FUZETEA_FOOD_TYPE = "fuzeTea";
     public static final String SMOOTHIE_ID = "drinksLicuado";
     public static final String SMOOTHIE_FOOD_TYPE = "smoothie";
+    public static final String ICECREAM_ID = "iceCream";
+    public static final String ICECREAM_FOOD_TYPE = "iceCream";
+    public static final String MILKSHAKE_ID = "milkshakesIceCreamMalteada";
+    public static final String MILKSHAKE_FOOD_TYPE = "milkShake";
+    public static final String ICECREAM_FOOD_ID = "milkshakesIceCreamNieve";
 }

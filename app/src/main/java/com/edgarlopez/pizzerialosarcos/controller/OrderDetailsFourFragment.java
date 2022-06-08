@@ -149,7 +149,17 @@ public class OrderDetailsFourFragment extends Fragment implements View.OnClickLi
         principalFood = foodViewModel.getSelectedFood().getValue();
         if (principalFood != null) {
             titleFoodTextView.setText(principalFood.getTitle());
-            descriptionTextView.setText(principalFood.getDescription());
+
+            String description = principalFood.getDescription();
+            if (description != null) {
+                if (!description.isEmpty()) {
+                    descriptionTextView.setText(description);
+                } else {
+                    descriptionTextView.setVisibility(View.GONE);
+                }
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
+            }
         }
 
         DrawableCompat.setTint(bigSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
@@ -348,7 +358,8 @@ public class OrderDetailsFourFragment extends Fragment implements View.OnClickLi
     }
 
     private void addItem() {
-        Item item = new Item(itemTitle,
+        Item item = new Item(principalFood.getId(),
+                itemTitle,
                 isCompleteItem,
                 extraIngredientList,
                 foodSize,

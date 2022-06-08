@@ -4,15 +4,15 @@ public class ExtraIngredient {
     private String id;
     private String title;
     private String food;
-    private int mPrice;
-    private int sPrice;
-    private int bPrice;
+    private Integer mPrice;
+    private Integer sPrice;
+    private Integer bPrice;
 
     public ExtraIngredient() {
 
     }
 
-    public ExtraIngredient(String id, String title, String food, int mPrice, int sPrice, int bPrice) {
+    public ExtraIngredient(String id, String title, String food, Integer mPrice, Integer sPrice, Integer bPrice) {
         this.id = id;
         this.title = title;
         this.food = food;
@@ -45,27 +45,27 @@ public class ExtraIngredient {
         this.food = food;
     }
 
-    public int getmPrice() {
+    public Integer getmPrice() {
         return mPrice;
     }
 
-    public void setmPrice(int mPrice) {
+    public void setmPrice(Integer mPrice) {
         this.mPrice = mPrice;
     }
 
-    public int getsPrice() {
+    public Integer getsPrice() {
         return sPrice;
     }
 
-    public void setsPrice(int sPrice) {
+    public void setsPrice(Integer sPrice) {
         this.sPrice = sPrice;
     }
 
-    public int getbPrice() {
+    public Integer getbPrice() {
         return bPrice;
     }
 
-    public void setbPrice(int bPrice) {
+    public void setbPrice(Integer bPrice) {
         this.bPrice = bPrice;
     }
 }

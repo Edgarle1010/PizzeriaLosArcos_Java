@@ -1,8 +1,14 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.DESSERTS;
+import static com.edgarlopez.pizzerialosarcos.util.Util.EGGS_INGREDIENTS_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_ITEM;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_SIZE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TITLE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.KIDS;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
@@ -36,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.edgarlopez.pizzerialosarcos.adapter.FirestoreCallback;
+import com.edgarlopez.pizzerialosarcos.adapter.FirestoreCallbackDrink;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredientViewModel;
 import com.edgarlopez.pizzerialosarcos.model.Food;
@@ -47,25 +55,39 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderDetailsDrinksFragment extends Fragment implements View.OnClickListener,
         NumberPicker.OnValueChangeListener {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FoodViewModel foodViewModel;
-    private Food principalFood;
+    private Food principalFood,
+            ingredientFood;
     private Food currDrink;
     private List<Food> foodList;
+    private List<ExtraIngredient> extraIngredientList;
     private ProgressBar progressBar;
     private TextView titleFoodTextView,
             descriptionTextView,
             sodaTextView,
+            snowLessTextView,
+            withSnowTextView,
+            iceCreamSizeTextView,
+            iceCreamBigTextView,
+            iceCreamMediumTextView,
+            iceCreamSmallTextView,
             sizeTextView,
             pitcherSizeTextView,
             glassSizeTextView,
@@ -78,7 +100,9 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             foodTitle;
     private NumberPicker sodaNumberPicker;
 
-    private LinearLayout sizeLayout;
+    private LinearLayout sizeLayout,
+            iceCreamLayout,
+            snowLayout;
 
     private ItemViewModel itemViewModel;
 
@@ -107,6 +131,8 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         super.onCreate(savedInstanceState);
 
         foodList = new ArrayList<>();
+
+        extraIngredientList = new ArrayList<>();
     }
 
     @Override
@@ -129,8 +155,16 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         backButton = view.findViewById(R.id.back_button_order_detail_drinks);
         titleFoodTextView = view.findViewById(R.id.food_title_order_drinks);
         descriptionTextView = view.findViewById(R.id.food_description_order_drinks);
+        snowLayout = view.findViewById(R.id.snow_layout);
+        snowLessTextView = view.findViewById(R.id.snowless_text_view);
+        withSnowTextView = view.findViewById(R.id.with_snow_text_view);
         sodaTextView = view.findViewById(R.id.soda_text_view);
         sodaNumberPicker = view.findViewById(R.id.soda_number_picker);
+        iceCreamSizeTextView = view.findViewById(R.id.ice_cream_size_text_view);
+        iceCreamLayout = view.findViewById(R.id.ice_cream_size_layout);
+        iceCreamBigTextView = view.findViewById(R.id.ice_cream_big_text_view);
+        iceCreamMediumTextView = view.findViewById(R.id.ice_cream_medium_text_view);
+        iceCreamSmallTextView = view.findViewById(R.id.ice_cream_small_text_view);
         sizeTextView = view.findViewById(R.id.food_size_order_drinks);
         sizeLayout = view.findViewById(R.id.size_layout_drinks);
         pitcherSizeTextView = view.findViewById(R.id.size_pitcher_text_view);
@@ -150,14 +184,37 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         principalFood = foodViewModel.getSelectedFood().getValue();
         if (principalFood != null) {
             titleFoodTextView.setText(principalFood.getTitle());
-            descriptionTextView.setText(principalFood.getDescription());
+
+            String description = principalFood.getDescription();
+            if (description != null) {
+                if (!description.isEmpty()) {
+                    descriptionTextView.setText(description);
+                } else {
+                    descriptionTextView.setVisibility(View.GONE);
+                }
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
+            }
         }
 
+        sodaNumberPicker.setOnScrollListener((numberPicker, i) -> {
+            Vibrator v = (Vibrator) this.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            v.vibrate(25);
+        });
+
+        DrawableCompat.setTint(iceCreamBigTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+        DrawableCompat.setTint(snowLessTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(pitcherSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(amountTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
         DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
 
         backButton.setOnClickListener(this);
+        iceCreamBigTextView.setOnClickListener(this);
+        iceCreamMediumTextView.setOnClickListener(this);
+        iceCreamSmallTextView.setOnClickListener(this);
+        snowLessTextView.setOnClickListener(this);
+        withSnowTextView.setOnClickListener(this);
         pitcherSizeTextView.setOnClickListener(this);
         glassSizeTextView.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
@@ -185,54 +242,24 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
                     foodSizeTitle = "Jarra";
                 }
             }
+        } else if (foodType.equals(DESSERTS)) {
+            snowLayout.setVisibility(View.VISIBLE);
+
+            sodaTextView.setVisibility(View.GONE);
+            sodaNumberPicker.setVisibility(View.GONE);
+        } else if (foodType.equals(KIDS)) {
+            sodaTextView.setVisibility(View.GONE);
+            sodaNumberPicker.setVisibility(View.GONE);
         } else {
-            progressBar.setVisibility(View.VISIBLE);
-            collectionReference
-                    .orderBy("listPosition")
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        progressBar.setVisibility(View.GONE);
-                        foodList.clear();
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
-                                Food food = foods.toObject(Food.class);
+            getDrink(drink -> {
+                currDrink = drink;
+                getTotal();
 
-                                if (food.getId().contains(foodType)) {
-                                    foodList.add(food);
-                                }
-                            }
-
-                            foodViewModel.setSelectedFoods(foodList);
-
-                            if (foodViewModel.getFoods().getValue() != null) {
-                                foodList = foodViewModel.getFoods().getValue();
-
-                                String[] array = new String[foodList.size()];
-
-                                for(int j = 0; j < foodList.size(); j++) {
-                                    array[j] = foodList.get(j).getTitle();
-                                }
-
-                                if (foodList.size() > 1) {
-                                    sodaNumberPicker.setMaxValue(foodList.size() - 1);
-                                    sodaNumberPicker.setMinValue(0);
-                                    sodaNumberPicker.setDisplayedValues(array);
-                                    sodaNumberPicker.setWrapSelectorWheel(true);
-                                    sodaNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-                                    sodaNumberPicker.setOnValueChangedListener(this);
-                                    foodViewModel.setSelectedFood(foodList.get(0));
-                                    currDrink = foodList.get(0);
-                                }
-                            }
-
-                        }else {
-                            Toast.makeText(getContext(), "Lista vacía", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                if (foodType.equals(ICECREAM_FOOD_TYPE)) {
+                    iceCreamSizeTextView.setVisibility(View.VISIBLE);
+                    iceCreamLayout.setVisibility(View.VISIBLE);
+                }
+            });
         }
 
         itemTitle = titleFoodTextView.getText().toString().trim();
@@ -286,12 +313,121 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         });
     }
 
+    private void getDrink(FirestoreCallbackDrink firestoreCallbackDrink) {
+        progressBar.setVisibility(View.VISIBLE);
+        collectionReference
+                .orderBy("listPosition")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    progressBar.setVisibility(View.GONE);
+                    foodList.clear();
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
+                            Food food = foods.toObject(Food.class);
+
+                            if (food.getId().contains(foodType)) {
+                                foodList.add(food);
+                            }
+                        }
+
+                        foodViewModel.setSelectedFoods(foodList);
+
+                        if (foodViewModel.getFoods().getValue() != null) {
+                            foodList = foodViewModel.getFoods().getValue();
+
+                            String[] array = new String[foodList.size()];
+
+                            for(int j = 0; j < foodList.size(); j++) {
+                                array[j] = foodList.get(j).getTitle();
+                            }
+
+                            if (foodList.size() > 1) {
+                                sodaNumberPicker.setMaxValue(foodList.size() - 1);
+                                sodaNumberPicker.setMinValue(0);
+                                sodaNumberPicker.setDisplayedValues(array);
+                                sodaNumberPicker.setWrapSelectorWheel(false);
+                                sodaNumberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+                                sodaNumberPicker.setOnValueChangedListener(this);
+                                foodViewModel.setSelectedFood(foodList.get(0));
+                                currDrink = foodList.get(0);
+
+                                firestoreCallbackDrink.onCallbackDrink(currDrink);
+                            }
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "Lista vacía", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_button_order_detail_drinks:
                 getParentFragmentManager().popBackStack();
+                break;
+            case R.id.ice_cream_big_text_view:
+                DrawableCompat.setTint(iceCreamBigTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(iceCreamMediumTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(iceCreamSmallTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "big";
+                getTotal();
+
+                break;
+            case R.id.ice_cream_medium_text_view:
+                DrawableCompat.setTint(iceCreamMediumTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(iceCreamBigTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(iceCreamSmallTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "medium";
+                getTotal();
+
+                break;
+            case R.id.ice_cream_small_text_view:
+                DrawableCompat.setTint(iceCreamSmallTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(iceCreamMediumTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+                DrawableCompat.setTint(iceCreamBigTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                foodSize = "small";
+                getTotal();
+
+                break;
+            case R.id.snowless_text_view:
+                DrawableCompat.setTint(snowLessTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(withSnowTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                ingredientFood = null;
+                getTotal();
+
+                break;
+            case R.id.with_snow_text_view:
+                DrawableCompat.setTint(withSnowTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+                DrawableCompat.setTint(snowLessTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.quarter_color));
+
+                disableView();
+                Fragment halfFoodFragment = new HalfFoodFragment();
+                Bundle halfFoodBundle = new Bundle();
+                halfFoodBundle.putString(FOOD_TYPE, ICECREAM_ID);
+                halfFoodFragment.setArguments(halfFoodBundle);
+                halfFoodBundle.putSerializable(FOOD_ITEM, principalFood);
+
+                FragmentTransaction HalfFoodFragmentTransaction = getParentFragmentManager().beginTransaction();
+                HalfFoodFragmentTransaction
+                        .setReorderingAllowed(true)
+                        .setCustomAnimations(
+                                R.anim.slide_in_up,
+                                R.anim.fade_out
+                        )
+                        .replace(R.id.extras_frame, halfFoodFragment);
+                HalfFoodFragmentTransaction.addToBackStack(null);
+                HalfFoodFragmentTransaction.commit();
                 break;
             case R.id.size_pitcher_text_view:
                 DrawableCompat.setTint(pitcherSizeTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
@@ -331,7 +467,7 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         if (picker.equals(sodaNumberPicker)) {
             currDrink = foodList.get(newVal);
-            principalFood = currDrink;
+            //principalFood = currDrink;
         } else {
             itemAmount = picker.getValue();
             amountTextView.setText(String.valueOf(itemAmount));
@@ -340,18 +476,63 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
         getTotal();
     }
 
+    public void disableView() {
+        backButton.setClickable(false);
+        snowLessTextView.setClickable(false);
+        withSnowTextView.setClickable(false);
+        commentsEditText.setFocusable(false);
+        amountTextView.setClickable(false);
+        addOrderButton.setClickable(false);
+        requireView().setAlpha((float) .3);
+    }
+
+    public void enableView() {
+        backButton.setClickable(true);
+        snowLessTextView.setClickable(true);
+        withSnowTextView.setClickable(true);
+        commentsEditText.setFocusableInTouchMode(true);
+        amountTextView.setClickable(true);
+        addOrderButton.setClickable(true);
+        requireView().setAlpha((float) 1);
+    }
+
+    public void addHalfFoodClicked() {
+        enableView();
+
+        ingredientFood = foodViewModel.getSelectedFood().getValue();
+
+        getTotal();
+    }
+
+    public void cancelHalfFoodClicked() {
+        enableView();
+        snowLessTextView.callOnClick();
+    }
+
     public void getTotal() {
         float sizePrice;
 
         if (foodSize.equals("big")) {
             sizePrice = principalFood.getbPrice();
-        }else if (foodSize.equals("medium")) {
+        } else if (foodSize.equals("medium")) {
             sizePrice = principalFood.getmPrice();
-        }else {
+        } else {
             sizePrice = principalFood.getsPrice();
         }
 
-        price = sizePrice * itemAmount;
+        if (ingredientFood != null) {
+            titleFoodTextView.setText(String.format("%s | Con nieve de %s", principalFood.getTitle(), ingredientFood.getTitle()));
+            price = (sizePrice + ingredientFood.getsPrice()) * itemAmount;
+        } else if (currDrink != null) {
+            if (foodType.equals(ICECREAM_FOOD_TYPE)) {
+                price = sizePrice * itemAmount;
+            } else {
+                price = currDrink.getbPrice() * itemAmount;
+            }
+        } else {
+            titleFoodTextView.setText(String.format("%s", principalFood.getTitle()));
+            price = sizePrice * itemAmount;
+        }
 
         totalTextView.setText(String.format("Total: $%s", price));
     }
@@ -364,7 +545,13 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
 
     private void addItem() {
         if (foodSizeTitle == null) {
-            itemTitle = principalFood.getTitle();
+            if (ingredientFood != null) {
+                itemTitle = String.format("%s | Con nieve de %s", principalFood.getTitle(), ingredientFood.getTitle());
+            } else if (currDrink != null) {
+                itemTitle = String.format("%s | %s", principalFood.getTitle(), currDrink.getTitle());
+            } else {
+                itemTitle = principalFood.getTitle();
+            }
         } else if (principalFood.getTitle().contains("naranja") ||
                 principalFood.getTitle().contains("Limonada") ||
                 principalFood.getTitle().contains("Chocolate")) {
@@ -373,10 +560,15 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             itemTitle = String.format("%s | %s", principalFood.getTitle(), currDrink.getTitle());
         }
 
-        Item item = new Item(itemTitle,
+        if (!foodType.equals(ICECREAM_FOOD_TYPE)) {
+            foodSize = "";
+        }
+
+        Item item = new Item(principalFood.getId(),
+                itemTitle,
                 isCompleteItem,
-                null,
-                "",
+                extraIngredientList,
+                foodSize,
                 itemAmount,
                 commentsEditText.getText().toString().trim(),
                 price);

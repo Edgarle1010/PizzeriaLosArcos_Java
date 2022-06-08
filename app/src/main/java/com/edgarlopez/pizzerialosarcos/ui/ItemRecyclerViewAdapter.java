@@ -51,9 +51,9 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
         if (item.size.equals("big")) {
             item.size = "Grande";
-        }else if (item.size.equals("medium")) {
+        } else if (item.size.equals("medium")) {
             item.size = "Mediana";
-        }else if (item.size.equals("small")) {
+        } else if (item.size.equals("small")) {
             if (item.getTitle().contains("Coctel") || item.getTitle().contains("Filete")) {
                 item.size = "Chico";
             } else {
@@ -68,16 +68,29 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         }
 
         if (item.extraIngredientList != null) {
-            for (ExtraIngredient extraIngredients : item.extraIngredientList) {
-                holder.extraIngredient.append("- " + extraIngredients.getTitle() + "\n");
+            if (!item.extraIngredientList.isEmpty()) {
+                for (ExtraIngredient extraIngredients : item.extraIngredientList) {
+                    holder.extraIngredient.append("- " + extraIngredients.getTitle() + "\n");
+                }
+            } else {
+                holder.extraIngredientSubtitle.setVisibility(View.GONE);
+                holder.extraIngredient.setVisibility(View.GONE);
             }
         } else {
-            holder.extraIngredient.setText("");
+            holder.extraIngredientSubtitle.setVisibility(View.GONE);
+            holder.extraIngredient.setVisibility(View.GONE);
         }
 
-        holder.comments.setText(item.getComments());
+        String comments = item.getComments();
+        if (!comments.isEmpty()) {
+            holder.comments.setText(comments);
+        } else {
+            holder.commentsSubtitle.setVisibility(View.GONE);
+            holder.comments.setVisibility(View.GONE);
+        }
+
         holder.amount.setText(String.valueOf(item.getAmount()));
-        holder.price.setText("$" + item.getPrice());
+        holder.price.setText("$" + String.format("%.02f", item.getPrice()));
     }
 
     @Override
@@ -88,11 +101,13 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     //public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public class ViewHolder extends RecyclerView.ViewHolder {
         //OnItemClickListener onItemClickListener;
-        public TextView title;
-        public TextView extraIngredient;
-        public TextView comments;
-        public TextView amount;
-        public TextView price;
+        public TextView title,
+                extraIngredientSubtitle,
+                extraIngredient,
+                commentsSubtitle,
+                comments,
+                amount,
+                price;
         public ConstraintLayout viewForeground;
         public RelativeLayout viewBackground;
 
@@ -100,7 +115,9 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_title_textView);
+            extraIngredientSubtitle = itemView.findViewById(R.id.item_extra_ingredient_textview);
             extraIngredient = itemView.findViewById(R.id.item_extra_ingredient_object_textview);
+            commentsSubtitle = itemView.findViewById(R.id.item_comments_textview);
             comments = itemView.findViewById(R.id.item_comments_object_textview);
             amount = itemView.findViewById(R.id.item_amount_object_textview);
             price = itemView.findViewById(R.id.item_price_textview);

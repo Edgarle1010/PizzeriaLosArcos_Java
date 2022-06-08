@@ -32,12 +32,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Pizzas"
+            android:textAlignment="center"
             android:textColor="@color/primary_color"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/back_button_food_list"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back_button_food_list"
+            app:layout_constraintStart_toStartOf="@+id/back_button_food_list"
             app:layout_constraintTop_toTopOf="@+id/back_button_food_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

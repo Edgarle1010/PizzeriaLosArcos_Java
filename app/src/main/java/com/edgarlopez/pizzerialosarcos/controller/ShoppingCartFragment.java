@@ -1,5 +1,7 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.ORDERS_DATE_REQUEST;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -58,8 +61,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
@@ -121,6 +126,8 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+        DrawableCompat.setTint(totalTextView.getBackground(), ContextCompat.getColor(requireActivity(), R.color.third_color));
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -163,7 +170,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                 price = price + itemList.getPrice();
             }
 
-            totalTextView.setText("Total: $" + price);
+            totalTextView.setText("Total: $" + String.format("%.2f", price));
         });
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
@@ -182,12 +189,19 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                                     checkService(activeService -> {
                                         Order order = new Order();
                                         if (activeService) {
+                                            double dateRequest = System.currentTimeMillis() / 1000;
+                                            double dateEstimatedDelivery = dateRequest + (Integer.parseInt(waitTime) * 60);
+
                                             String name = userViewModel.getOne(user.getUid()).getName();
                                             String lastName = userViewModel.getOne(user.getUid()).getLastName();
-
                                             order.setClient(user.getPhoneNumber());
                                             order.setClientName(name + " " + lastName);
-                                            order.setDate(new Date().getTime());
+                                            order.setDateRequest(dateRequest);
+                                            order.setDateEstimatedDelivery(dateEstimatedDelivery);
+                                            order.setDateProcessed(0.0);
+                                            order.setDateFinished(0.0);
+                                            order.setDateDelivered(0.0);
+                                            order.setDateCanceled(0.0);
                                             if (currentLocation != null) {
                                                 order.setLocation(currentLocation);
                                             } else {
@@ -306,6 +320,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
         progressBar.setVisibility(View.VISIBLE);
 
         db.collection("orders")
+                .orderBy(ORDERS_DATE_REQUEST)
                 .get().addOnCompleteListener(task -> {
             progressBar.setVisibility(View.GONE);
             if (task.isSuccessful()) {
@@ -385,7 +400,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
                 assert doc != null;
                 if (doc.exists()) {
-                    waitTime = doc.getString("time");
+                    waitTime = String.valueOf(doc.get("time"));
                     firestoreCallback.onCallback(waitTime);
                 }
             } else {

@@ -31,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,10 +99,13 @@ public class CreatePasswordActivity extends AppCompatActivity {
                                                     String lastName = snapshot.getString("lastName");
                                                     String email1 = snapshot.getString("email");
                                                     String phoneNumber = snapshot.getString("phoneNumber");
-                                                    int streaks = snapshot.getLong("streaks").intValue();
+                                                    String streak = snapshot.getString("streaks");
+                                                    List<String> streaks = new ArrayList<String>();
+                                                    streaks.add(streak);
+                                                    String fcmToken = snapshot.getString("fcmToken");
                                                     boolean baned = snapshot.getBoolean("baned");
 
-                                                    User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned);
+                                                    User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned, fcmToken);
 
                                                     userViewModel.getAllUsers().observe(this, users -> {
                                                         UserViewModel.insert(user1);
@@ -151,7 +155,9 @@ public class CreatePasswordActivity extends AppCompatActivity {
                                                                 assert currentUser != null;
                                                                 final String currentUserId = currentUser.getUid();
 
-                                                                User user = new User(currentUserId, name, lastName, email, phoneNumber, 0, false);
+                                                                List<String> streaks = new ArrayList<String>();
+
+                                                                User user = new User(currentUserId, name, lastName, email, phoneNumber, streaks, false, "");
 
                                                                 progressBar.setVisibility(View.VISIBLE);
                                                                 collectionReference

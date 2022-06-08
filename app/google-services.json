@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "610898311485-geu0nh091lgddfe4hr1aggkr17h7kl8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.edgarlopez.pizzerialosarcos",
+            "certificate_hash": "e3c6456bef2e05d11864eaa6c13aac71e484c42d"
+          }
+        },
+        {
           "client_id": "610898311485-55p0hbvv3d49v833s9i67em8apfrub34.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "610898311485-55p0hbvv3d49v833s9i67em8apfrub34.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "610898311485-cqvpo0ac0uodvtb9ucvevag1lgnietn0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.edgarlopez.PizzeriaLosArcos"
+              }
             }
           ]
         }

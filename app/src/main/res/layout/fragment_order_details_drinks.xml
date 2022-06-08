@@ -41,9 +41,10 @@ tools:context=".controller.OrderDetailsDrinksFragment">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_color"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingStart="6dp"
+            android:textAlignment="center"
+            android:layout_marginRight="30dp"
             app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_drinks"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_drinks"
@@ -56,6 +57,7 @@ tools:context=".controller.OrderDetailsDrinksFragment">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textAlignment="center"
         android:layout_marginTop="10dp"
         android:textSize="12sp">
 
@@ -82,6 +84,129 @@ tools:context=".controller.OrderDetailsDrinksFragment">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:id="@+id/snow_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/snowless_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Sin nieve"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/with_snow_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Con nieve"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ice_cream_size_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            android:text="Tamaño"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/ice_cream_size_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/ice_cream_big_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner"
+                android:padding="10dp"
+                android:text="Grande"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ice_cream_medium_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Mediana"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/ice_cream_small_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/quarter_color"
+                android:padding="10dp"
+                android:text="Chica"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/soda_text_view"
             android:layout_width="wrap_content"
@@ -102,7 +227,7 @@ tools:context=".controller.OrderDetailsDrinksFragment">
                 android:id="@+id/soda_number_picker"
                 android:theme="@style/AppTheme.Picker"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="wrap_content">
 
             </NumberPicker>
 

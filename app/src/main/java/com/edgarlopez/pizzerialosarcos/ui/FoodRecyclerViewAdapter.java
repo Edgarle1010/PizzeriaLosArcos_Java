@@ -41,7 +41,18 @@ public class FoodRecyclerViewAdapter extends RecyclerView.Adapter<FoodRecyclerVi
         Food food = foodList.get(position);
 
         viewHolder.title.setText(food.getTitle());
-        viewHolder.description.setText(food.getDescription());
+
+        String description = food.getDescription();
+        if (description != null) {
+            if (description.isEmpty()) {
+                viewHolder.description.setVisibility(View.GONE);
+            } else {
+                viewHolder.description.setText(description);
+            }
+        } else {
+            viewHolder.description.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

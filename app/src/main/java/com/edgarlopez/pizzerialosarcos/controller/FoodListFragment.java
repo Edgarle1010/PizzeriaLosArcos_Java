@@ -36,6 +36,7 @@ import java.util.List;
 
 import static com.edgarlopez.pizzerialosarcos.util.Util.BREAKFAST;
 import static com.edgarlopez.pizzerialosarcos.util.Util.BURGER;
+import static com.edgarlopez.pizzerialosarcos.util.Util.DESSERTS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.DRINKS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ENCHILADAS_ID;
@@ -48,6 +49,13 @@ import static com.edgarlopez.pizzerialosarcos.util.Util.FUZETEA_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FUZETEA_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_FOOD_TYPE;
 import static com.edgarlopez.pizzerialosarcos.util.Util.HOTDOG_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_FOOD_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_ID;
+import static com.edgarlopez.pizzerialosarcos.util.Util.KIDS;
+import static com.edgarlopez.pizzerialosarcos.util.Util.MILKSHAKESICECREAM;
+import static com.edgarlopez.pizzerialosarcos.util.Util.MILKSHAKE_FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.MILKSHAKE_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PIZZA;
 import static com.edgarlopez.pizzerialosarcos.util.Util.PLATILLO;
 import static com.edgarlopez.pizzerialosarcos.util.Util.RANCH_SHRIMP_FOOD_TYPE;
@@ -126,6 +134,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         backButton.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
             requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+            requireActivity().findViewById(R.id.nav_bar_layout).setVisibility(View.VISIBLE);
         });
 
         progressBar.setVisibility(View.VISIBLE);
@@ -154,7 +163,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                             recyclerView.setAdapter(foodRecyclerAdapter);
                         }
 
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Lista vacía", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -229,7 +238,7 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
             fragmentTransaction
                     .replace(R.id.menu_frame, orderFive);
             fragmentTransaction.commit();
-        } else if (foodType.equals(DRINKS)) {
+        } else if (foodType.equals(DRINKS) || foodType.equals(DESSERTS) || foodType.equals(MILKSHAKESICECREAM) || foodType.equals(KIDS)) {
             Fragment orderDrinks = new OrderDetailsDrinksFragment();
             if (food.getId().equals(SODA_ID)) {
                 bundle.putString(FOOD_TYPE, SODA_FOOD_TYPE);
@@ -237,6 +246,10 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                 bundle.putString(FOOD_TYPE, FUZETEA_FOOD_TYPE);
             } else if (food.getId().equals(SMOOTHIE_ID)) {
                 bundle.putString(FOOD_TYPE, SMOOTHIE_FOOD_TYPE);
+            } else if (food.getId().equals(MILKSHAKE_ID)) {
+                bundle.putString(FOOD_TYPE, MILKSHAKE_FOOD_TYPE);
+            } else if (food.getId().equals(ICECREAM_FOOD_ID)) {
+                bundle.putString(FOOD_TYPE, ICECREAM_FOOD_TYPE);
             }
             orderDrinks.setArguments(bundle);
             fragmentTransaction

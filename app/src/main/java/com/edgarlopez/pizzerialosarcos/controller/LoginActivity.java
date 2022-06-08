@@ -243,10 +243,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 String lastName = snapshot.getString("lastName");
                                                 String email1 = snapshot.getString("email");
                                                 String phoneNumber = snapshot.getString("phoneNumber");
-                                                int streaks = snapshot.getLong("streaks").intValue();
-                                                boolean baned = snapshot.getBoolean("baned");
+                                                String streak = snapshot.get("streaks").toString();
+                                                List<String> streaks = new ArrayList<String>();
+                                                streaks.add(streak);
+                                                String fcmToken = snapshot.getString("fcmToken");
+                                                boolean baned = snapshot.getBoolean("isBaned");
 
-                                                User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned);
+                                                User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned, fcmToken);
 
                                                 userViewModel.getAllUsers().observe(this, users -> {
                                                     UserViewModel.insert(user1);

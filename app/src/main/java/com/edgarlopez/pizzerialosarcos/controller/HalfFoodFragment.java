@@ -40,6 +40,7 @@ import java.util.List;
 import static com.edgarlopez.pizzerialosarcos.util.Util.EGGS_INGREDIENTS_ID;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_ITEM;
 import static com.edgarlopez.pizzerialosarcos.util.Util.FOOD_TYPE;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ICECREAM_ID;
 
 public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -131,6 +132,8 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
 
         if (foodType.equals(EGGS_INGREDIENTS_ID)) {
             halfTitleTextView.setText("Seleccione el ingrediente");
+        } else if (foodType.equals((ICECREAM_ID))) {
+            halfTitleTextView.setText("Seleccione el sabor");
         }
 
         collectionReference

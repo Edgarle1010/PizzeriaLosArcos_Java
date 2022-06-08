@@ -55,13 +55,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/login_with_phone_number_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="onClick"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:onClick="onClick"
-                app:srcCompat="@drawable/ic_baseline_local_phone_24"
-                android:layout_width="30dp"
-                android:layout_height="30dp">
-            </androidx.appcompat.widget.AppCompatImageView>
+                app:srcCompat="@drawable/ic_baseline_local_phone_24" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/login_with_email_icon"
@@ -69,10 +68,9 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_toEndOf="@id/login_with_phone_number_icon"
-                app:srcCompat="@drawable/ic_baseline_email_24"
+                android:onClick="onClick"
                 android:tint="@android:color/darker_gray"
-                android:onClick="onClick">
-            </androidx.appcompat.widget.AppCompatImageView>
+                app:srcCompat="@drawable/ic_baseline_email_24" />
 
         </RelativeLayout>
 

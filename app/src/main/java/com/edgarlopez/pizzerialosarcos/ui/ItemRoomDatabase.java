@@ -43,6 +43,7 @@ public abstract class ItemRoomDatabase extends RoomDatabase {
                             ItemRoomDatabase.class, "item_database")
                             .allowMainThreadQueries()
                             .addCallback(sRoomDatabaseCallback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

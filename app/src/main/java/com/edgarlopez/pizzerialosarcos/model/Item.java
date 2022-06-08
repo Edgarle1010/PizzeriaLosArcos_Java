@@ -1,6 +1,7 @@
 package com.edgarlopez.pizzerialosarcos.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
@@ -16,8 +17,9 @@ import java.util.List;
 @Entity(tableName = "item_table")
 public class Item {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
+    @PrimaryKey
+    @NonNull
+    public String id;
 
     @ColumnInfo(name = "title")
     public String title;
@@ -41,8 +43,9 @@ public class Item {
     @ColumnInfo(name = "price")
     public float price;
 
-    public Item(@NonNull String title, boolean isComplete, List<ExtraIngredient> extraIngredientList,
+    public Item(@Nullable String id, @NonNull String title, boolean isComplete, List<ExtraIngredient> extraIngredientList,
                 @NonNull String size, int amount, @NonNull String comments, float price) {
+        this.id = id;
         this.title = title;
         this.isComplete = isComplete;
         this.extraIngredientList = extraIngredientList;
@@ -56,11 +59,11 @@ public class Item {
     public Item() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

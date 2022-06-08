@@ -1,28 +1,28 @@
 
 package com.edgarlopez.pizzerialosarcos.controller;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import static com.edgarlopez.pizzerialosarcos.util.Util.NOTIFICATIONS_COLLECTION;
+import static com.edgarlopez.pizzerialosarcos.util.Util.USERS_COLLECTION;
+import static com.edgarlopez.pizzerialosarcos.util.Util.USER_TOKEN;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,29 +33,50 @@ import com.edgarlopez.pizzerialosarcos.adapter.OnAddHalfFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnCancelExtraIngredientClickListener;
 import com.edgarlopez.pizzerialosarcos.adapter.OnCancelHalfFoodClickListener;
 import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
-import com.edgarlopez.pizzerialosarcos.model.Item;
 import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
-import com.edgarlopez.pizzerialosarcos.model.User;
-import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
-import com.edgarlopez.pizzerialosarcos.ui.ItemRecyclerViewAdapter;
+import com.edgarlopez.pizzerialosarcos.model.Notification;
+import com.edgarlopez.pizzerialosarcos.model.NotificationViewModel;
+import com.edgarlopez.pizzerialosarcos.ui.NotificationRecyclerViewAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredientClickListener,
         OnCancelExtraIngredientClickListener,
         OnAddHalfFoodClickListener,
-        OnCancelHalfFoodClickListener {
-
+        OnCancelHalfFoodClickListener, View.OnClickListener {
     private ProgressBar progressBar;
     public List<ExtraIngredient> currExtraIngredients;
+    private Button notificationsButton,
+            ordersHistoryImageButton;
+    private TextView navBarTitleTextView;
+    private LinearLayout navBarLayout;
+    private BottomNavigationView bottomNavigationView;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+
+    private Query query = db.collection(NOTIFICATIONS_COLLECTION);
+    private ListenerRegistration registration;
 
     private ItemViewModel itemViewModel;
+
+    private List<Notification> notificationList;
+    private BadgeDrawable badgeDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +87,21 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                 .replace(R.id.menu_frame, MenuFragment.newInstance())
                 .commit();
 
-        progressBar = findViewById(R.id.menu_activity_progress);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
-        BottomNavigationView bottomNavigationView =
-                findViewById(R.id.bottom_navigation);
+        progressBar = findViewById(R.id.menu_activity_progress);
+        navBarLayout = findViewById(R.id.nav_bar_layout);
+        notificationsButton = findViewById(R.id.notifications_icon);
+        ordersHistoryImageButton = findViewById(R.id.orders_in_process_icon);
+        navBarTitleTextView = findViewById(R.id.nav_bar_title_text_view);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        notificationsButton.setOnClickListener(this);
+        ordersHistoryImageButton.setOnClickListener(this);
+
+        notificationList = new ArrayList<>();
+        badgeDrawable =  BadgeDrawable.create(this);
 
         itemViewModel = new ViewModelProvider.AndroidViewModelFactory(MenuActivity.this
                 .getApplication())
@@ -88,15 +120,18 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
+            navBarTitleTextView.setText(item.getTitle());
+            ordersHistoryImageButton.setVisibility(View.GONE);
+
             int id = item.getItemId();
             if (id == R.id.menu_nav_button) {
-                //show the menu view
                 selectedFragment = MenuFragment.newInstance();
 
-            }else if (id == R.id.more_nav_button) {
+            } else if (id == R.id.more_nav_button) {
                 selectedFragment = MoreFragment.newInstance();
 
-            }else if (id == R.id.cart_nav_button) {
+            } else if (id == R.id.cart_nav_button) {
+                ordersHistoryImageButton.setVisibility(View.VISIBLE);
                 selectedFragment = ShoppingCartFragment.newInstance();
             }
             assert selectedFragment != null;
@@ -110,9 +145,61 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         bottomNavigationView.setOnItemReselectedListener(item -> {
 
         });
+    }
 
+    @SuppressLint("UnsafeOptInUsageError")
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("NOTIFICATION_TAG", "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
 
+                    String token = task.getResult();
+
+                    db.collection(USERS_COLLECTION).document(user.getUid()).update(USER_TOKEN, token)
+                            .addOnCompleteListener(updateTask -> {
+                                Log.d("USER_TOKEN", "DocumentSnapshot successfully updated!");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.w("USER_TOKEN", "Error updating document", e);
+                            });
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    registration = query.addSnapshotListener((value, error) -> {
+                        progressBar.setVisibility(View.GONE);
+                        if (error != null) {
+                            Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        notificationList.clear();
+                        if (value != null && !value.isEmpty()) {
+                            for (QueryDocumentSnapshot notifications : value) {
+                                Notification notification = notifications.toObject(Notification.class);
+
+                                if (notification.userToken.equals(token) && !notification.viewed) {
+                                    notificationList.add(notification);
+                                }
+                            }
+                        }
+
+                        badgeDrawable.setVisible(true);
+                        badgeDrawable.setVerticalOffset(10);
+                        badgeDrawable.setHorizontalOffset(10);
+
+                        if (notificationList.size() == 0) {
+                            badgeDrawable.setNumber(notificationList.size());
+                            BadgeUtils.detachBadgeDrawable(badgeDrawable, notificationsButton);
+                        } else {
+                            badgeDrawable.setNumber(notificationList.size());
+                            BadgeUtils.attachBadgeDrawable(badgeDrawable, notificationsButton);
+                        }
+                    });
+                });
     }
 
     @Override
@@ -157,6 +244,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsFragment) fragment).addHalfFoodClicked();
         } else if (fragment instanceof OrderDetailsFiveFragment) {
             ((OrderDetailsFiveFragment) fragment).addHalfFoodClicked();
+        } else if (fragment instanceof OrderDetailsDrinksFragment) {
+            ((OrderDetailsDrinksFragment) fragment).addHalfFoodClicked();
         }
     }
 
@@ -168,6 +257,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
             ((OrderDetailsFragment) fragment).cancelHalfFoodClicked();
         } else if (fragment instanceof OrderDetailsFiveFragment) {
             ((OrderDetailsFiveFragment) fragment).cancelHalfFoodClicked();
+        } else if (fragment instanceof OrderDetailsDrinksFragment) {
+            ((OrderDetailsDrinksFragment) fragment).cancelHalfFoodClicked();
         }
     }
 
@@ -186,6 +277,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         }else if (menuFragment instanceof FoodListFragment) {
             FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);
             foodListFragment.requireActivity().findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+            foodListFragment.requireActivity().findViewById(R.id.nav_bar_layout).setVisibility(View.VISIBLE);
             super.onBackPressed();
         }else if (menuFragment instanceof OrderDetailsFragment) {
             OrderDetailsFragment orderDetailsFragment = (OrderDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.menu_frame);
@@ -249,5 +341,24 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
 
         checkPlayServices();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        registration.remove();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.notifications_icon:
+                startActivity(new Intent(MenuActivity.this,
+                        NotificationsActivity.class));
+                break;
+            case R.id.orders_in_process_icon:
+                break;
+        }
     }
 }

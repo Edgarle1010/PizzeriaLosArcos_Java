@@ -149,7 +149,17 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
         principalFood = foodViewModel.getSelectedFood().getValue();
         if (principalFood != null) {
             titleFoodTextView.setText(principalFood.getTitle());
-            descriptionTextView.setText(principalFood.getDescription());
+
+            String description = principalFood.getDescription();
+            if (description != null) {
+                if (!description.isEmpty()) {
+                    descriptionTextView.setText(description);
+                } else {
+                    descriptionTextView.setVisibility(View.GONE);
+                }
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
+            }
 
             if (principalFood.getId().equals(FRENCH_FRIES_ID)) {
                 extraIngredientSubtitleTextView.setVisibility(View.GONE);
@@ -328,7 +338,8 @@ public class OrderDetailsSecondaryFragment extends Fragment implements View.OnCl
     }
 
     private void addItem() {
-        Item item = new Item(itemTitle,
+        Item item = new Item(principalFood.getId(),
+                itemTitle,
                 isCompleteItem,
                 extraIngredientList,
                 "",
