@@ -90,6 +90,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
     private Button sendButton;
     private TextView totalTextView;
+    private TextView emptyListTextView;
     private RecyclerView recyclerView;
     private ItemRecyclerViewAdapter itemRecyclerViewAdapter;
     private ProgressBar progressBar;
@@ -168,6 +169,12 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
             price = 0;
             for (Item itemList : items) {
                 price = price + itemList.getPrice();
+            }
+
+            if (items.isEmpty()) {
+                emptyListTextView.setVisibility(View.VISIBLE);
+            } else {
+                emptyListTextView.setVisibility(View.GONE);
             }
 
             totalTextView.setText("Total: $" + String.format("%.2f", price));
@@ -299,6 +306,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
         recyclerView = view.findViewById(R.id.orderRecyclerView);
         sendButton = view.findViewById(R.id.send_order_button);
         totalTextView = view.findViewById(R.id.shopping_total_text_view);
+        emptyListTextView = view.findViewById(R.id.empty_list_items);
         progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
 
         return view;
@@ -377,7 +385,7 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
                         for (QueryDocumentSnapshot users : queryDocumentSnapshots) {
 
                             if (Objects.equals(users.getString("phoneNumber"), user.getPhoneNumber())) {
-                                isBaned = users.getBoolean("baned");
+                                isBaned = users.getBoolean("isBaned");
                                 banedCallBack.onCheckBaned(isBaned);
                             }
                         }

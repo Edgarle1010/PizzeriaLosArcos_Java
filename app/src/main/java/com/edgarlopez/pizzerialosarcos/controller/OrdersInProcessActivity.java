@@ -1,16 +1,15 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
+import static com.edgarlopez.pizzerialosarcos.util.Util.ORDERS_CLIENT;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ORDERS_COLLECTIONS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.ORDERS_DATE_REQUEST;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -19,16 +18,13 @@ import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
 import com.edgarlopez.pizzerialosarcos.adapter.OnOrderClickListener;
-import com.edgarlopez.pizzerialosarcos.model.Food;
-import com.edgarlopez.pizzerialosarcos.model.FoodViewModel;
+import com.edgarlopez.pizzerialosarcos.model.Notification;
 import com.edgarlopez.pizzerialosarcos.model.Order;
 import com.edgarlopez.pizzerialosarcos.model.OrderViewModel;
-import com.edgarlopez.pizzerialosarcos.ui.FoodRecyclerViewAdapter;
-import com.edgarlopez.pizzerialosarcos.ui.OrderHistoryRecyclerViewAdapter;
+import com.edgarlopez.pizzerialosarcos.ui.NotificationRecyclerViewAdapter;
 import com.edgarlopez.pizzerialosarcos.ui.OrderRecyclerViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -40,7 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersHistoryActivity extends AppCompatActivity implements View.OnClickListener, OnOrderClickListener {
+public class OrdersInProcessActivity extends AppCompatActivity implements OnOrderClickListener {
     private ImageButton backImageButton;
     private RecyclerView recyclerView;
     private TextView emptyListTextView;
@@ -50,7 +46,7 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
 
-    private OrderHistoryRecyclerViewAdapter orderRecyclerAdapter;
+    private OrderRecyclerViewAdapter orderRecyclerAdapter;
     private OrderViewModel orderViewModel;
 
     private Query query = db.collection(ORDERS_COLLECTIONS);
@@ -61,40 +57,27 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders_history);
+        setContentView(R.layout.activity_orders_in_process);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        backImageButton = findViewById(R.id.back_button_orders_history);
-        progressBar = findViewById(R.id.orders_history_activity_progress);
-        emptyListTextView = findViewById(R.id.empty_list_orders_history);
-        recyclerView = findViewById(R.id.orders_history_recycler_view);
+        backImageButton = findViewById(R.id.back_button_orders_in_process);
+        recyclerView = findViewById(R.id.orders_in_process_recycler_view);
+        emptyListTextView = findViewById(R.id.empty_list_orders_in_process);
+        progressBar = findViewById(R.id.orders_in_process_progress);
 
         orderViewModel = new ViewModelProvider(this)
                 .get(OrderViewModel.class);
         orderList = new ArrayList<>();
 
-        backImageButton.setOnClickListener(this);
+        backImageButton.setOnClickListener(view -> finish());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        loadOrdersList();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back_button_orders_history:
-                finish();
-                break;
-        }
-    }
-
-    private void loadOrdersList() {
         progressBar.setVisibility(View.VISIBLE);
         registration = query
                 .orderBy(ORDERS_DATE_REQUEST)
@@ -108,7 +91,7 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
                         for (QueryDocumentSnapshot orders : value) {
                             Order order = orders.toObject(Order.class);
 
-                            if (order.getClient().equals(user.getPhoneNumber())) {
+                            if (!order.isComplete() && order.getClient().equals(user.getPhoneNumber())) {
                                 orderList.add(order);
                             }
                         }
@@ -118,7 +101,7 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
                         if (orderViewModel.getOrders().getValue() != null) {
                             orderList = orderViewModel.getOrders().getValue();
 
-                            orderRecyclerAdapter = new OrderHistoryRecyclerViewAdapter(this,
+                            orderRecyclerAdapter = new OrderRecyclerViewAdapter(this,
                                     orderList,
                                     this);
 
@@ -138,14 +121,14 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
 
         registration.remove();
     }
 
     @Override
     public void onOrderClicked(Order order) {
-        Log.d("Order", "onOrderClicked: " + order.getFolio());
+
     }
 }

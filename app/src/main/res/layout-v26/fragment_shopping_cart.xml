@@ -37,6 +37,16 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/empty_list_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/empty_item_list" />
+
         </LinearLayout>
 
         <TextView

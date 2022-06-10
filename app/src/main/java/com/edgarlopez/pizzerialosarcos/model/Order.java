@@ -40,6 +40,18 @@ public class Order {
         this.itemList = itemList;
     }
 
+    public int getStatus(String status) {
+        if (status.equals("Pedido")) {
+            return 5;
+        } else if (status.equals("En proceso")) {
+            return 35;
+        } else if (status.equals("Listo")) {
+            return 65;
+        } else {
+            return 100;
+        }
+    }
+
     public String getFolio() {
         return folio;
     }

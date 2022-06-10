@@ -20,6 +20,8 @@ public class Util {
     public static final String NOTIFICATIONS_VIEWED = "viewed";
     public static final String USERS_COLLECTION = "Users";
     public static final String USER_TOKEN = "fcmToken";
+    public static final String ORDERS_COLLECTIONS = "orders";
+    public static final String ORDERS_CLIENT = "client";
     public static final String ORDERS_DATE_REQUEST = "dateRequest";
 
     public static final String FOOD_TYPE = "FOOD_TYPE";

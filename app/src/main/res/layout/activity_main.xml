@@ -1,49 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
-    android:gravity="center|bottom"
-    android:background="@drawable/welcome_view"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context=".controller.WelcomeActivity">
 
-    <ProgressBar
-        android:id="@+id/welcome_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </ProgressBar>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginButton"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/primary_color"
-        app:cornerRadius="20dp"
-        android:text="@string/text_login_button">
-    </com.google.android.material.button.MaterialButton>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInButton"
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/secondary_color"
-        app:cornerRadius="20dp"
-        android:text="@string/text_signin_button">
-    </com.google.android.material.button.MaterialButton>
+        android:layout_height="0dp"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/guestButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="@string/text_guest_button"
-        style="?android:attr/borderlessButtonStyle">
-    </com.google.android.material.button.MaterialButton>
+        <ProgressBar
+            android:id="@+id/welcome_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
-</LinearLayout>
+        </ProgressBar>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/primary_color"
+            android:text="@string/text_login_button"
+            app:cornerRadius="20dp"></com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signInButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/secondary_color"
+            android:text="@string/text_signin_button"
+            app:cornerRadius="20dp"></com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/guestButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@android:color/transparent"
+            android:text="@string/text_guest_button"></com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

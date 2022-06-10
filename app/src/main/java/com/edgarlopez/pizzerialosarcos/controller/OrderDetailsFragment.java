@@ -327,7 +327,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void addItem() {
-        Item item = new Item(principalFood.getId(),
+        Item item = new Item(String.valueOf(System.currentTimeMillis()),
                 itemTitle,
                 isCompleteItem,
                 extraIngredientList,

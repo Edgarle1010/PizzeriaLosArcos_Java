@@ -2,106 +2,125 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="5dp"
-    android:layout_margin="10dp"
+    android:layout_margin="4dp"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal"
         android:background="@color/third_color"
         android:padding="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/order_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="F12"
-            android:textAlignment="center"
-            android:textColor="@color/primary_color"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_weight=".75"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </TextView>
+            <TextView
+                android:id="@+id/orders_history_row_folio_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:text="F1"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color">
 
-        <TextView
-            android:id="@+id/order_price_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$174.5"
-            android:textAlignment="center"
-            android:textColor="@color/primary_color"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            </TextView>
 
-        </TextView>
+            <TextView
+                android:id="@+id/orders_history_row_price_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:text="$134.00"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeTextType="uniform"
+                android:lines="1"
+                android:gravity="center"
+                android:textColor="@color/primary_color">
 
-        <TextView
-            android:id="@+id/order_date_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Fecha:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/order_title_textview"
-            app:layout_constraintTop_toBottomOf="@+id/order_title_textview">
+            </TextView>
 
-        </TextView>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/order_date_object_textview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
-            android:text="22 de Noviembre del 2021"
-            android:textColor="@color/primary_color"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toStartOf="@+id/order_price_textview"
-            app:layout_constraintStart_toEndOf="@+id/order_date_textview"
-            app:layout_constraintTop_toTopOf="@+id/order_date_textview">
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_weight=".25"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        </TextView>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/order_status_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Estado:"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/order_date_textview"
-            app:layout_constraintTop_toBottomOf="@+id/order_date_object_textview">
+                <TextView
+                    android:text="Estado:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-        </TextView>
+                </TextView>
 
-        <TextView
-            android:id="@+id/order_status_object_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="En proceso"
-            android:textAlignment="center"
-            android:textColor="@color/primary_color"
-            android:textSize="15sp"
-            app:layout_constraintStart_toEndOf="@+id/order_status_textview"
-            app:layout_constraintTop_toTopOf="@+id/order_status_textview">
+                <TextView
+                    android:id="@+id/orders_history_row_status"
+                    android:text="Pedido"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-        </TextView>
+                </TextView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="right"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Fecha del pedido"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/orders_history_row_date_request"
+                    android:text="10 de mayo del 2022 10:20 PM"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_color"
+                    android:paddingLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

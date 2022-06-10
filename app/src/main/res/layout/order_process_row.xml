@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp"
+    android:layout_margin="4dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/third_color"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_weight=".88"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/orders_in_process_row_folio_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:text="F1"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/orders_in_process_row_price_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:text="$134.00"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeTextType="uniform"
+                android:lines="1"
+                android:gravity="center"
+                android:textColor="@color/primary_color">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_weight=".12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight=".75"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Pedido"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/orders_in_process_row_date_request"
+                        android:text="3:22 PM"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight=".75"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="En proceso"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/orders_in_process_row_date_processed"
+                        android:text="3:30 PM"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight=".75"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Listo"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/orders_in_process_row_date_finished"
+                        android:text="3:45 PM"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight=".75"
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Entregado"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/orders_in_process_row_date_delivered"
+                        android:text="3:22 PM"
+                        android:textColor="@color/primary_color"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/orders_in_process_row_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100"
+                android:progress="65"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:progressTint="@color/primary_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ProgressBar>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Hora estimada de entrega:"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/orders_in_process_row_date_estimated_delivery"
+                    android:text="4:55 PM"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_color"
+                    android:paddingLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

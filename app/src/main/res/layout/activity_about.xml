@@ -47,6 +47,14 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_height="130dp">
+
+        </ImageView>
+
         <TextView
             android:layout_marginBottom="30dp"
             android:text="Version: V1.0"

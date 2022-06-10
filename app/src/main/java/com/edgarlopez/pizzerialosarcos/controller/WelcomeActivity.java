@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -90,11 +91,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             }
         };
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-
+        Window w = getWindow();
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -128,4 +126,5 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
+
 }

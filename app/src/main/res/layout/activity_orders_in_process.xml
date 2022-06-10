@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    android:background="@color/quarter_color"
+    android:windowTranslucentStatus="false"
+    tools:context=".controller.OrdersInProcessActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/orders_in_process_form"
+        android:paddingTop="40dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/back_button_orders_in_process"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/text_orders_in_process_title"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back_button_orders_in_process"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_button_orders_in_process"
+                app:layout_constraintTop_toTopOf="@+id/back_button_orders_in_process" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orders_in_process_recycler_view"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/empty_list_orders_in_process"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@string/empty_orders_in_process_list" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/orders_in_process_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ProgressBar>
+
+</LinearLayout>

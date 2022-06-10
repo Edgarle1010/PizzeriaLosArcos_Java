@@ -24,10 +24,11 @@
         <entry key="app/src/main/res/layout/activity_create_password.xml" value="0.1765625" />
         <entry key="app/src/main/res/layout/activity_edit_user_name.xml" value="0.1765625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3229166666666667" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.14493373236425822" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.5091463414634146" />
         <entry key="app/src/main/res/layout/activity_notifications.xml" value="0.34692028985507245" />
         <entry key="app/src/main/res/layout/activity_orders_history.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_orders_in_process.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_recovery_password.xml" value="0.1625" />
         <entry key="app/src/main/res/layout/activity_register_number.xml" value="0.1765625" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.3229166666666667" />
@@ -52,7 +53,8 @@
         <entry key="app/src/main/res/layout/fragment_shopping_cart.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_row.xml" value="0.375" />
         <entry key="app/src/main/res/layout/notification_row.xml" value="0.5653024291992188" />
-        <entry key="app/src/main/res/layout/order_row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/order_process_row.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/order_row.xml" value="0.375" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3169230769230769" />
         <entry key="app/src/main/res/menu/notification_menu.xml" value="0.175" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.185" />

@@ -1,15 +1,11 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -28,26 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
-import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.model.User;
 import com.edgarlopez.pizzerialosarcos.model.UserViewModel;
-import com.edgarlopez.pizzerialosarcos.ui.ItemRoomDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.annotation.Nullable;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageButton backButton;
@@ -224,53 +212,56 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             firebaseAuth.signInWithEmailAndPassword(email, pwd)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            progressBar.setVisibility(View.INVISIBLE);
+
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             assert user != null;
                             String currentUserId = user.getUid();
 
+                            progressBar.setVisibility(View.VISIBLE);
                             collectionReference
                                     .whereEqualTo("userId", currentUserId)
-                                    .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                                    .get()
+                                    .addOnCompleteListener((value) -> {
                                         progressBar.setVisibility(View.INVISIBLE);
+                                        if (value.isSuccessful()) {
+                                            DocumentSnapshot snapshot = value.getResult().getDocuments().get(0);
 
-                                        if (e != null) {
-                                        }
-                                        assert queryDocumentSnapshots != null;
-                                        if (!queryDocumentSnapshots.isEmpty()) {
-                                            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                                                String id = snapshot.getString("userId");
-                                                String name = snapshot.getString("name");
-                                                String lastName = snapshot.getString("lastName");
-                                                String email1 = snapshot.getString("email");
-                                                String phoneNumber = snapshot.getString("phoneNumber");
-                                                String streak = snapshot.get("streaks").toString();
-                                                List<String> streaks = new ArrayList<String>();
-                                                streaks.add(streak);
-                                                String fcmToken = snapshot.getString("fcmToken");
-                                                boolean baned = snapshot.getBoolean("isBaned");
+                                            String id = snapshot.getString("userId");
+                                            String name = snapshot.getString("name");
+                                            String lastName = snapshot.getString("lastName");
+                                            String email1 = snapshot.getString("email");
+                                            String phoneNumber = snapshot.getString("phoneNumber");
+                                            String streak = snapshot.get("streaks").toString();
+                                            List<String> streaks = new ArrayList<String>();
+                                            streaks.add(streak);
+                                            String fcmToken = snapshot.getString("fcmToken");
+                                            boolean baned = snapshot.getBoolean("isBaned");
 
-                                                User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned, fcmToken);
+                                            User user1 = new User(id, name, lastName, email1, phoneNumber, streaks, baned, fcmToken);
 
-                                                userViewModel.getAllUsers().observe(this, users -> {
-                                                    UserViewModel.insert(user1);
-                                                });
+                                            userViewModel.getAllUsers().observe(this, users -> {
+                                                UserViewModel.insert(user1);
+                                            });
 
-                                                Toast.makeText(LoginActivity.this,
-                                                        String.format(getString(R.string.welcome_message), name),
-                                                        Toast.LENGTH_SHORT)
-                                                        .show();
+                                            Toast.makeText(LoginActivity.this,
+                                                            String.format(getString(R.string.welcome_message), name),
+                                                            Toast.LENGTH_SHORT)
+                                                    .show();
 
-                                                finishAffinity();
+                                            finishAffinity();
 
-                                                startActivity(new Intent(LoginActivity.this,
-                                                        MenuActivity.class));
-                                            }
-
+                                            startActivity(new Intent(LoginActivity.this,
+                                                    MenuActivity.class));
+                                        } else {
+                                            Toast.makeText(LoginActivity.this,
+                                                            Objects.requireNonNull(value.getException()).getLocalizedMessage(),
+                                                            Toast.LENGTH_SHORT)
+                                                    .show();
                                         }
 
                                     });
                         }else {
-                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(LoginActivity.this,
                                     Objects.requireNonNull(task.getException()).getLocalizedMessage(),
                                     Toast.LENGTH_SHORT)

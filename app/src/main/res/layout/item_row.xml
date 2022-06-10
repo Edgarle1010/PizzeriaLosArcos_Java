@@ -66,7 +66,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_title_textView">
+            app:layout_constraintTop_toTopOf="@+id/item_amount_textview">
 
         </TextView>
 
@@ -92,7 +92,7 @@
             android:layout_marginEnd="32dp"
             android:textColor="@color/primary_color"
             android:textSize="15sp"
-            app:layout_constraintEnd_toStartOf="@+id/item_price_textview"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_extra_ingredient_textview"
             app:layout_constraintTop_toTopOf="@+id/item_extra_ingredient_textview">
 

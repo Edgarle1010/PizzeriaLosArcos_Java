@@ -6,7 +6,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondary_color</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/secondary_color</item>
+        <item name="android:statusBarColor" >@color/secondary_color</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -17,7 +17,7 @@
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@color/primary_color</item>
         <item name="android:textSize">17sp</item>
-        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="colorControlNormal">@android:color/primary_text_dark</item>
     </style>
     <style name="AlertDialogCustom" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:textColor">@color/primary_color</item>

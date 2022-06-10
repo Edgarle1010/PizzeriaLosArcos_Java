@@ -112,6 +112,7 @@
                         android:text="username"
                         android:textAlignment="textEnd"
                         android:textSize="16sp"
+                        android:lines="1"
                         app:layout_constraintBottom_toBottomOf="@+id/textView"
                         app:layout_constraintEnd_toStartOf="@+id/imageView"
                         app:layout_constraintStart_toEndOf="@+id/textView"

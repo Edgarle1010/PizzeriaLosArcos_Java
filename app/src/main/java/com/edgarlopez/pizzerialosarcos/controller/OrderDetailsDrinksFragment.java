@@ -564,7 +564,7 @@ public class OrderDetailsDrinksFragment extends Fragment implements View.OnClick
             foodSize = "";
         }
 
-        Item item = new Item(principalFood.getId(),
+        Item item = new Item(String.valueOf(System.currentTimeMillis()),
                 itemTitle,
                 isCompleteItem,
                 extraIngredientList,

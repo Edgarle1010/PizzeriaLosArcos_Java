@@ -2,9 +2,11 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
 import static com.edgarlopez.pizzerialosarcos.util.Util.NOTIFICATIONS_COLLECTION;
+import static com.edgarlopez.pizzerialosarcos.util.Util.ORDERS_COLLECTIONS;
 import static com.edgarlopez.pizzerialosarcos.util.Util.USERS_COLLECTION;
 import static com.edgarlopez.pizzerialosarcos.util.Util.USER_TOKEN;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -36,7 +38,9 @@ import com.edgarlopez.pizzerialosarcos.model.ExtraIngredient;
 import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.edgarlopez.pizzerialosarcos.model.Notification;
 import com.edgarlopez.pizzerialosarcos.model.NotificationViewModel;
+import com.edgarlopez.pizzerialosarcos.model.Order;
 import com.edgarlopez.pizzerialosarcos.ui.NotificationRecyclerViewAdapter;
+import com.edgarlopez.pizzerialosarcos.ui.OrderRecyclerViewAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.badge.BadgeDrawable;
@@ -45,10 +49,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -71,12 +78,16 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     private FirebaseUser user;
 
     private Query query = db.collection(NOTIFICATIONS_COLLECTION);
+    private Query queryOrders = db.collection(ORDERS_COLLECTIONS);
     private ListenerRegistration registration;
+    private ListenerRegistration registrationOrders;
 
     private ItemViewModel itemViewModel;
 
     private List<Notification> notificationList;
+    private List<Order> orderList;
     private BadgeDrawable badgeDrawable;
+    private BadgeDrawable badgeDrawableOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +112,10 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         ordersHistoryImageButton.setOnClickListener(this);
 
         notificationList = new ArrayList<>();
-        badgeDrawable =  BadgeDrawable.create(this);
+        badgeDrawable = BadgeDrawable.create(this);
+
+        orderList = new ArrayList<>();
+        badgeDrawableOrders = BadgeDrawable.create(this);
 
         itemViewModel = new ViewModelProvider.AndroidViewModelFactory(MenuActivity.this
                 .getApplication())
@@ -145,6 +159,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         bottomNavigationView.setOnItemReselectedListener(item -> {
 
         });
+
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -197,6 +212,35 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                         } else {
                             badgeDrawable.setNumber(notificationList.size());
                             BadgeUtils.attachBadgeDrawable(badgeDrawable, notificationsButton);
+                        }
+                    });
+
+                    registrationOrders = queryOrders.addSnapshotListener((value, error) -> {
+                        if (error != null) {
+                            Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        orderList.clear();
+                        if (value != null && !value.isEmpty()) {
+                            for (QueryDocumentSnapshot orders : value) {
+                                Order order = orders.toObject(Order.class);
+
+                                if (!order.isComplete() && order.getClient().equals(user.getPhoneNumber())) {
+                                    orderList.add(order);
+                                }
+                            }
+                        }
+
+                        badgeDrawableOrders.setVisible(true);
+                        badgeDrawableOrders.setVerticalOffset(10);
+                        badgeDrawableOrders.setHorizontalOffset(10);
+
+                        if (orderList.size() == 0) {
+                            badgeDrawableOrders.setNumber(orderList.size());
+                            BadgeUtils.detachBadgeDrawable(badgeDrawableOrders, ordersHistoryImageButton);
+                        } else {
+                            badgeDrawableOrders.setNumber(orderList.size());
+                            BadgeUtils.attachBadgeDrawable(badgeDrawableOrders, ordersHistoryImageButton);
                         }
                     });
                 });
@@ -348,6 +392,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
         super.onPause();
 
         registration.remove();
+        registrationOrders.remove();
     }
 
     @Override
@@ -358,6 +403,8 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                         NotificationsActivity.class));
                 break;
             case R.id.orders_in_process_icon:
+                startActivity(new Intent(MenuActivity.this,
+                        OrdersInProcessActivity.class));
                 break;
         }
     }
