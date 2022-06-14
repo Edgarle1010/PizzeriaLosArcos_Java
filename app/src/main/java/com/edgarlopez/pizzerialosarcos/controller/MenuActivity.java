@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -89,6 +90,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     private BadgeDrawable badgeDrawable;
     private BadgeDrawable badgeDrawableOrders;
 
+    @SuppressLint("UnsafeOptInUsageError")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,75 +148,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
 
             } else if (id == R.id.cart_nav_button) {
                 ordersHistoryImageButton.setVisibility(View.VISIBLE);
-                selectedFragment = ShoppingCartFragment.newInstance();
-            }
-            assert selectedFragment != null;
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.menu_frame, selectedFragment)
-                    .commit();
-
-            return true;
-        });
-
-        bottomNavigationView.setOnItemReselectedListener(item -> {
-
-        });
-
-    }
-
-    @SuppressLint("UnsafeOptInUsageError")
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Log.w("NOTIFICATION_TAG", "Fetching FCM registration token failed", task.getException());
-                        return;
-                    }
-
-                    String token = task.getResult();
-
-                    db.collection(USERS_COLLECTION).document(user.getUid()).update(USER_TOKEN, token)
-                            .addOnCompleteListener(updateTask -> {
-                                Log.d("USER_TOKEN", "DocumentSnapshot successfully updated!");
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.w("USER_TOKEN", "Error updating document", e);
-                            });
-
-                    progressBar.setVisibility(View.VISIBLE);
-                    registration = query.addSnapshotListener((value, error) -> {
-                        progressBar.setVisibility(View.GONE);
-                        if (error != null) {
-                            Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        }
-
-                        notificationList.clear();
-                        if (value != null && !value.isEmpty()) {
-                            for (QueryDocumentSnapshot notifications : value) {
-                                Notification notification = notifications.toObject(Notification.class);
-
-                                if (notification.userToken.equals(token) && !notification.viewed) {
-                                    notificationList.add(notification);
-                                }
-                            }
-                        }
-
-                        badgeDrawable.setVisible(true);
-                        badgeDrawable.setVerticalOffset(10);
-                        badgeDrawable.setHorizontalOffset(10);
-
-                        if (notificationList.size() == 0) {
-                            badgeDrawable.setNumber(notificationList.size());
-                            BadgeUtils.detachBadgeDrawable(badgeDrawable, notificationsButton);
-                        } else {
-                            badgeDrawable.setNumber(notificationList.size());
-                            BadgeUtils.attachBadgeDrawable(badgeDrawable, notificationsButton);
-                        }
-                    });
-
+                if (user != null) {
                     registrationOrders = queryOrders.addSnapshotListener((value, error) -> {
                         if (error != null) {
                             Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -243,7 +177,78 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                             BadgeUtils.attachBadgeDrawable(badgeDrawableOrders, ordersHistoryImageButton);
                         }
                     });
-                });
+                }
+                selectedFragment = ShoppingCartFragment.newInstance();
+            }
+            assert selectedFragment != null;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.menu_frame, selectedFragment)
+                    .commit();
+
+            return true;
+        });
+
+        bottomNavigationView.setOnItemReselectedListener(item -> {
+
+        });
+
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (user != null) {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.w("NOTIFICATION_TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        String token = task.getResult();
+
+                        db.collection(USERS_COLLECTION).document(user.getUid()).update(USER_TOKEN, token)
+                                .addOnCompleteListener(updateTask -> {
+                                    Log.d("USER_TOKEN", "DocumentSnapshot successfully updated!");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.w("USER_TOKEN", "Error updating document", e);
+                                });
+
+                        progressBar.setVisibility(View.VISIBLE);
+                        registration = query.addSnapshotListener((value, error) -> {
+                            progressBar.setVisibility(View.GONE);
+                            if (error != null) {
+                                Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            notificationList.clear();
+                            if (value != null && !value.isEmpty()) {
+                                for (QueryDocumentSnapshot notifications : value) {
+                                    Notification notification = notifications.toObject(Notification.class);
+
+                                    if (notification.userToken.equals(token) && !notification.viewed) {
+                                        notificationList.add(notification);
+                                    }
+                                }
+                            }
+
+                            badgeDrawable.setVisible(true);
+                            badgeDrawable.setVerticalOffset(10);
+                            badgeDrawable.setHorizontalOffset(10);
+
+                            if (notificationList.size() == 0) {
+                                badgeDrawable.setNumber(notificationList.size());
+                                BadgeUtils.detachBadgeDrawable(badgeDrawable, notificationsButton);
+                            } else {
+                                badgeDrawable.setNumber(notificationList.size());
+                                BadgeUtils.attachBadgeDrawable(badgeDrawable, notificationsButton);
+                            }
+                        });
+                    });
+        }
     }
 
     @Override
@@ -391,21 +396,37 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
     protected void onPause() {
         super.onPause();
 
-        registration.remove();
-        registrationOrders.remove();
+        if (registration != null) {
+            registration.remove();
+        }
+
+        if (registrationOrders != null) {
+            registrationOrders.remove();
+        }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.notifications_icon:
-                startActivity(new Intent(MenuActivity.this,
-                        NotificationsActivity.class));
-                break;
-            case R.id.orders_in_process_icon:
-                startActivity(new Intent(MenuActivity.this,
-                        OrdersInProcessActivity.class));
-                break;
+        if (user != null) {
+            switch (view.getId()) {
+                case R.id.notifications_icon:
+                    startActivity(new Intent(MenuActivity.this,
+                            NotificationsActivity.class));
+                    break;
+                case R.id.orders_in_process_icon:
+                    startActivity(new Intent(MenuActivity.this,
+                            OrdersInProcessActivity.class));
+                    break;
+            }
+        } else {
+            AlertDialog.Builder aD = new AlertDialog.Builder(this);
+            aD.setTitle("Modo invitado");
+            aD.setMessage("Al estar en modo invitado no tienes acceso a esta función. Inicia sesión o registrate para continuar.");
+            aD.setPositiveButton(R.string.acept, null);
+            aD.setCancelable(false);
+
+            AlertDialog dialog = aD.create();
+            dialog.show();
         }
     }
 }

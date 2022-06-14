@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.OrderDataActivity">
+
+    <ProgressBar
+        android:id="@+id/order_data_activity_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/quarter_color"
+        android:paddingLeft="16dp"
+        android:paddingTop="40dp"
+        android:paddingRight="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="25dp"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/back_button_order_data"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageButton>
+
+            <TextView
+                android:id="@+id/title_order_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Detalles del pedido"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back_button_order_data"
+                app:layout_constraintStart_toEndOf="@+id/back_button_order_data"
+                app:layout_constraintTop_toTopOf="@+id/back_button_order_data" />
+
+            <TextView
+                android:id="@+id/folio_order_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F5"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/date_order_data_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:background="@drawable/rounded_corner"
+            android:elevation="5dp"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:text="Fecha del pedido: 17 de enero"
+            android:textAlignment="center"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold">
+        </TextView>
+
+        <LinearLayout
+            android:padding="6dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingEnd="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Hora en que se pidió:"
+                android:layout_weight=".50"
+                android:textAlignment="textEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/date_request_order_data_text_view"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
+                android:text="3:13 p.m."
+                android:layout_weight=".50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="6dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingEnd="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Hora en que se procesó:"
+                android:layout_weight=".50"
+                android:textAlignment="textEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/date_processed_order_data_text_view"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
+                android:layout_weight=".50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="6dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingEnd="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Hora de terminación:"
+                android:layout_weight=".50"
+                android:textAlignment="textEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/date_finished_order_data_text_view"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
+                android:layout_weight=".50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="6dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/date_delivered_title_order_data_text_view"
+                android:paddingEnd="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Hora de entrega:"
+                android:layout_weight=".50"
+                android:textAlignment="textEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/date_delivered_order_data_text_view"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color"
+                android:layout_weight=".50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/status_order_data_text_view"
+                android:layout_margin="6dp"
+                android:layout_weight=".50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:background="@drawable/rounded_corner"
+                android:elevation="5dp"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="En proceso"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/total_order_data_text_view"
+                android:layout_margin="6dp"
+                android:layout_weight="0.50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:background="@drawable/rounded_corner"
+                android:elevation="5dp"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="Total: $0.00"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold">
+            </TextView>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_data_recycler_view"
+            android:layout_marginTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

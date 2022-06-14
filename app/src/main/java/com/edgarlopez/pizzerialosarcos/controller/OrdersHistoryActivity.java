@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -146,6 +147,8 @@ public class OrdersHistoryActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onOrderClicked(Order order) {
-        Log.d("Order", "onOrderClicked: " + order.getFolio());
+        Intent i = new Intent(OrdersHistoryActivity.this, OrderDataActivity.class);
+        i.putExtra("folio", order.getFolio());
+        startActivity(i);
     }
 }

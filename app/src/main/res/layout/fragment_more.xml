@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="username"
+                    android:text="Invitado"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/user_image_icon"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="phone_number"
                     app:layout_constraintStart_toEndOf="@+id/user_image_icon"
                     app:layout_constraintTop_toBottomOf="@+id/username_textview" />
 

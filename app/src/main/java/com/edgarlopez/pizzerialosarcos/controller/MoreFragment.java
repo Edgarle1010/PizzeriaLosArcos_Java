@@ -1,6 +1,7 @@
 package com.edgarlopez.pizzerialosarcos.controller;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -109,8 +110,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                         UserInformationActivity.class));
                 break;
             case R.id.orders_history_cardview:
-                startActivity(new Intent(requireActivity(),
-                        OrdersHistoryActivity.class));
+                if (user != null) {
+                    startActivity(new Intent(requireActivity(),
+                            OrdersHistoryActivity.class));
+                } else {
+                    AlertDialog.Builder aD = new AlertDialog.Builder(requireContext());
+                    aD.setTitle("Modo invitado");
+                    aD.setMessage("Al estar en modo invitado no tienes acceso a esta función. Inicia sesión o registrate para continuar.");
+                    aD.setPositiveButton(R.string.acept, null);
+                    aD.setCancelable(false);
+
+                    AlertDialog dialog = aD.create();
+                    dialog.show();
+                }
                 break;
             case R.id.how_to_get_cardview:
                 Intent intentMaps = new Intent(android.content.Intent.ACTION_VIEW,
@@ -151,30 +163,26 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        assert user != null;
-        String currentUserId = user.getUid();
-
-        collectionReference
-                .whereEqualTo("userId", currentUserId)
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-
-                    if (e != null) {
-                    }
-                    assert queryDocumentSnapshots != null;
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                            String name = snapshot.getString("name");
-                            String lastName = snapshot.getString("lastName");
-                            String phoneNumber = snapshot.getString("phoneNumber");
-
-                            userNameTextView.setText(name + " " + lastName);
-                            phoneNumberTextView.setText(phoneNumber);
+        if (user != null) {
+            collectionReference
+                    .whereEqualTo("userId", user.getUid())
+                    .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                        if (e != null) {
+                            Toast.makeText(requireContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                    }
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                String name = snapshot.getString("name");
+                                String lastName = snapshot.getString("lastName");
+                                String phoneNumber = snapshot.getString("phoneNumber");
 
-                });
+                                userNameTextView.setText(name + " " + lastName);
+                                phoneNumberTextView.setText(phoneNumber);
+                            }
+                        }
+                    });
+        }
     }
 
     public void makeCall()

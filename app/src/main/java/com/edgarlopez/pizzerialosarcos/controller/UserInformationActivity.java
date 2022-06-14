@@ -82,112 +82,131 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
         emailTextView = findViewById(R.id.email_object_textview_user_information);
         logoutButton = findViewById(R.id.logout_button);
 
-        backImageButton.setOnClickListener(this);
+        backImageButton.setOnClickListener(view -> finish());
+
+        logoutButton.setOnClickListener(view -> {
+            if (user != null && firebaseAuth != null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.logout_question_message);
+                builder.setNegativeButton(R.string.cancel_option, null);
+                builder.setPositiveButton(R.string.acept, (dialog, which) -> {
+                    firebaseAuth.signOut();
+
+                    ItemViewModel.deleteAll();
+                    UserViewModel.deleteAll();
+
+                    Intent intent = new Intent(UserInformationActivity.this,
+                            WelcomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                });
+                builder.setCancelable(false);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            } else {
+                ItemViewModel.deleteAll();
+                UserViewModel.deleteAll();
+
+                Intent intent = new Intent(UserInformationActivity.this,
+                        WelcomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
         userNameCardView.setOnClickListener(this);
         changePasswordCardView.setOnClickListener(this);
         deleteAccountCardView.setOnClickListener(this);
-        logoutButton.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back_button_user_information:
-                finish();
-                break;
-            case R.id.edit_username_card_view:
-                startActivity(new Intent(UserInformationActivity.this,
-                        EditUserNameActivity.class));
-                break;
-            case R.id.change_password_card_view:
-                startActivity(new Intent(UserInformationActivity.this,
-                        ChangePasswordActivity.class));
-                break;
-            case R.id.delete_account_card_view:
-                final EditText edittext = new EditText(UserInformationActivity.this);
-                edittext.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                edittext.setHint(R.string.password_hint);
-                edittext.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        if (user != null) {
+            switch (v.getId()) {
+                case R.id.edit_username_card_view:
+                    startActivity(new Intent(UserInformationActivity.this,
+                            EditUserNameActivity.class));
+                    break;
+                case R.id.change_password_card_view:
+                    startActivity(new Intent(UserInformationActivity.this,
+                            ChangePasswordActivity.class));
+                    break;
+                case R.id.delete_account_card_view:
+                    final EditText edittext = new EditText(UserInformationActivity.this);
+                    edittext.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    edittext.setHint(R.string.password_hint);
+                    edittext.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-                AlertDialog.Builder aD = new AlertDialog.Builder(this);
-                aD.setTitle(R.string.important_announcement);
-                aD.setMessage(R.string.delete_account_message);
-                aD.setView(edittext);
-                aD.setNegativeButton(R.string.cancel_option, null);
-                aD.setPositiveButton(R.string.acept, (dialog, which) -> {
-                    progressBar.setVisibility(View.VISIBLE);
+                    AlertDialog.Builder aD = new AlertDialog.Builder(this);
+                    aD.setTitle(R.string.important_announcement);
+                    aD.setMessage(R.string.delete_account_message);
+                    aD.setView(edittext);
+                    aD.setNegativeButton(R.string.cancel_option, null);
+                    aD.setPositiveButton(R.string.acept, (dialog, which) -> {
+                        progressBar.setVisibility(View.VISIBLE);
 
-                    String edittextValue = edittext.getText().toString();
-                    AuthCredential credential = EmailAuthProvider
-                            .getCredential(user.getEmail(), edittextValue);
+                        String edittextValue = edittext.getText().toString();
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(user.getEmail(), edittextValue);
 
-                    user.reauthenticate(credential)
-                            .addOnCompleteListener(taskR -> {
-                                progressBar.setVisibility(View.GONE);
-                                if (taskR.isSuccessful()) {
-                                    progressBar.setVisibility(View.VISIBLE);
-                                    user.delete()
-                                            .addOnCompleteListener(task -> {
-                                                progressBar.setVisibility(View.GONE);
-                                                if (task.isSuccessful()) {
-                                                    ItemViewModel.deleteAll();
-                                                    UserViewModel.deleteAll();
+                        user.reauthenticate(credential)
+                                .addOnCompleteListener(taskR -> {
+                                    progressBar.setVisibility(View.GONE);
+                                    if (taskR.isSuccessful()) {
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        user.delete()
+                                                .addOnCompleteListener(task -> {
+                                                    progressBar.setVisibility(View.GONE);
+                                                    if (task.isSuccessful()) {
+                                                        ItemViewModel.deleteAll();
+                                                        UserViewModel.deleteAll();
 
-                                                    Toast.makeText(UserInformationActivity.this,
-                                                            R.string.delete_account_successfully,
-                                                            Toast.LENGTH_SHORT)
-                                                            .show();
+                                                        Toast.makeText(UserInformationActivity.this,
+                                                                        R.string.delete_account_successfully,
+                                                                        Toast.LENGTH_SHORT)
+                                                                .show();
 
-                                                    Intent intent = new Intent(UserInformationActivity.this,
-                                                            WelcomeActivity.class);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                                                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(intent);
-                                                } else {
-                                                    Toast.makeText(UserInformationActivity.this,
-                                                            Objects.requireNonNull(task.getException()).getLocalizedMessage(),
-                                                            Toast.LENGTH_SHORT)
-                                                            .show();
-                                                }
-                                            });
-                                } else {
-                                    Toast.makeText(UserInformationActivity.this,
-                                            Objects.requireNonNull(taskR.getException()).getLocalizedMessage(),
-                                            Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            });
-                });
-                aD.setCancelable(false);
-
-                AlertDialog d = aD.create();
-                d.show();
-                break;
-            case R.id.logout_button:
-                if (user != null && firebaseAuth != null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(R.string.logout_question_message);
-                    builder.setNegativeButton(R.string.cancel_option, null);
-                    builder.setPositiveButton(R.string.acept, (dialog, which) -> {
-                        firebaseAuth.signOut();
-
-                        ItemViewModel.deleteAll();
-                        UserViewModel.deleteAll();
-
-                        Intent intent = new Intent(UserInformationActivity.this,
-                                WelcomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                                                        Intent intent = new Intent(UserInformationActivity.this,
+                                                                WelcomeActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                    } else {
+                                                        Toast.makeText(UserInformationActivity.this,
+                                                                        Objects.requireNonNull(task.getException()).getLocalizedMessage(),
+                                                                        Toast.LENGTH_SHORT)
+                                                                .show();
+                                                    }
+                                                });
+                                    } else {
+                                        Toast.makeText(UserInformationActivity.this,
+                                                        Objects.requireNonNull(taskR.getException()).getLocalizedMessage(),
+                                                        Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
                     });
-                    builder.setCancelable(false);
+                    aD.setCancelable(false);
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    AlertDialog d = aD.create();
+                    d.show();
+                    break;
+            }
+        }
+        else {
+            android.app.AlertDialog.Builder aD = new android.app.AlertDialog.Builder(this);
+            aD.setTitle("Modo invitado");
+            aD.setMessage("Al estar en modo invitado no tienes acceso a esta función. Inicia sesión o registrate para continuar.");
+            aD.setPositiveButton(R.string.acept, null);
+            aD.setCancelable(false);
 
-                }
-                break;
+            android.app.AlertDialog dialog = aD.create();
+            dialog.show();
         }
     }
 
@@ -195,34 +214,30 @@ public class UserInformationActivity extends AppCompatActivity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.VISIBLE);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        assert user != null;
-        String currentUserId = user.getUid();
+        if (user != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            collectionReference
+                    .whereEqualTo("userId", user.getUid())
+                    .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                        progressBar.setVisibility(View.INVISIBLE);
 
-        collectionReference
-                .whereEqualTo("userId", currentUserId)
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                    progressBar.setVisibility(View.INVISIBLE);
-
-                    if (e != null) {
-                    }
-                    assert queryDocumentSnapshots != null;
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                            String name = snapshot.getString("name");
-                            String lastName = snapshot.getString("lastName");
-                            String email = snapshot.getString("email");
-                            String phoneNumber = snapshot.getString("phoneNumber");
-
-                            userNameTextView.setText(name + " " + lastName);
-                            phoneNumberTextView.setText(phoneNumber);
-                            emailTextView.setText(email);
+                        if (e != null) {
+                            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                    }
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty())
+                            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                String name = snapshot.getString("name");
+                                String lastName = snapshot.getString("lastName");
+                                String email = snapshot.getString("email");
+                                String phoneNumber = snapshot.getString("phoneNumber");
 
-                });
+                                userNameTextView.setText(name + " " + lastName);
+                                phoneNumberTextView.setText(phoneNumber);
+                                emailTextView.setText(email);
+                            }
+                    });
+        }
     }
 }

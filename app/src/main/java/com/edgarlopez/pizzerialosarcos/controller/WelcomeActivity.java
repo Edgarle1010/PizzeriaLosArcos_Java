@@ -3,6 +3,7 @@ package com.edgarlopez.pizzerialosarcos.controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
+import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
@@ -108,6 +110,19 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                         TermsServicesActivity.class));
                 break;
             case R.id.guestButton:
+                AlertDialog.Builder aD = new AlertDialog.Builder(this);
+                aD.setTitle("Modo invitado");
+                aD.setMessage("Iniciaras sesión en modo invitado, podrás ver el menú completo y la mayoria de las funciones pero no podrás realizar pedidos hasta realizar el proceso de registro.");
+                aD.setPositiveButton(R.string.acept, (dialog, which) -> {
+                    startActivity(new Intent(WelcomeActivity.this,
+                            MenuActivity.class));
+                    finish();
+                });
+                aD.setNegativeButton("Volver", null);
+                aD.setCancelable(false);
+
+                AlertDialog dialog = aD.create();
+                dialog.show();
                 break;
         }
     }

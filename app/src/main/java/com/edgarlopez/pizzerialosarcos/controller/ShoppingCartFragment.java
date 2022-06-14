@@ -185,91 +185,102 @@ public class ShoppingCartFragment extends Fragment implements RecyclerItemTouchH
 
         sendButton.setOnClickListener(view1 -> {
             if (Objects.requireNonNull(itemViewModel.getAllItems().getValue()).size() != 0) {
-                readData(waitTime -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                    builder.setTitle("¿Seguro que quieres realizar el pedido?")
-                            .setMessage("Tiempo de espera promedio: " + waitTime + " minutos");
-                    builder.setPositiveButton("Sí", (dialogInterface, i) -> {
-                        if (user.getPhoneNumber() != null && user.getDisplayName() != null) {
-                            checkBaned(baned -> {
-                                if (!baned) {
-                                    checkService(activeService -> {
-                                        Order order = new Order();
-                                        if (activeService) {
-                                            double dateRequest = System.currentTimeMillis() / 1000;
-                                            double dateEstimatedDelivery = dateRequest + (Integer.parseInt(waitTime) * 60);
+                if (user != null) {
+                    readData(waitTime -> {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                        builder.setTitle("¿Seguro que quieres realizar el pedido?")
+                                .setMessage("Tiempo de espera promedio: " + waitTime + " minutos");
+                        builder.setPositiveButton("Sí", (dialogInterface, i) -> {
+                            if (user.getPhoneNumber() != null && user.getDisplayName() != null) {
+                                checkBaned(baned -> {
+                                    if (!baned) {
+                                        checkService(activeService -> {
+                                            Order order = new Order();
+                                            if (activeService) {
+                                                double dateRequest = System.currentTimeMillis() / 1000;
+                                                double dateEstimatedDelivery = dateRequest + (Integer.parseInt(waitTime) * 60);
 
-                                            String name = userViewModel.getOne(user.getUid()).getName();
-                                            String lastName = userViewModel.getOne(user.getUid()).getLastName();
-                                            order.setClient(user.getPhoneNumber());
-                                            order.setClientName(name + " " + lastName);
-                                            order.setDateRequest(dateRequest);
-                                            order.setDateEstimatedDelivery(dateEstimatedDelivery);
-                                            order.setDateProcessed(0.0);
-                                            order.setDateFinished(0.0);
-                                            order.setDateDelivered(0.0);
-                                            order.setDateCanceled(0.0);
-                                            if (currentLocation != null) {
-                                                order.setLocation(currentLocation);
-                                            } else {
-                                                order.setLocation("Ubicación no proporcionada.");
-                                            }
-                                            order.setComplete(false);
-                                            order.setStatus("Pedido");
-                                            order.setItems(itemViewModel.getAllItems().getValue().size());
-                                            order.setItemList(itemViewModel.getAllItems().getValue());
-                                            order.setTotalPrice(price);
+                                                String name = userViewModel.getOne(user.getUid()).getName();
+                                                String lastName = userViewModel.getOne(user.getUid()).getLastName();
+                                                order.setClient(user.getPhoneNumber());
+                                                order.setClientName(name + " " + lastName);
+                                                order.setDateRequest(dateRequest);
+                                                order.setDateEstimatedDelivery(dateEstimatedDelivery);
+                                                order.setDateProcessed(0.0);
+                                                order.setDateFinished(0.0);
+                                                order.setDateDelivered(0.0);
+                                                order.setDateCanceled(0.0);
+                                                if (currentLocation != null) {
+                                                    order.setLocation(currentLocation);
+                                                } else {
+                                                    order.setLocation("Ubicación no proporcionada.");
+                                                }
+                                                order.setComplete(false);
+                                                order.setStatus("Pedido");
+                                                order.setItems(itemViewModel.getAllItems().getValue().size());
+                                                order.setItemList(itemViewModel.getAllItems().getValue());
+                                                order.setTotalPrice(price);
 
-                                            checkOrderId(id -> {
-                                                String fol = "F" + id;
-                                                order.setFolio(fol);
-                                                db.collection("orders")
-                                                        .document(fol)
-                                                        .set(order).addOnSuccessListener(documentReference -> {
+                                                checkOrderId(id -> {
+                                                    String fol = "F" + id;
+                                                    order.setFolio(fol);
+                                                    db.collection("orders")
+                                                            .document(fol)
+                                                            .set(order).addOnSuccessListener(documentReference -> {
 
-                                                    Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                                                    v.vibrate(400);
+                                                                Vibrator v = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                                                                v.vibrate(400);
 
-                                                    AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
-                                                    aD.setTitle(R.string.order_sent_successfully_title);
-                                                    aD.setMessage(String.format(getString(R.string.order_successfully_message), waitTime, fol));
-                                                    aD.setPositiveButton(R.string.acept, (dialog, which) -> {
-                                                        ItemViewModel.deleteAll();
-                                                    });
-                                                    aD.setCancelable(false);
+                                                                AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
+                                                                aD.setTitle(R.string.order_sent_successfully_title);
+                                                                aD.setMessage(String.format(getString(R.string.order_successfully_message), waitTime, fol));
+                                                                aD.setPositiveButton(R.string.acept, (dialog, which) -> {
+                                                                    ItemViewModel.deleteAll();
+                                                                });
+                                                                aD.setCancelable(false);
 
-                                                    AlertDialog dialog = aD.create();
-                                                    dialog.show();
+                                                                AlertDialog dialog = aD.create();
+                                                                dialog.show();
+                                                            });
                                                 });
-                                            });
 
-                                        } else {
-                                            AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
-                                            aD.setTitle(R.string.notice);
-                                            aD.setMessage(messageStatus);
-                                            aD.setPositiveButton(R.string.acept, null);
+                                            } else {
+                                                AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
+                                                aD.setTitle(R.string.notice);
+                                                aD.setMessage(messageStatus);
+                                                aD.setPositiveButton(R.string.acept, null);
 
-                                            AlertDialog dialog = aD.create();
-                                            dialog.show();
-                                        }
-                                    });
-                                } else {
-                                    AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
-                                    aD.setTitle(R.string.problem_occurred);
-                                    aD.setMessage(R.string.baned_dialog);
-                                    aD.setPositiveButton(R.string.acept, null);
+                                                AlertDialog dialog = aD.create();
+                                                dialog.show();
+                                            }
+                                        });
+                                    } else {
+                                        AlertDialog.Builder aD = new AlertDialog.Builder(requireActivity());
+                                        aD.setTitle(R.string.problem_occurred);
+                                        aD.setMessage(R.string.baned_dialog);
+                                        aD.setPositiveButton(R.string.acept, null);
 
-                                    AlertDialog dialog = aD.create();
-                                    dialog.show();
-                                }
-                            });
-                        }
+                                        AlertDialog dialog = aD.create();
+                                        dialog.show();
+                                    }
+                                });
+                            }
+                        });
+                        builder.setNegativeButton("No", (dialogInterface, i) -> {
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     });
-                    builder.setNegativeButton("No", (dialogInterface, i) -> {
-                    });
-                    AlertDialog dialog = builder.create();
+                } else {
+                    AlertDialog.Builder aD = new AlertDialog.Builder(requireContext());
+                    aD.setTitle("Modo invitado");
+                    aD.setMessage("Al estar en modo invitado no tienes acceso a esta función. Inicia sesión o registrate para continuar.");
+                    aD.setPositiveButton(R.string.acept, null);
+                    aD.setCancelable(false);
+
+                    AlertDialog dialog = aD.create();
                     dialog.show();
-                });
+                }
             } else {
                 Toast.makeText(requireActivity(), "La lista está vacía", Toast.LENGTH_SHORT).show();
             }
