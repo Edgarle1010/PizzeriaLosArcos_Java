@@ -105,7 +105,7 @@ public class NotificationsActivity extends AppCompatActivity implements OnNotifi
                     for (QueryDocumentSnapshot notifications : value) {
                         Notification notification = notifications.toObject(Notification.class);
 
-                        if (notification.userToken.equals(userToken)) {
+                        if (notification.phoneNumber.equals(user.getPhoneNumber())) {
                             notificationList.add(notification);
                         }
                     }

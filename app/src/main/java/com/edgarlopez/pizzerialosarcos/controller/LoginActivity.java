@@ -32,6 +32,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AutoCompleteTextView phoneNumberEditText;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+
     private ProgressBar progressBar;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -207,23 +210,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginEmailPasswordUser(String email, String pwd) {
-        progressBar.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pwd)) {
+            progressBar.setVisibility(View.VISIBLE);
             firebaseAuth.signInWithEmailAndPassword(email, pwd)
                     .addOnCompleteListener(task -> {
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            progressBar.setVisibility(View.INVISIBLE);
-
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            assert user != null;
-                            String currentUserId = user.getUid();
-
+                            user = firebaseAuth.getCurrentUser();
                             progressBar.setVisibility(View.VISIBLE);
                             collectionReference
-                                    .whereEqualTo("userId", currentUserId)
+                                    .whereEqualTo("userId", user.getUid())
                                     .get()
                                     .addOnCompleteListener((value) -> {
-                                        progressBar.setVisibility(View.INVISIBLE);
+                                        progressBar.setVisibility(View.GONE);
                                         if (value.isSuccessful()) {
                                             DocumentSnapshot snapshot = value.getResult().getDocuments().get(0);
 
@@ -244,11 +243,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 UserViewModel.insert(user1);
                                             });
 
-                                            Toast.makeText(LoginActivity.this,
-                                                            String.format(getString(R.string.welcome_message), name),
-                                                            Toast.LENGTH_SHORT)
-                                                    .show();
-
                                             finishAffinity();
 
                                             startActivity(new Intent(LoginActivity.this,
@@ -261,15 +255,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         }
 
                                     });
-                        }else {
+                        } else {
                             Toast.makeText(LoginActivity.this,
                                     Objects.requireNonNull(task.getException()).getLocalizedMessage(),
                                     Toast.LENGTH_SHORT)
                                     .show();
                         }
                     });
-        }else {
-            progressBar.setVisibility(View.INVISIBLE);
+        } else {
             Toast.makeText(LoginActivity.this,
                     "Por favor introduce tu e-mail y contraseña.",
                     Toast.LENGTH_SHORT)
@@ -278,31 +271,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginWithPhoneNumberPasswordUser(String phoneNumber, String password) {
-        progressBar.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(password)) {
+            progressBar.setVisibility(View.VISIBLE);
             collectionReference
                     .whereEqualTo("phoneNumber", phoneNumber)
-                    .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        if (e != null) {
-                        }
-                        assert queryDocumentSnapshots != null;
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                                AppController appController = AppController.getInstance();
-                                String email = snapshot.getString("email");
-                                loginEmailPasswordUser(email, password);
+                    .get()
+                    .addOnCompleteListener((task) -> {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            QuerySnapshot document = task.getResult();
+                            if (!document.isEmpty()) {
+                                for (QueryDocumentSnapshot snapshot : document) {
+                                    AppController appController = AppController.getInstance();
+                                    String email = snapshot.getString("email");
+                                    loginEmailPasswordUser(email, password);
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this,
+                                                "El número celular introducido no esta registrado.",
+                                                Toast.LENGTH_SHORT)
+                                        .show();
                             }
-                        }else {
-                            Toast.makeText(LoginActivity.this,
-                                    "El número celular introducido no esta registrado.",
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                        } else {
+                            Toast.makeText(this, String.valueOf(task.getException()), Toast.LENGTH_SHORT).show();
                         }
-
                     });
-        }else {
-            progressBar.setVisibility(View.INVISIBLE);
+        } else {
             Toast.makeText(LoginActivity.this,
                     "Por favor introduce tu número celular y contraseña.",
                     Toast.LENGTH_SHORT)

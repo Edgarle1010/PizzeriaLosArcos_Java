@@ -8,19 +8,19 @@ public class Notification implements Serializable {
     public String title;
     public String description;
     public String options;
-    public String userToken;
+    public String phoneNumber;
     public boolean viewed;
     public double dateSend;
 
     public Notification() { }
 
-    public Notification(String folio, String imageURL, String title, String description, String options, String userToken, boolean viewed, double dateSend) {
+    public Notification(String folio, String imageURL, String title, String description, String options, String phoneNumber, boolean viewed, double dateSend) {
         this.folio = folio;
         this.imageURL = imageURL;
         this.title = title;
         this.description = description;
         this.options = options;
-        this.userToken = userToken;
+        this.phoneNumber = phoneNumber;
         this.viewed = viewed;
         this.dateSend = dateSend;
     }
@@ -65,12 +65,12 @@ public class Notification implements Serializable {
         this.options = options;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isViewed() {

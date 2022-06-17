@@ -229,7 +229,7 @@ public class MenuActivity extends AppCompatActivity implements OnAddExtraIngredi
                                 for (QueryDocumentSnapshot notifications : value) {
                                     Notification notification = notifications.toObject(Notification.class);
 
-                                    if (notification.userToken.equals(token) && !notification.viewed) {
+                                    if (notification.phoneNumber.equals(user.getPhoneNumber()) && !notification.viewed) {
                                         notificationList.add(notification);
                                     }
                                 }

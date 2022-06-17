@@ -4,9 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -16,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edgarlopez.pizzerialosarcos.R;
-import com.edgarlopez.pizzerialosarcos.model.ItemViewModel;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
@@ -28,19 +26,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private Button loginButton;
     private Button signInButton;
     private Button guestButton;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser currentUser;
+    private FirebaseUser user;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_PizzeriaLosArcos);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -58,25 +58,26 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         signInButton.setOnClickListener(this);
         guestButton.setOnClickListener(this);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        progressBar.setVisibility(View.VISIBLE);
-        authStateListener = firebaseAuth -> {
-            progressBar.setVisibility(View.GONE);
-            currentUser = firebaseAuth.getCurrentUser();
-            if (currentUser != null) {
-                currentUser = firebaseAuth.getCurrentUser();
-                String currentUserId = currentUser.getUid();
+        progressDialog = new ProgressDialog(this);
 
-                progressBar.setVisibility(View.VISIBLE);
+        firebaseAuth = FirebaseAuth.getInstance();
+        showProgressDialogWithTitle("Iniciando sesión...");
+        authStateListener = firebaseAuth -> {
+            hideProgressDialogWithTitle();
+            user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                showProgressDialogWithTitle("Iniciando sesión...");
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 collectionReference
-                        .whereEqualTo("userId", currentUserId)
+                        .whereEqualTo("userId", user.getUid())
                         .get().addOnCompleteListener(task -> {
-                            progressBar.setVisibility(View.GONE);
+                            hideProgressDialogWithTitle();
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                     String userId = snapshot.getString("userId");
-
-                                    if (userId.equals(currentUserId)) {
+                                    if (userId.equals(userId)) {
                                         startActivity(new Intent(WelcomeActivity.this,
                                                 MenuActivity.class));
                                         finish();
@@ -84,17 +85,27 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                                 }
                             } else {
                                 Toast.makeText(WelcomeActivity.this,
-                                        task.getException().getLocalizedMessage(),
+                                        String.valueOf(task.getException()),
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
-            } else {
-                progressBar.setVisibility(View.GONE);
             }
         };
 
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    private void showProgressDialogWithTitle(String substring) {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(substring);
+        progressDialog.show();
+    }
+
+    private void hideProgressDialogWithTitle() {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.dismiss();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -130,7 +141,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStart() {
         super.onStart();
-        currentUser = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
     }
 

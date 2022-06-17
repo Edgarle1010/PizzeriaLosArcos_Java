@@ -10,6 +10,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SplashScreen" parent="Theme.PizzeriaLosArcos">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -32,6 +36,5 @@
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/primary_color</item>
     </style>
-
 
 </resources>

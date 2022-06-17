@@ -154,14 +154,15 @@
                 android:id="@+id/phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/phonenumber_hint"
-                android:inputType="number"
                 android:layout_toEndOf="@id/region_login_spinner"
+                android:hint="@string/phonenumber_hint"
                 android:imeOptions="actionNext"
-                android:nextFocusDown="@id/password"
-                android:maxLines="1">
-            </AutoCompleteTextView>
-            <requestFocus></requestFocus>
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:nextFocusDown="@id/password" />
+
+            <requestFocus />
 
         </RelativeLayout>
 
