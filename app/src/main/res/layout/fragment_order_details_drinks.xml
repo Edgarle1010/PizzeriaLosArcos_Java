@@ -1,381 +1,415 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-android:id="@+id/fragment_order_details"
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/quarter_color"
-tools:context=".controller.OrderDetailsDrinksFragment">
-
-<LinearLayout
-    android:id="@+id/title_layout_orders_detail_drinks"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_order_details"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:background="@color/secondary_color"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/back_button_order_detail_drinks"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageButton>
-
-        <TextView
-            android:id="@+id/food_title_order_drinks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_marginRight="30dp"
-            app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_drinks"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_drinks"
-            app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_drinks" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/food_description_order_drinks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp">
-
-    </TextView>
-
-</LinearLayout>
-
-<ScrollView
-    android:id="@+id/scrollView_drinks"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:layout_constraintBottom_toTopOf="@+id/order_add_button_drinks"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_drinks">
+    android:layout_height="match_parent"
+    android:background="@color/quarter_color"
+    tools:context=".controller.OrderDetailsDrinksFragment">
 
     <LinearLayout
+        android:id="@+id/title_layout_orders_detail_drinks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondary_color"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/snow_layout"
-            android:visibility="gone"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/snowless_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Sin nieve"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
+            <ImageButton
+                android:id="@+id/back_button_order_detail_drinks"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
+            </ImageButton>
 
             <TextView
-                android:id="@+id/with_snow_text_view"
+                android:id="@+id/food_title_order_drinks"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Con nieve"
+                android:layout_marginRight="30dp"
                 android:textAlignment="center"
                 android:textColor="@color/primary_color"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_drinks"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_drinks"
+                app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_drinks" />
 
-            </TextView>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/ice_cream_size_text_view"
+            android:id="@+id/food_description_order_drinks"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:visibility="gone"
-            android:text="Tamaño"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/ice_cream_size_layout"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:id="@+id/ice_cream_big_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Grande"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/ice_cream_medium_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Mediana"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/ice_cream_small_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Chica"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/soda_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Sabor"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <NumberPicker
-                android:id="@+id/soda_number_picker"
-                android:theme="@style/AppTheme.Picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </NumberPicker>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_size_order_drinks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="15dp"
-            android:text="Tamaño"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/size_layout_drinks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/size_pitcher_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Jarra"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/size_glass_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Vaso"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Cantidad"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/order_amount_text_view_drinks"
-            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_corner"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="1"
-            android:textColor="@color/primary_color"
-            android:textSize="17sp"
-            android:textStyle="bold">
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="12sp">
 
         </TextView>
-
-        <TextView
-            android:id="@+id/food_comments_text_drinks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Comentarios"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <EditText
-            android:id="@+id/order_comments_edit_text_drinks"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_edit_text"
-            android:elevation="3dp"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:maxLength="100"
-            android:padding="10dp"
-            android:scrollbars="vertical"
-            android:textColor="@color/primary_color">
-
-        </EditText>
-
 
     </LinearLayout>
 
-</ScrollView>
+    <ScrollView
+        android:id="@+id/scrollView_drinks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/order_add_button_drinks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_drinks">
 
-<Button
-    android:id="@+id/order_add_button_drinks"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
-    android:text="Agregar al carrito"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</Button>
+            <LinearLayout
+                android:id="@+id/snow_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:visibility="gone">
 
-<TextView
-    android:id="@+id/order_total_text_view_drinks"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/rounded_corner"
-    android:padding="10dp"
-    android:text="Total: $"
-    android:textAlignment="center"
-    android:textColor="@color/primary_color"
-    android:textSize="17sp"
-    android:textStyle="bold"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+                <TextView
+                    android:id="@+id/snowless_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Sin nieve"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-</TextView>
+                </TextView>
+
+                <TextView
+                    android:id="@+id/with_snow_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Con nieve"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ice_cream_size_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Tamaño"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:visibility="gone">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/ice_cream_size_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ice_cream_big_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Grande"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/ice_cream_medium_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Mediana"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/ice_cream_small_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Chica"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/soda_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Sabor"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <NumberPicker
+                    android:id="@+id/soda_number_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.Picker">
+
+                </NumberPicker>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_size_order_drinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Tamaño"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:visibility="gone">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/size_layout_drinks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/size_pitcher_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Jarra"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/size_glass_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Vaso"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textSize="17sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Cantidad"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/order_amount_text_view_drinks"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:autoSizeStepGranularity="2sp"
+                android:background="@drawable/rounded_corner"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="1"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="17sp"
+                app:autoSizeMinTextSize="11sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/food_comments_text_drinks"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Comentarios"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/order_comments_edit_text_drinks"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/rounded_edit_text"
+                android:elevation="3dp"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:maxLength="100"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/primary_color">
+
+            </EditText>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/order_add_button_drinks"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="5dp"
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeStepGranularity="2sp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Agregar al carrito"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline4">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/order_total_text_view_drinks"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner"
+        android:elevation="5dp"
+        android:padding="10dp"
+        android:text="Total: $"
+        android:textAlignment="center"
+        android:textColor="@color/primary_color"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </TextView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

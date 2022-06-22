@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.edgarlopez.pizzerialosarcos"
-        minSdkVersion 24
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 26
+        targetSdkVersion 32
+        versionCode 21062022
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -60,4 +60,5 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.0.0'
 }

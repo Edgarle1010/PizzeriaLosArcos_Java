@@ -36,8 +36,10 @@ public class AmountOrderFragment extends DialogFragment {
         numberPicker.setMaxValue(15);
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         numberPicker.setWrapSelectorWheel(false);
-        numberPicker.setSelectionDividerHeight(0);
-        numberPicker.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            numberPicker.setSelectionDividerHeight(0);
+            numberPicker.setTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color));
+        }
     }
 
     @Override

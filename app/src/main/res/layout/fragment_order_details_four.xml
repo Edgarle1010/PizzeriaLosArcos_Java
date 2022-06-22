@@ -1,278 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-android:id="@+id/fragment_order_details"
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/quarter_color"
-tools:context=".controller.OrderDetailsFourFragment">
-
-<LinearLayout
-    android:id="@+id/title_layout_orders_detail_four"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_order_details"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:background="@color/secondary_color"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/back_button_order_detail_four"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageButton>
-
-        <TextView
-            android:id="@+id/food_title_order_four"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Coctel de camarones"
-            android:textColor="@color/primary_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_marginRight="30dp"
-            app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_four"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_four"
-            app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_four" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/food_description_order_four"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp">
-
-    </TextView>
-
-</LinearLayout>
-
-<ScrollView
-    android:id="@+id/scrollView_four"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:layout_constraintBottom_toTopOf="@+id/order_add_button_four"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_four">
+    android:layout_height="match_parent"
+    android:background="@color/quarter_color"
+    tools:context=".controller.OrderDetailsFourFragment">
 
     <LinearLayout
+        android:id="@+id/title_layout_orders_detail_four"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondary_color"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/back_button_order_detail_four"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageButton>
+
+            <TextView
+                android:id="@+id/food_title_order_four"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:text="Coctel de camarones"
+                android:textAlignment="center"
+                android:textColor="@color/primary_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_four"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_four"
+                app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_four" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
+            android:id="@+id/food_description_order_four"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Tamaño"
-            android:textSize="19sp"
-            android:textStyle="bold">
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textSize="12sp">
 
         </TextView>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView_four"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/order_add_button_four"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_four">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/size_big_text_view_four"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Grande"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/size_small_text_view_four"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Chico"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Ingrediente extra"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/extraIngredientRecyclerView_four"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <RelativeLayout
-            android:id="@+id/extra_ingredient_relative_layout_four"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:onClick="onClick">
-
-            <ImageView
-                android:id="@+id/add_extra_ingredient_icon_four"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_baseline_add_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </ImageView>
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/add_extra_ingredient_icon_four"
-                android:text="Añadir ingrediente extra"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp">
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Tamaño"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
 
             </TextView>
 
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Cantidad"
-            android:textSize="19sp"
-            android:textStyle="bold">
+                <TextView
+                    android:id="@+id/size_big_text_view_four"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Grande"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    android:autoSizeStepGranularity="2sp"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
 
-        </TextView>
+                </TextView>
 
-        <TextView
-            android:id="@+id/order_amount_text_view_four"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_corner"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="1"
-            android:textColor="@color/primary_color"
-            android:textSize="17sp"
-            android:textStyle="bold">
+                <TextView
+                    android:id="@+id/size_small_text_view_four"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Chico"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
 
-        </TextView>
+                </TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Comentarios"
-            android:textSize="19sp"
-            android:textStyle="bold">
+            </LinearLayout>
 
-        </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Ingrediente extra"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
 
-        <EditText
-            android:id="@+id/order_comments_edit_text_four"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_edit_text"
-            android:elevation="3dp"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:maxLength="100"
-            android:padding="10dp"
-            android:scrollbars="vertical"
-            android:textColor="@color/primary_color">
+            </TextView>
 
-        </EditText>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/extraIngredientRecyclerView_four"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <RelativeLayout
+                android:id="@+id/extra_ingredient_relative_layout_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:onClick="onClick">
+
+                <ImageView
+                    android:id="@+id/add_extra_ingredient_icon_four"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_baseline_add_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/add_extra_ingredient_icon_four"
+                    android:autoSizeStepGranularity="2sp"
+                    android:text="Añadir ingrediente extra"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Cantidad"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/order_amount_text_view_four"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:autoSizeStepGranularity="2sp"
+                android:background="@drawable/rounded_corner"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="1"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="17sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Comentarios"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/order_comments_edit_text_four"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/rounded_edit_text"
+                android:elevation="3dp"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:maxLength="100"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/primary_color">
+
+            </EditText>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
-<Button
-    android:id="@+id/order_add_button_four"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
-    android:text="Agregar al carrito"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+    <Button
+        android:id="@+id/order_add_button_four"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="5dp"
+        android:text="Agregar al carrito"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeTextType="uniform"
+        android:autoSizeStepGranularity="2sp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6">
 
-</Button>
+    </Button>
 
-<TextView
-    android:id="@+id/order_total_text_view_four"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/rounded_corner"
-    android:padding="10dp"
-    android:text="Total: $"
-    android:textAlignment="center"
-    android:textColor="@color/primary_color"
-    android:textSize="17sp"
-    android:textStyle="bold"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    <TextView
+        android:id="@+id/order_total_text_view_four"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner"
+        android:elevation="5dp"
+        android:padding="10dp"
+        android:text="Total: $"
+        android:textAlignment="center"
+        android:textColor="@color/primary_color"
+        android:autoSizeStepGranularity="2sp"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeTextType="uniform"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent">
 
-</TextView>
+    </TextView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

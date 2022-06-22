@@ -83,8 +83,6 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
 
         View view = inflater.inflate(R.layout.fragment_half_food, container, false);
 
-        foodList.clear();
-
         assert getArguments() != null;
         foodType = getArguments().getString(FOOD_TYPE);
         principalFood = (Food) getArguments().getSerializable(FOOD_ITEM);
@@ -128,20 +126,20 @@ public class HalfFoodFragment extends Fragment implements OnFoodClickListener {
         foodViewModel = new ViewModelProvider(requireActivity())
                 .get(FoodViewModel.class);
 
-        //progressBar.setVisibility(View.VISIBLE);
-
         if (foodType.equals(EGGS_INGREDIENTS_ID)) {
             halfTitleTextView.setText("Seleccione el ingrediente");
         } else if (foodType.equals((ICECREAM_ID))) {
             halfTitleTextView.setText("Seleccione el sabor");
         }
 
+        progressBar.setVisibility(View.VISIBLE);
         collectionReference
                 .orderBy("listPosition")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    //progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     if (!queryDocumentSnapshots.isEmpty()) {
+                        foodList.clear();
                         for (QueryDocumentSnapshot foods : queryDocumentSnapshots) {
                             Food food = foods.toObject(Food.class);
 

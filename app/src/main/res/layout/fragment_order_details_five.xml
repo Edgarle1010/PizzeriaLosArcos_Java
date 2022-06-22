@@ -1,590 +1,690 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-android:id="@+id/fragment_order_details"
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/quarter_color"
-tools:context=".controller.OrderDetailsFiveFragment">
-
-<LinearLayout
-    android:id="@+id/title_layout_orders_detail_five"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_order_details"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:background="@color/secondary_color"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/back_button_order_detail_five"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </ImageButton>
-
-        <TextView
-            android:id="@+id/food_title_order_five"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Desayuno americano"
-            android:textColor="@color/primary_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_marginRight="30dp"
-            app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_five"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_five"
-            app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_five" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/food_description_order_five"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:layout_marginTop="10dp"
-        android:text="Su elección de huevos revueltos o estrellados"
-        android:textSize="12sp">
-
-    </TextView>
-
-</LinearLayout>
-
-<ScrollView
-    android:id="@+id/scrollView_five"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:layout_constraintBottom_toTopOf="@+id/order_add_button_five"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_five">
+    android:layout_height="match_parent"
+    android:background="@color/quarter_color"
+    tools:context=".controller.OrderDetailsFiveFragment">
 
     <LinearLayout
+        android:id="@+id/title_layout_orders_detail_five"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondary_color"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/complete_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Orden completa"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/half_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Media orden"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_style_order_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Estilo"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/style_smashed_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Estrellados"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/style_scrambled_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Revueltos"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_chilaquiles_order_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="15dp"
-            android:text="Chilaquiles"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/chilaquiles_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/chilaquiles_red_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Rojos"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/chilaquiles_green_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Verdes"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_filling_order_five"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Relleno"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/filling_layout_five"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/filling_cheese_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Queso"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/filling_hash_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Picadillo"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/filling_chicken_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Pollo"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_ingredient_order_five"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Ingrediente"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/ingredient_layout_five"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/ingredient_bacon_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Tocino"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/ingredient_ham_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Jamón"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/ingredient_chorizo_text_view_five"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Chorizo"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_bread_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Pan"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/bread_white_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:padding="10dp"
-                android:text="Blanco"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/bread_wholemeal_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Integral"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/bread_baguette_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight=".33"
-                android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/quarter_color"
-                android:padding="10dp"
-                android:text="Baguette"
-                android:textAlignment="center"
-                android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/food_extra_ingredient_order_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Ingrediente extra"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/extraIngredientRecyclerView_five"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <RelativeLayout
-            android:id="@+id/extra_ingredient_relative_layout_five"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:onClick="onClick">
-
-            <ImageView
-                android:id="@+id/add_extra_ingredient_icon_five"
+            <ImageButton
+                android:id="@+id/back_button_order_detail_five"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_baseline_add_24"
+                android:layout_height="0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </ImageView>
+            </ImageButton>
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/food_title_order_five"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/add_extra_ingredient_icon_five"
-                android:text="Añadir ingrediente extra"
+                android:layout_marginRight="30dp"
+                android:text="Desayuno americano"
+                android:textAlignment="center"
                 android:textColor="@color/primary_color"
-                android:textSize="17sp">
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_five"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_five"
+                app:layout_constraintTop_toTopOf="@+id/back_button_order_detail_five" />
 
-            </TextView>
-
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/food_amount_text"
+            android:id="@+id/food_description_order_five"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Cantidad"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/order_amount_text_view_five"
-            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_corner"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="1"
-            android:textColor="@color/primary_color"
-            android:textSize="17sp"
-            android:textStyle="bold">
+            android:layout_marginTop="10dp"
+            android:text="Su elección de huevos revueltos o estrellados"
+            android:textAlignment="center"
+            android:textSize="12sp">
 
         </TextView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:text="Comentarios"
-            android:textSize="19sp"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <EditText
-            android:id="@+id/order_comments_edit_text_five"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_edit_text"
-            android:elevation="3dp"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:maxLength="100"
-            android:padding="10dp"
-            android:scrollbars="vertical"
-            android:textColor="@color/primary_color">
-
-        </EditText>
-
 
     </LinearLayout>
 
-</ScrollView>
+    <ScrollView
+        android:id="@+id/scrollView_five"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/order_add_button_five"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout_orders_detail_five">
 
-<Button
-    android:id="@+id/order_add_button_five"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
-    android:text="Agregar al carrito"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</Button>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
-<TextView
-    android:id="@+id/order_total_text_view_five"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/rounded_corner"
-    android:padding="10dp"
-    android:text="Total: $"
-    android:textAlignment="center"
-    android:textColor="@color/primary_color"
-    android:textSize="17sp"
-    android:textStyle="bold"
-    android:elevation="5dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+                <TextView
+                    android:id="@+id/complete_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Orden completa"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-</TextView>
+                </TextView>
+
+                <TextView
+                    android:id="@+id/half_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Media orden"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_style_order_five"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Estilo"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/style_smashed_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Estrellados"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/style_scrambled_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Revueltos"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_chilaquiles_order_five"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Chilaquiles"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:visibility="gone">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/chilaquiles_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/chilaquiles_red_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Rojos"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/chilaquiles_green_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Verdes"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_filling_order_five"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Relleno"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:autoSizeStepGranularity="2sp"
+                android:textStyle="bold"
+                android:visibility="gone">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/filling_layout_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/filling_cheese_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Queso"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/filling_hash_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Picadillo"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/filling_chicken_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Pollo"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_ingredient_order_five"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Ingrediente"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:autoSizeStepGranularity="2sp"
+                android:textStyle="bold"
+                android:visibility="gone">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/ingredient_layout_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ingredient_bacon_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Tocino"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/ingredient_ham_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Jamón"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/ingredient_chorizo_text_view_five"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Chorizo"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    android:autoSizeStepGranularity="2sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_bread_order"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Pan"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/bread_white_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="10dp"
+                    android:text="Blanco"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/bread_wholemeal_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Integral"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/bread_baguette_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".33"
+                    android:autoSizeStepGranularity="2sp"
+                    android:background="@drawable/rounded_corner"
+                    android:backgroundTint="@color/quarter_color"
+                    android:padding="10dp"
+                    android:text="Baguette"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/food_extra_ingredient_order_five"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Ingrediente extra"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/extraIngredientRecyclerView_five"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <RelativeLayout
+                android:id="@+id/extra_ingredient_relative_layout_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:onClick="onClick">
+
+                <ImageView
+                    android:id="@+id/add_extra_ingredient_icon_five"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_baseline_add_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@id/add_extra_ingredient_icon_five"
+                    android:text="Añadir ingrediente extra"
+                    android:textColor="@color/primary_color"
+                    android:autoSizeStepGranularity="2sp"
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/food_amount_text"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Cantidad"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/order_amount_text_view_five"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:autoSizeStepGranularity="2sp"
+                android:background="@drawable/rounded_corner"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="1"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="17sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
+                android:text="Comentarios"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/order_comments_edit_text_five"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/rounded_edit_text"
+                android:elevation="3dp"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:maxLength="100"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/primary_color">
+
+            </EditText>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/order_add_button_five"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="5dp"
+        android:text="Agregar al carrito"
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeStepGranularity="2sp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/order_total_text_view_five"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner"
+        android:elevation="5dp"
+        android:padding="10dp"
+        android:text="Total: $"
+        android:textAlignment="center"
+        android:textColor="@color/primary_color"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </TextView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

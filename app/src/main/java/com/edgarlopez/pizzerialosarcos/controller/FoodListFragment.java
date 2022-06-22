@@ -115,6 +115,9 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
         recyclerView = view.findViewById(R.id.foodRecyclerView);
         progressBar = requireActivity().findViewById(R.id.menu_activity_progress);
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
         return view;
     }
 
@@ -158,8 +161,6 @@ public class FoodListFragment extends Fragment implements OnFoodClickListener {
                         if (foodViewModel.getFoods().getValue() != null) {
                             foodList = foodViewModel.getFoods().getValue();
                             foodRecyclerAdapter = new FoodRecyclerViewAdapter(getContext(), foodList, this);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                             recyclerView.setAdapter(foodRecyclerAdapter);
                         }
 

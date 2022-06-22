@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/fragment_order_details"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_order_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/quarter_color"
@@ -13,9 +12,9 @@
         android:id="@+id/title_layout_orders_detail_secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/secondary_color"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="@color/secondary_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -40,12 +39,12 @@
                 android:id="@+id/food_title_order_secondary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
                 android:text="Hamburguesa Especial"
+                android:textAlignment="center"
                 android:textColor="@color/primary_color"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginRight="30dp"
-                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="@+id/back_button_order_detail_secondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/back_button_order_detail_secondary"
@@ -58,9 +57,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAlignment="center"
             android:layout_marginTop="10dp"
             android:text="Con jamón y tocino"
+            android:textAlignment="center"
             android:textSize="12sp">
 
         </TextView>
@@ -87,13 +86,16 @@
 
             <TextView
                 android:id="@+id/extra_ingredient_subtitle_textview_secondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
                 android:text="Ingrediente extra"
-                android:textSize="19sp"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
 
             </TextView>
 
@@ -125,51 +127,63 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@id/add_extra_ingredient_icon_secondary"
+                    android:autoSizeStepGranularity="2sp"
                     android:text="Añadir ingrediente extra"
                     android:textColor="@color/primary_color"
-                    android:textSize="17sp">
+                    app:autoSizeMaxTextSize="17sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform">
 
                 </TextView>
 
             </RelativeLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
                 android:text="Cantidad"
-                android:textSize="19sp"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform">
 
             </TextView>
 
             <TextView
                 android:id="@+id/order_secondary_amount_text_view"
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
+                android:autoSizeStepGranularity="2sp"
                 android:background="@drawable/rounded_corner"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="1"
                 android:textColor="@color/primary_color"
-                android:textSize="17sp"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="17sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeTextType="uniform">
 
             </TextView>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
+                android:autoSizeStepGranularity="2sp"
                 android:text="Comentarios"
-                android:textSize="19sp"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform">
 
             </TextView>
 
@@ -196,34 +210,57 @@
 
     <Button
         android:id="@+id/order_secondary_add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Agregar al carrito"
         android:elevation="5dp"
+        android:text="Agregar al carrito"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="8sp"
+        app:autoSizeTextType="uniform"
+        android:autoSizeStepGranularity="2sp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline7">
 
     </Button>
 
     <TextView
         android:id="@+id/order_secondary_total_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_corner"
+        android:elevation="5dp"
         android:padding="10dp"
         android:text="Total: $"
         android:textAlignment="center"
         android:textColor="@color/primary_color"
-        android:textSize="17sp"
+        android:autoSizeStepGranularity="2sp"
+        app:autoSizeMaxTextSize="17sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeTextType="uniform"
         android:textStyle="bold"
-        android:elevation="5dp"
+        android:maxLines="1"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="parent">
 
     </TextView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
